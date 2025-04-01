@@ -18,6 +18,7 @@
     width: 100%;
     height: 48px;
     border-radius: 10px;
+    padding-left: 20px;
     font-size: 18px;
     color: var(--footer-color);
     border: 1px solid var(--footer-color);
@@ -29,7 +30,7 @@
     width: 100%;
     height: 100px;
     border-radius: 10px;
-    padding: 10px;
+    padding-left: 20px;
     font-size: 18px;
     color: var(--footer-color);
     border: 1px solid var(--footer-color);
@@ -48,7 +49,6 @@
     height: 60%;
     border: 2px solid black;
     width: 80%;
-
 }
 .promotion-dates{
     display: flex;
@@ -58,7 +58,6 @@
     gap: 30px;
 
 }
-
 
 .promotion-unrequired{
     display: flex;
@@ -92,7 +91,6 @@ form{
     cursor: pointer;
 }
 
-
 .popup-btn{
     height: 40px;
     border-radius: 100px;
@@ -111,183 +109,9 @@ form{
     width: 180px;
 }
 
-
 .popup-btn:hover{
     background-color: var(--tertiary-color);
     color: var(--footer-color);
     cursor: pointer;
     transition: 0.15s;
 }
-
-  /* Popup header section */
-  .detail-popup-inner {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    height: 100%;
-    
-  }
-  
-  .detail-popup-header {
-    display: flex;
-    flex-direction: column;
-    padding: 30px 30px 15px;
-    border-bottom: 1px solid #eee;
-    background-color: #f8f9fa;
-    border-radius: 15px 15px 0 0;
-  }
-  
-  .detail-popup-header > div:first-child {
-    margin-bottom: 15px;
-  }
-  
-  .detail-popup-header h2 {
-    font-size: 28px;
-    color: var(--text-color);
-    margin: 0 0 10px 0;
-    line-height: 1.2;
-    word-break: break-word;
-  }
-  
-  .detail-popup-header > div:nth-child(2) {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  
-  .detail-popup-promotion-tag {
-    height: 34px;
-    min-width: 120px;
-    background-color: var(--tertiary-color);
-    text-align: center;
-    padding: 7px 15px;
-    border-radius: 100px;
-    font-weight: bold;
-  }
-  
-  .popup-dates {
-    font-size: 14px;
-    color: #666;
-  }
-  
-/* Fix the heading before description */
-.promotion-details-popup h3 {
-    margin: 10px 0 5px; /* Reduced margins */
-    font-size: 18px;
-    font-weight: bold;
-    padding-bottom: 5px;
-  }
-
-  
-  /* Buttons section */
-  #detail-popup-buttons {
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px 30px;
-    border-top: 1px solid #eee;
-    background-color: #f8f9fa;
-    margin-top: auto;
-    border-radius: 0 0 15px 15px;
-    gap: 15px;
-  }
-  
-  #detail-popup-buttons .popup-btn {
-    height: 40px;
-    border-radius: 8px;
-    font-size: 15px;
-    border: none;
-    padding: 0 20px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .cancel-btn {
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  
-  .cancel-btn:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .submit-btn {
-    background-color: var(--primary-color);
-    color: white;
-  }
-  
-  .submit-btn:hover {
-    background-color: var(--quaternary-color);
-  }
-
-/* 1. First, delete ALL existing .promotion-detail-description rules */
-
-/* 2. Then add this single definition for the description box */
-/* Updated description box with improved scrolling */
-.promotion-detail-description {
-    max-height: 200px;
-    border-radius: 12px;
-    padding: 20px; /* Keep existing padding */
-    padding-top: 25px; /* Add extra paddig at the top */
-    width: 100%;
-    overflow-y: auto;
-    line-height: 1.6;
-    background-color: #f8f9fa;
-    font-size: 18px; /* Increased from 12px for better readability */
-    margin: 0 0 25px 0;
-    /* Add these scroll properties to fix the scrolling issue */
-    scroll-padding-top: 20px;
-    overscroll-behavior: contain;
-  }
-
-  .promotion-detail-description::before {
-    content: "";
-    display: block;
-    height: 10px; /* Invisible space at the top */
-    margin-top: -10px;
-  }
-  /* Also adjust the content inside the description */
-.promotion-detail-description p:first-child {
-    margin-top: 5px; /* Add margin to first paragraph */
-  }
-  
-  
-  /* 3. To make the box wider, increase the parent container width */
-  .detail-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    padding: 0;
-    width: 850px; /* Increased from 750px */
-    max-width: 95vw; /* Increased from 90vw */
-    max-height: 85vh;
-    overflow-y: auto;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    z-index: 1001;
-  }
-  
-  /* 4. Also fix the promotion-details-popup to use more width */
-  .promotion-details-popup {
-    padding: 20px 30px; /* Reduced top padding */
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Reduced gap */
-  }
-  
-  /* 5. Fix the duplicate promotion-details-popup p definitions */
-  .promotion-details-popup p {
-    margin: 8px 0;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 800px; /* Increased from 400px */
-    margin-left: 0;
-  }
