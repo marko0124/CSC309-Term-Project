@@ -19,19 +19,26 @@ const port = (() => {
 })();
 
 const express = require("express");
+const cors = require("cors");
+
 const app = express();
-app.use(express.json());
 const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
 const transactionRoutes = require("./routes/transactions");
 const eventRoutes = require("./routes/events");
 const promotionRoutes = require("./routes/promotions");
 
+app.use(cors());
+app.use(express.json());
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/events", eventRoutes);
 app.use("/promotions", promotionRoutes);
+
+app.get("/getData", (req,res) => {
+    res.send("Welcome to the backend API!");
+})
 
 const server = app.listen(port, () => {
     console.log(`Server running on port ${port}`);
