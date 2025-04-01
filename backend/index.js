@@ -19,6 +19,7 @@ const port = (() => {
 })();
 
 const express = require("express");
+const cors = require('cors');
 const app = express();
 app.use(express.json());
 const userRoutes = require("./routes/users");
@@ -32,6 +33,13 @@ app.use("/auth", authRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/events", eventRoutes);
 app.use("/promotions", promotionRoutes);
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }));
 
 const server = app.listen(port, () => {
     console.log(`Server running on port ${port}`);
