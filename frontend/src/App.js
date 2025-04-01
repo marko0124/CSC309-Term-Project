@@ -8,6 +8,7 @@ import ChangePassword from './pages/profile/ChangePassword.jsx';
 import Home from './pages/Home.jsx';
 import Users from './pages/users/Users.jsx';
 import CreateUser from './pages/users/CreateUser.jsx';
+import Promotions from './pages/Promotions.jsx';
 import {AuthProvider, useAuth} from './context/authContext.js';
 
 const App = () => {
@@ -98,6 +99,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <CreateUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/promotions"
+          element={
+            <ProtectedRoute>
+              <Promotions />
             </ProtectedRoute>
           }
         />
