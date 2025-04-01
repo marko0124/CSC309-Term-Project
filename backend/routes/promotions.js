@@ -87,7 +87,7 @@ router.post('/', auth.login, auth.checkRole('manager'), async (req, res) => {
 
 router.get('/', auth.login, async (req, res) => {
     try {
-        const {name, type, started, ended, page=1, limit=10} = req.query;
+        const {name, type, started, ended, page=1, limit=10, orderBy="asc"} = req.query;
         const pageNum = parseInt(page, 10);
         const limitNum = parseInt(limit, 10);
         if (isNaN(pageNum) || isNaN(limitNum) || pageNum < 1 || limitNum < 1) {
@@ -151,7 +151,10 @@ router.get('/', auth.login, async (req, res) => {
             where: conditions,
             include: {users: {}},
             skip: (pageNum - 1) * limitNum,
-            take: limitNum
+            take: limitNum,
+            orderBy: {
+                id: orderBy
+            }
         });
         const promos = promotions.map(promo => {
             if (req.user.role === "manager" || req.user.role === "superuser") {
