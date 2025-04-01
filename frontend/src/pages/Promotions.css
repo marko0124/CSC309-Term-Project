@@ -23,6 +23,15 @@ h1{
     color: var(--text-color);
 }
 
+a{
+    text-decoration: none;
+}
+
+a:hover{
+    opacity: 0.4;
+    transition: 0.2s;
+}
+
 .custom-shape-divider-top-1743545933 {
     position: relative;
     top: 0;
@@ -153,6 +162,19 @@ h1{
     border: 1px solid var(--text-color);
     color: var(--text-color);
     margin-right: 8px;
+}
+
+.filter-button-container{
+    width: 100%;
+    display: flex;
+    margin-top: 20px;
+}
+.create {
+    position: relative;
+    width: 200px;
+    margin-left: auto;
+
+
 }
 
 .filter-button:hover{
