@@ -254,7 +254,7 @@ router.post('/', auth.login, auth.checkRole('cashier'), async (req, res) => {
 
 router.get('/', auth.login, auth.checkRole('manager'), async (req, res) => {
     try {
-        const {name, createdBy, suspicious: sus, promotionId, type, relatedId, amount, operator, page=1, limit=10} = req.query;
+        const {name, createdBy, suspicious: sus, promotionId, type, relatedId, amount, operator, page=1, limit=10, orderBy="asc"} = req.query;
         const pageNum = parseInt(page, 10);
         const limitNum = parseInt(limit, 10);
         if (isNaN(pageNum) || isNaN(limitNum) || pageNum < 1 || limitNum < 1) {
@@ -340,6 +340,9 @@ router.get('/', auth.login, auth.checkRole('manager'), async (req, res) => {
             },
             skip: (pageNum - 1) * limitNum,
             take: limitNum,
+            orderBy: {
+                id: orderBy
+            }
         });
         const response = transactions.map(transaction => {
             const promotions = transaction.promotions.map(promo => promo.id);
