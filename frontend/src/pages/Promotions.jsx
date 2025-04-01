@@ -3,144 +3,18 @@ import apiClient from '../api/client';
 import './navbar.css'; 
 import './Promotions.css';
 import supermarketImage from '../assets/supermarket.avif'; // Adjust the path as necessary
+// Proper FontAwesome imports
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Promotions = () => {
   const [promotions, setPromotions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [editMode, setEditMode] = useState(false);
-  const [itemsPerPage] = useState(5);
-  const [editingPromotionId, setEditingPromotionId] = useState(null);
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const [buttonPopup, setButtonPopup] = useState(false);
-  const [selectedPromotion, setSelectedPromotion] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeButtons, setActiveButtons] = useState({
-    oneTime: false,
-    automatic: false,
-    started: false,
-    ended: false
-  });
-  const [filter, setFilter] = useState({
-    name: '',
-    type: null,
-    page: 1,
-    limit: 10,
-    started: false,
-    ended: false,
-  })
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    promotionType: 'one-time', 
-    startDate: '',
-    endDate: '',
-    minSpending: null,
-    rate: null,
-    points: null
-  });
-  // Add this pagination component
- // Pagination component with improved stability
-const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) => {
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  
-  const handlePageChange = (newPage) => {
-    if (newPage === currentPage) return; // Prevent unnecessary re-renders
-    
-    setCurrentPage(newPage);
-    fetchPromotions(newPage);
-  };
-  
-  return (
-    <div className="pagination">
-      <button 
-        type="button" // Important to prevent form submission behavior
-        onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-        disabled={currentPage === 1}
-        className="pagination-button"
-      >
-        Previous
-      </button>
-      
-      <span className="page-info">
-        Page {currentPage} of {totalPages || 1}
-      </span>
-      
-      <button 
-        type="button" // Important to prevent form submission behavior
-        onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
-        disabled={currentPage === totalPages || totalPages === 0}
-        className="pagination-button"
-      >
-        Next
-      </button>
-    </div>
-  );
-};
-  
-  const applySearch = async (e, page = 1) => {
-    if (e) e.preventDefault();
-    
-    // Update your filter
-    setFilter({
-      ...filter,
-      name: searchTerm,
-      page: page
-    });
-    
-    setLoading(true);
-    try {
-      // Include page and limit in URL
-      let url = `http://localhost:5001/promotions?name=${encodeURIComponent(searchTerm)}&page=${page}&limit=${itemsPerPage}`;
-      // Add additional filter parameters if needed
-      if (filter.type && filter.type !== 'both') {
-        url += `&type=${encodeURIComponent(filter.type)}`;
-      }
-      if (filter.started) {
-        url += '&started=true';
-      }
-      if (filter.ended) {
-        url += '&ended=true';
-      }
-      
-      console.log("Fetching from URL:", url);
-      
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (response.status === 400) {
-        setPromotions([]);
-        return;
-      }
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      console.log('Search results:', data);
-      
-      setPromotions(data);
-      
-      // Only reset to first page on initial search, not pagination clicks
-      if (e) {
-        setCurrentPage(1);
-      } else {
-        // If this was triggered by pagination, update the current page
-        setCurrentPage(page);
-      }
-      
-    } catch (error) {
-      console.error('Error searching promotions:', error);
-      alert('Failed to search promotions: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+  const fullDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s";
+
+  const truncatedDescription = fullDescription.substring(0, 100) + "...";
 
   // Add this effect near your other useEffect hooks
   useEffect(() => {
@@ -174,8 +48,6 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) =
       ended: newActiveButtons.ended
     });
   };
-  const fullDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s";
-  const truncatedDescription = fullDescription.substring(0, 100) + "...";
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -395,7 +267,8 @@ const handlePromotionClick = (promotion, e) => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className='background-container'>
+    <div className='wave-container'>
+      <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
       <div className='navbar'> NAVBAR </div>
       <div className='header-container'> 
         <div className='header-text'>
@@ -404,19 +277,83 @@ const handlePromotionClick = (promotion, e) => {
             <p className='promotion-tag'>some type</p>
             <p> Some Date</p>
           </div>
-          <p className='header-text-description'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
-          </p>
+          <div className='expandable-text'>
+            <p className='header-text-description'>
+              {showFullDescription ? fullDescription : truncatedDescription}
+            </p>
+            <button 
+              className='show-more-button'
+              onClick={() => setShowFullDescription(!showFullDescription)}
+            >
+              {showFullDescription ? 'Show Less' : 'Show More'}
+            </button>
+          </div>
         </div>
         <div className='header-image'>
           <img className='himg' src={supermarketImage} alt="promotion" />
         </div>
       </div>
-
+     
+      <div class="custom-shape-divider-top-1743545933">
+          <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+          </svg>
+      </div>
       <div className='promotions-list-container'>
         <div className='promotions-list'> 
           <p className='promotion-header'><h2>All Promotions (32)</h2></p>
+          <div className='filter'>
+            <input type='text' placeholder='Search for a promotion' className='search-bar'/>
+            <button className='search-button'>Search <FontAwesomeIcon icon={faSearch}/></button>
+          </div>
+          <div>
+            <button className='filter-button active-filter-button onetime'>One-Time</button>
+            <button className='filter-button automatic'>Automatic</button>
+          </div>
+         
           <div className='promotions'>
+            <ul className='promotion'>
+              <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
+              <div className='promotion-title'> Some title</div>
+              <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
+              </p>
+            </ul>
+            <div className='divider'></div>
+            <ul className='promotion'>
+              <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
+              <div className='promotion-title'> Some title</div>
+              <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
+              </p>
+            </ul>
+            <div className='divider'></div>
+            <ul className='promotion'>
+              <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
+              <div className='promotion-title'> Some title</div>
+              <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
+              </p>
+            </ul>
+            <div className='divider'></div>
+            <ul className='promotion'>
+              <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
+              <div className='promotion-title'> Some title</div>
+              <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
+              </p>
+            </ul>
+            <div className='divider'></div>
+            <ul className='promotion'>
+              <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
+              <div className='promotion-title'> Some title</div>
+              <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
+              </p>
+            </ul>
+            <div className='divider'></div>
+            <ul className='promotion'>
+              <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
+              <div className='promotion-title'> Some title</div>
+              <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
+              </p>
+            </ul>
+            <div className='divider'></div>
             <ul className='promotion'>
               <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
               <div className='promotion-title'> Some title</div>
@@ -435,9 +372,10 @@ const handlePromotionClick = (promotion, e) => {
             )} */}
           </div>
           </div>
+          
         </div>
         <div className='footer'> 
-           
+           Footer
 
         </div>
       </div>
