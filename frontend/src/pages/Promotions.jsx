@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
-// import Popup from '../components/PopUp.jsx';
+import apiClient from '../api/client';
 import './navbar.css'; 
 import './Promotions.css';
-import '../components/PopUp.css';
-
-import supermarketImage from '../assets/supermarket.avif';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
+import supermarketImage from '../assets/supermarket.avif'; // Adjust the path as necessary
 
 const Promotions = () => {
   const [promotions, setPromotions] = useState([]);
@@ -399,287 +395,53 @@ const handlePromotionClick = (promotion, e) => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className='promotion-page'>
-      <main>
-        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-        <div className='navbar'> NAVBAR </div>
-        <div className='header-container'> 
-          <div className='header-text'>
-            <h1>A Title of the most Important Upcoming Event</h1>
-            <div className='header-text-details'>
-              <p className='promotion-tag'>some type</p>
-              <p> Some Date</p>
-            </div>
-            <div className='expandable-text'>
-              <p className='header-text-description'>
-                {showFullDescription ? fullDescription : truncatedDescription}
+    <div className='background-container'>
+      <div className='navbar'> NAVBAR </div>
+      <div className='header-container'> 
+        <div className='header-text'>
+          <h1>A Title of the most Important Upcoming Event</h1>
+          <div className='header-text-details'>
+            <p className='promotion-tag'>some type</p>
+            <p> Some Date</p>
+          </div>
+          <p className='header-text-description'>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
+          </p>
+        </div>
+        <div className='header-image'>
+          <img className='himg' src={supermarketImage} alt="promotion" />
+        </div>
+      </div>
+
+      <div className='promotions-list-container'>
+        <div className='promotions-list'> 
+          <p className='promotion-header'><h2>All Promotions (32)</h2></p>
+          <div className='promotions'>
+            <ul className='promotion'>
+              <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
+              <div className='promotion-title'> Some title</div>
+              <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
               </p>
-              <button 
-                className='show-more-button'
-                onClick={() => setShowFullDescription(!showFullDescription)}
-              >
-                {showFullDescription ? 'Show Less' : 'Show More'}
-              </button>
-            </div>
-          </div>
-          <div className='header-image'>
-            <img className='himg' src={supermarketImage} alt="promotion" />
-          </div>
-        </div>
-      
-        <div className="custom-shape-divider-top-1743545933">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
-            </svg>
-        </div>
-        <div className='promotions-list-container'>
-          <div className='promotions-list'> 
-            <p className='promotion-header'>All Promotions ({promotions.count || 0})</p>
-            <div className='filter'>
-            <input 
-              type="text" 
-              placeholder="Search for a promotion" 
-              className="search-bar"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-
-            <button 
-              type="button"
-              className="search-button" 
-              onClick={applySearch}
-            >
-              Search <FontAwesomeIcon icon={faSearch}/>
-            </button>
-            </div>
-            <div className='filter-button-container'>
-            <div className='button-filter'>
-                <button 
-                  className={`filter-button ${activeButtons.oneTime ? 'active-filter-button' : ''}`}
-                  onClick={() => toggleFilterButton('oneTime')}
-                >
-                  One-Time
-                </button>
-                
-                <button 
-                  className={`filter-button ${activeButtons.automatic ? 'active-filter-button' : ''}`}
-                  onClick={() => toggleFilterButton('automatic')}
-                >
-                  Automatic
-                </button>
-                
-                <button 
-                  className={`filter-button ${activeButtons.started ? 'active-filter-button' : ''}`}
-                  onClick={() => toggleFilterButton('started')}
-                >
-                  Started
-                </button>
-                
-                <button 
-                  className={`filter-button ${activeButtons.ended ? 'active-filter-button' : ''}`}
-                  onClick={() => toggleFilterButton('ended')}
-                >
-                  Ended
-                </button>
-              </div>
-              <button className='filter-button create' onClick={() => setButtonPopup(true)}>Create Promotion <FontAwesomeIcon icon={faPlus}/></button>
-              
-            </div>
-          
-            {!promotions.results || promotions.results.length === 0 ? (
-              <div className="no-results"> No promotions available :( </div>
+            </ul>
+            <div className='divider'></div>
+            {/* {promotions.length === 0 ? (
+              <p>No promotions available</p>
             ) : (
-              <>
-                <div className='promotions'>
-                  {/* Display only items for the current page */}
-                     {promotions.results && promotions.results.map((promotion, index) => (
-                      <ul className='promotion' key={promotion.id || index}>
-                        <div className='promotion-details'> 
-                          <div className='promotion-tag'>{promotion.type}</div> 
-                          <p>{new Date(promotion.startTime).toLocaleDateString()}</p>
-                        </div>
-                        <div 
-                          className="promotion-clickable"
-                          onClick={(e) => handlePromotionClick(promotion, e)}
-                        >
-                          <div className='promotion-title'>{promotion.name || 'Some title'}</div>
-                          <p className='promotion-description'>
-                            Get a discount of {promotion.rate} at a minimum spending of {promotion.minSpending || 0}! 
-                            Only available until {new Date(promotion.endTime).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <div className='divider'></div>
-                      </ul>
-                    ))}
-                  </div>
-                  
-                  <Pagination 
-                    totalItems={promotions.count || 0}
-                    itemsPerPage={itemsPerPage}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                  />
-                </>
-              )}
-            </div>
-            </div>
-          <div className='footer'> 
-            Footer
-
+              <ul>
+                {promotions.map(promo => (
+                  <li key={promo.id}>{promo.name} - {promo.description}</li>
+                ))}
+              </ul>
+            )} */}
           </div>
-          </main>
-          {/* Popup Component */}
-      {buttonPopup && (
-        <>
-          <div className="overlay" onClick={() => setButtonPopup(false)}></div>
-          <div className="popup">
-            <div className="popup-inner">
-            <h2>{editMode ? 'Edit Promotion' : 'Create New Promotion'}</h2>              
-            <form onSubmit={handleSubmit}>
-                <input 
-                  id="promotion-title"
-                  type="text" 
-                  name="title"
-                  placeholder="Promotion Title" 
-                  value={formData.title}
-                  onChange={handleInputChange}
-                  required
-                />
-                <textarea 
-                  id='promotion-description'
-                  name="description"
-                  placeholder="Promotion Description" 
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  required
-                ></textarea>
-                <div className="promotion-dates">
-                  <select 
-                    id="promotion-type" 
-                    name="promotionType" 
-                    value={formData.promotionType}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    <option value="one-time">One-Time</option>
-                    <option value="automatic">Automatic</option>
-                  </select>
-
-                  <input
-                    id='promotion-start-date'
-                    type="date"
-                    name="startDate"
-                    placeholder="Start Date"
-                    value={formData.startDate}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    id='promotion-end-date'
-                    type="date"
-                    name="endDate"
-                    placeholder="End Date"
-                    value={formData.endDate}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="promotion-unrequired">
-                <input 
-                  type="number"
-                  name="minSpending"
-                  placeholder="Minimum Spending"
-                  value={formData.minSpending}
-                  onChange={handleInputChange}
-                />
-
-                <input
-                  type="number"
-                  name="rate"
-                  placeholder="Discount Rate"
-                  value={formData.rate}
-                  onChange={handleInputChange}
-                />
-                <input 
-                  type="number" 
-                  name="points"
-                  placeholder="Points" 
-                  value={formData.points}
-                  onChange={handleInputChange}
-                />
-              </div>
-                              
-              </form>
-              <div id="popup-buttons">
-              <button className="popup-btn cancel-btn" onClick={() => {
-                setButtonPopup(false);
-                setEditMode(false);
-                // Reset form data
-                setFormData({
-                  title: '',
-                  description: '',
-                  promotionType: 'one-time',
-                  startDate: '',
-                  endDate: '',
-                  minSpending: '',
-                  rate: '',
-                  points: ''
-                });
-              }}>Cancel
-              </button>                
-              <button className="popup-btn submit-btn" onClick={handleSubmit}>{editMode ? 'Edit Promotion' : 'Create New Promotion'}</button>
-              </div>
-             
-            </div>
           </div>
-        </>
-      )}
+        </div>
+        <div className='footer'> 
+           
 
-      {selectedPromotion && (
-        <>
-          <div className="overlay" onClick={() => setSelectedPromotion(null)}></div>
-          <div className="detail-popup">
-            <div className="detail-popup-inner">
-              <div className="detail-popup-header">
-              <div><h2>{selectedPromotion.name}</h2></div>
-              <div>
-                <div className="detail-popup-promotion-tag">{selectedPromotion.type}</div>
-                <div className="popup-dates"> {new Date(selectedPromotion.startTime).toLocaleDateString()} - {new Date(selectedPromotion.endTime).toLocaleDateString()}</div>
-              </div>
-              
-              </div>
-
-              
-              {selectedPromotion.loading ? (
-                <div className="loading-spinner">Loading details...</div>
-              ) : (
-                <div className="promotion-details-popup">
-                  
-                    
-                    <p>Discount Rate: {selectedPromotion.rate || 'N/A'}</p>
-                    <p>Minimum Spending: ${selectedPromotion.minSpending || 0}</p>
-                    <p>Points: {selectedPromotion.points || 'N/A'}</p>                  
-                    <h3>Promotion Description</h3>
-                  <div className="promotion-detail-description">{selectedPromotion.description}</div>
-                  
-                  
-                </div>
-              )}
-              
-              <div id="detail-popup-buttons">
-                <button className="popup-btn cancel-btn" onClick={() => setSelectedPromotion(null)}>Close</button>
-                {!selectedPromotion.loading && (
-                  <button className="popup-btn submit-btn" onClick={handleEditClick}>Edit Promotion</button>
-                )}
-                <button className="popup-btn submit-btn" onClick={handleDeleteClick}>Delete Promotion</button>
-
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-    
+        </div>
+      </div>
+      
   );
 };
 
