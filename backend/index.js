@@ -36,9 +36,12 @@ app.use("/transactions", transactionRoutes);
 app.use("/events", eventRoutes);
 app.use("/promotions", promotionRoutes);
 
-app.get("/getData", (req,res) => {
-    res.send("Welcome to the backend API!");
-})
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }));
 
 const server = app.listen(port, () => {
     console.log(`Server running on port ${port}`);

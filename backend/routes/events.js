@@ -73,7 +73,7 @@ router.post('/', auth.login, auth.checkRole('manager'), async (req, res) => {
 
 router.get('/', auth.login, async (req, res) => {
     try {
-        const {name, location, started, ended, showFull, published, page=1, limit=10} = req.query;
+        const {name, location, started, ended, showFull, published, page=1, limit=10, orderBy="asc"} = req.query;
         const pageNum = parseInt(page, 10);
         const limitNum = parseInt(limit, 10);
         if (isNaN(pageNum) || isNaN(limitNum) || pageNum < 1 || limitNum < 1) {
@@ -147,6 +147,9 @@ router.get('/', auth.login, async (req, res) => {
             take: limitNum,
             include: {
                 guests: {}
+            },
+            orderBy: {
+                id: orderBy
             }
         });
 
