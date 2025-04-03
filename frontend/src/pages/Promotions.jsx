@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import apiClient from '../api/client';
-import Popup from '../components/PopUp.jsx';
+// import Popup from '../components/PopUp.jsx';
 import './navbar.css'; 
 import './Promotions.css';
 import '../components/PopUp.css';
@@ -12,35 +11,138 @@ import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 const Promotions = () => {
   const [promotions, setPromotions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [editMode, setEditMode] = useState(false);
+  const [itemsPerPage] = useState(5);
+  const [editingPromotionId, setEditingPromotionId] = useState(null);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [buttonPopup, setButtonPopup] = useState(false);
+  const [selectedPromotion, setSelectedPromotion] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeButtons, setActiveButtons] = useState({
+    oneTime: false,
+    automatic: false,
+    started: false,
+    ended: false
+  });
+  const [filter, setFilter] = useState({
+    name: '',
+    type: null,
+    page: 1,
+    limit: 10,
+    started: false,
+    ended: false,
+  })
   const [formData, setFormData] = useState({
     title: '',
-    description: ''
+    description: '',
+    promotionType: 'one-time', 
+    startDate: '',
+    endDate: '',
+    minSpending: null,
+    rate: null,
+    points: null
   });
-
-  const fullDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s";
-  const truncatedDescription = fullDescription.substring(0, 100) + "...";
-
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  // Add this pagination component
+  const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) => {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    
+    const handlePageChange = (newPage) => {
+      setCurrentPage(newPage);
+      fetchPromotions(newPage);
+    };
+    
+    return (
+      <div className="pagination">
+        <button 
+          type="button" // Add this attribute
+          onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+          disabled={currentPage === 1}
+          className="pagination-button"
+        >
+          Previous
+    </button>
+        
+        <span className="page-info">
+          Page {currentPage} of {totalPages || 1}
+        </span>
+        
+        <button 
+          onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+          disabled={currentPage === totalPages || totalPages === 0}
+          className="pagination-button"
+        >
+          Next
+        </button>
+      </div>
+    );
+  };
+  
+  const applySearch = async (e, page = 1) => {
+    if (e) e.preventDefault();
+    
+    // Update your filter
+    setFilter({
+      ...filter,
+      name: searchTerm,
+      page: page
+    });
+    
+    setLoading(true);
+    try {
+      // Include page and limit in URL
+      let url = `http://localhost:5001/promotions?name=${encodeURIComponent(searchTerm)}&page=${page}&limit=${itemsPerPage}`;
+      // Add additional filter parameters if needed
+      if (filter.type && filter.type !== 'both') {
+        url += `&type=${encodeURIComponent(filter.type)}`;
+      }
+      if (filter.started) {
+        url += '&started=true';
+      }
+      if (filter.ended) {
+        url += '&ended=true';
+      }
+      
+      console.log("Fetching from URL:", url);
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.status === 400) {
+        setPromotions([]);
+        return;
+      }
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Search results:', data);
+      
+      setPromotions(data);
+      
+      // Only reset to first page on initial search, not pagination clicks
+      if (e) {
+        setCurrentPage(1);
+      } else {
+        // If this was triggered by pagination, update the current page
+        setCurrentPage(page);
+      }
+      
+    } catch (error) {
+      console.error('Error searching promotions:', error);
+      alert('Failed to search promotions: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Submitted data:', formData);
-    // Call your API here
-    // apiClient.post('/promotions', formData);
-    setButtonPopup(false); // Close popup after submission
-    setFormData({ title: '', description: '' }); // Reset form
-  };
-
+  // Add this effect near your other useEffect hooks
   useEffect(() => {
     console.log("Filter updated:", filter);
   }, [filter]); // This runs whenever filter changes
@@ -72,13 +174,24 @@ const Promotions = () => {
       ended: newActiveButtons.ended
     });
   };
+  const fullDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s";
+  const truncatedDescription = fullDescription.substring(0, 100) + "...";
+
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const fetchPromotions = async (page = 1) => {
     try {
       const response = await fetch(`http://localhost:5001/promotions?page=${page}&limit=${itemsPerPage}`, {
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
           'Content-Type': 'application/json'
         }
       });
@@ -109,7 +222,7 @@ const fetchPromotionDetails = async (promotionId) => {
     const response = await fetch(`http://localhost:5001/promotions/${promotionId}`, {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
         'Content-Type': 'application/json'
       }
     });
@@ -141,7 +254,77 @@ const handlePromotionClick = (promotion, e) => {
   // Fetch complete promotion details
   fetchPromotionDetails(promotion.id);
 };
-
+    // Handle form submission
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      
+      // Validation remains the same
+      if (!formData.title || !formData.description || !formData.startDate || !formData.endDate || !formData.promotionType) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      
+      // Create the request payload
+      const promotionData = {
+        name: formData.title,
+        description: formData.description,
+        type: formData.promotionType,
+        startTime: new Date(formData.startDate + 'T00:00:00').toISOString(),
+        endTime: new Date(formData.endDate + 'T00:00:00').toISOString(),
+        minSpending: formData.minSpending || null,
+        rate: formData.rate || null,
+        points: formData.points || null,
+      };
+      
+      console.log("Submitting promotion data:", promotionData);
+      try {
+        let url = 'http://localhost:5001/promotions';
+        let method = 'POST';
+        
+        // If in edit mode, update the URL and method for PUT request
+        if (editMode) {
+          url = `http://localhost:5001/promotions/${editingPromotionId}`;
+          method = 'PATCH';
+        }
+        
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(promotionData)
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Server responded with ${response.status}`);
+        }
+    
+        const result = await response.json();
+        console.log(editMode ? 'Update success:' : 'Creation success:', result);
+        
+        // Reset states
+        setButtonPopup(false);
+        setEditMode(false);
+        setFormData({
+          title: '',
+          description: '',
+          promotionType: 'one-time',
+          startDate: '',
+          endDate: '',
+          minSpending: '',
+          rate: '',
+          points: ''
+        });
+        setEditingPromotionId(null);
+        // Refresh promotions list
+        fetchPromotions();
+        
+      } catch (error) {
+        console.error('Error submitting promotion:', error);
+        alert(`Failed to ${editMode ? 'update' : 'create'} promotion: ${error.message}`);
+      }
+    };
     const handleDeleteClick = async () => {
       setEditingPromotionId(selectedPromotion.id);
       const confirmDelete = window.confirm('Are you sure you want to delete this promotion?');
@@ -150,7 +333,7 @@ const handlePromotionClick = (promotion, e) => {
           const response = await fetch(`http://localhost:5001/promotions/${selectedPromotion.id}`, {
             method: 'DELETE',
             headers: {
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
               'Content-Type': 'application/json'
             }
           }); 
@@ -162,8 +345,8 @@ const handlePromotionClick = (promotion, e) => {
           // Close the details popup
           setSelectedPromotion(null);
           
-          // Refresh the promotions list with current page
-          fetchPromotions(currentPage); // Pass the current page
+          // Refresh the promotions list
+          fetchPromotions();
           
         } catch (error) {
           console.error('Error deleting promotion:', error);
@@ -172,10 +355,6 @@ const handlePromotionClick = (promotion, e) => {
       }
     };
 
-    const closeDetailPopup = () => {
-      // Just close the popup without affecting other state
-      setSelectedPromotion(null);
-    };
 
     const handleEditClick = () => {
       // Save the ID of the promotion being edited
@@ -235,91 +414,102 @@ const handlePromotionClick = (promotion, e) => {
           </div>
         </div>
       
-        <div class="custom-shape-divider-top-1743545933">
+        <div className="custom-shape-divider-top-1743545933">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
             </svg>
         </div>
         <div className='promotions-list-container'>
           <div className='promotions-list'> 
-            <p className='promotion-header'><h2>All Promotions (32)</h2></p>
+            <p className='promotion-header'>All Promotions ({promotions.count || 0})</p>
             <div className='filter'>
-              <input type='text' placeholder='Search for a promotion' className='search-bar'/>
-              <button className='search-button'>Search <FontAwesomeIcon icon={faSearch}/></button>
+            <input 
+              type="text" 
+              placeholder="Search for a promotion" 
+              className="search-bar"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+
+            <button 
+              type="button"
+              className="search-button" 
+              onClick={applySearch}
+            >
+              Search <FontAwesomeIcon icon={faSearch}/>
+            </button>
             </div>
             <div className='filter-button-container'>
-              <div className='button-filter'>
-                <button className='filter-button active-filter-button onetime'>One-Time</button>
-                <button className='filter-button automatic'>Automatic</button>
+            <div className='button-filter'>
+                <button 
+                  className={`filter-button ${activeButtons.oneTime ? 'active-filter-button' : ''}`}
+                  onClick={() => toggleFilterButton('oneTime')}
+                >
+                  One-Time
+                </button>
+                
+                <button 
+                  className={`filter-button ${activeButtons.automatic ? 'active-filter-button' : ''}`}
+                  onClick={() => toggleFilterButton('automatic')}
+                >
+                  Automatic
+                </button>
+                
+                <button 
+                  className={`filter-button ${activeButtons.started ? 'active-filter-button' : ''}`}
+                  onClick={() => toggleFilterButton('started')}
+                >
+                  Started
+                </button>
+                
+                <button 
+                  className={`filter-button ${activeButtons.ended ? 'active-filter-button' : ''}`}
+                  onClick={() => toggleFilterButton('ended')}
+                >
+                  Ended
+                </button>
               </div>
               <button className='filter-button create' onClick={() => setButtonPopup(true)}>Create Promotion <FontAwesomeIcon icon={faPlus}/></button>
               
             </div>
           
-            <div className='promotions'>
-              <ul className='promotion'>
-                <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
-                <a href='/promotion/{promotion.id}'>
-                  <div className='promotion-title'> Some title</div>
-                  <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s</p>
-                </a>
-              </ul>
-              <div className='divider'></div>
-              <ul className='promotion'>
-                <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
-                <div className='promotion-title'> Some title</div>
-                <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
-                </p>
-              </ul>
-              <div className='divider'></div>
-              <ul className='promotion'>
-                <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
-                <div className='promotion-title'> Some title</div>
-                <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
-                </p>
-              </ul>
-              <div className='divider'></div>
-              <ul className='promotion'>
-                <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
-                <div className='promotion-title'> Some title</div>
-                <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
-                </p>
-              </ul>
-              <div className='divider'></div>
-              <ul className='promotion'>
-                <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
-                <div className='promotion-title'> Some title</div>
-                <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
-                </p>
-              </ul>
-              <div className='divider'></div>
-              <ul className='promotion'>
-                <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
-                <div className='promotion-title'> Some title</div>
-                <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
-                </p>
-              </ul>
-              <div className='divider'></div>
-              <ul className='promotion'>
-                <div className='promotion-details'> <div className='promotion-tag'>something</div> <p>some date</p></div>
-                <div className='promotion-title'> Some title</div>
-                <p className='promotion-description'>           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, s
-                </p>
-              </ul>
-              <div className='divider'></div>
-              {/* {promotions.length === 0 ? (
-                <p>No promotions available</p>
-              ) : (
-                <ul>
-                  {promotions.map(promo => (
-                    <li key={promo.id}>{promo.name} - {promo.description}</li>
-                  ))}
-                </ul>
-              )} */}
+            {!promotions.results || promotions.results.length === 0 ? (
+              <div className="no-results"> No promotions available :( </div>
+            ) : (
+              <>
+                <div className='promotions'>
+                  {/* Display only items for the current page */}
+                     {promotions.results && promotions.results.map((promotion, index) => (
+                      <ul className='promotion' key={promotion.id || index}>
+                        <div className='promotion-details'> 
+                          <div className='promotion-tag'>{promotion.type}</div> 
+                          <p>{new Date(promotion.startTime).toLocaleDateString()}</p>
+                        </div>
+                        <div 
+                          className="promotion-clickable"
+                          onClick={(e) => handlePromotionClick(promotion, e)}
+                        >
+                          <div className='promotion-title'>{promotion.name || 'Some title'}</div>
+                          <p className='promotion-description'>
+                            Get a discount of {promotion.rate} at a minimum spending of {promotion.minSpending || 0}! 
+                            Only available until {new Date(promotion.endTime).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className='divider'></div>
+                      </ul>
+                    ))}
+                  </div>
+                  
+                  <Pagination 
+                    totalItems={promotions.count || 0}
+                    itemsPerPage={itemsPerPage}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                  />
+                </>
+              )}
             </div>
             </div>
-            
-          </div>
           <div className='footer'> 
             Footer
 
@@ -331,8 +521,8 @@ const handlePromotionClick = (promotion, e) => {
           <div className="overlay" onClick={() => setButtonPopup(false)}></div>
           <div className="popup">
             <div className="popup-inner">
-              <h2>Create New Promotion</h2>
-              <form onSubmit={handleSubmit}>
+            <h2>{editMode ? 'Edit Promotion' : 'Create New Promotion'}</h2>              
+            <form onSubmit={handleSubmit}>
                 <input 
                   id="promotion-title"
                   type="text" 
@@ -351,10 +541,15 @@ const handlePromotionClick = (promotion, e) => {
                   required
                 ></textarea>
                 <div className="promotion-dates">
-                  <select id="promotion-type" name="promotionType" required>
+                  <select 
+                    id="promotion-type" 
+                    name="promotionType" 
+                    value={formData.promotionType}
+                    onChange={handleInputChange}
+                    required
+                  >
                     <option value="one-time">One-Time</option>
                     <option value="automatic">Automatic</option>
-                    <button type="submit">Submit</button>
                   </select>
 
                   <input
@@ -362,6 +557,8 @@ const handlePromotionClick = (promotion, e) => {
                     type="date"
                     name="startDate"
                     placeholder="Start Date"
+                    value={formData.startDate}
+                    onChange={handleInputChange}
                     required
                   />
                   <input
@@ -369,46 +566,102 @@ const handlePromotionClick = (promotion, e) => {
                     type="date"
                     name="endDate"
                     placeholder="End Date"
+                    value={formData.endDate}
+                    onChange={handleInputChange}
                     required
                   />
-
                 </div>
                 <div className="promotion-unrequired">
-                  <input 
-                    type="number"
-                    name="minSpending"
-                    placeholder="Minimum Spending"
-                    value={formData.minSpending}
-                    onChange={handleInputChange}
-                  />
+                <input 
+                  type="number"
+                  name="minSpending"
+                  placeholder="Minimum Spending"
+                  value={formData.minSpending}
+                  onChange={handleInputChange}
+                />
 
-                  <input
-                    type="number"
-                    name="rate"
-                    placeholder="Discount Rate"
-                    value={formData.Rate}
-                    onChange={handleInputChange}
-                  />
-                  <input 
-                    type="number" 
-                    name="points"
-                    placeholder="Points" 
-                    value={formData.terms}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                
+                <input
+                  type="number"
+                  name="rate"
+                  placeholder="Discount Rate"
+                  value={formData.rate}
+                  onChange={handleInputChange}
+                />
+                <input 
+                  type="number" 
+                  name="points"
+                  placeholder="Points" 
+                  value={formData.points}
+                  onChange={handleInputChange}
+                />
+              </div>
+                              
               </form>
               <div id="popup-buttons">
-                <button className="popup-btn cancel-btn" onClick={() => setButtonPopup(false)}>Cancel</button>
-                <button className="popup-btn submit-btn" onClick={handleSubmit}>Create Promotion</button>
+              <button className="popup-btn cancel-btn" onClick={() => {
+                setButtonPopup(false);
+                setEditMode(false);
+                // Reset form data
+                setFormData({
+                  title: '',
+                  description: '',
+                  promotionType: 'one-time',
+                  startDate: '',
+                  endDate: '',
+                  minSpending: '',
+                  rate: '',
+                  points: ''
+                });
+              }}>Cancel
+              </button>                
+              <button className="popup-btn submit-btn" onClick={handleSubmit}>{editMode ? 'Edit Promotion' : 'Create New Promotion'}</button>
               </div>
              
             </div>
           </div>
         </>
       )}
+
+      {selectedPromotion && (
+        <>
+          <div className="overlay" onClick={() => setSelectedPromotion(null)}></div>
+          <div className="popup">
+            <div className="popup-inner">
+              <h2>{selectedPromotion.name}</h2>
+              
+              {selectedPromotion.loading ? (
+                <div className="loading-spinner">Loading details...</div>
+              ) : (
+                <div className="promotion-details-popup">
+                  <div className="promotion-tag">{selectedPromotion.type}</div>
+                  <p>Start: {new Date(selectedPromotion.startTime).toLocaleDateString()}</p>
+                  <p>End: {new Date(selectedPromotion.endTime).toLocaleDateString()}</p>
+                  
+                  <h3>Description</h3>
+                  <p>{selectedPromotion.description}</p>
+                  
+                  <div className="promotion-terms">
+                    <p>Discount Rate: {selectedPromotion.rate || 'N/A'}</p>
+                    <p>Minimum Spending: ${selectedPromotion.minSpending || 0}</p>
+                    <p>Points: {selectedPromotion.points || 'N/A'}</p>
+                  </div>
+                </div>
+              )}
+              
+              <div id="popup-buttons">
+                <button className="popup-btn cancel-btn" onClick={() => setSelectedPromotion(null)}>Close</button>
+                {!selectedPromotion.loading && (
+                  <button className="popup-btn submit-btn" onClick={handleEditClick}>Edit Promotion</button>
+                )}
+                <button className="popup-btn submit-btn" onClick={handleDeleteClick}>Delete Promotion</button>
+
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
+    
   );
 };
 

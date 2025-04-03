@@ -108,6 +108,7 @@ a:hover{
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    z-index: 1000;
 }
 
 .search-bar{
@@ -231,6 +232,70 @@ a:hover{
     height: 1px;
     background-color: var(--text-color);
     margin-top: 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
+  
+  .pagination-button {
+    padding: 8px 16px;
+    background-color: var(--footer-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background-color: #444;
+  }
+  
+  .pagination-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  
+  .page-info {
+    margin: 0 10px;
+    font-size: 14px;
+  }
+
+.no-results{
+    height: 50vh;
+    font: bold 24px var(--font-type);
+    text-align: center;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.promotion-clickable {
+    cursor: pointer;
+  }
+  
+  
+  .promotion-details-popup {
+    margin: 20px 0;
+  }
+  
+  .promotion-terms {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+  }
+
+.promotion-clickable:hover{
+    opacity: 0.5;
+    transition: 0.15s;
 }
 
 .footer{
