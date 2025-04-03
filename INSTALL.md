@@ -4,7 +4,7 @@
 > 1. All the packages you need to install
 > 2. How to configure various servers (e.g., Nginx, Apache, etc)
 
-## Table of Contents
+# Table of Contents
 - [Table of Contents](#table-of-contents)
 - [Getting Started](#getting-started)
 - [Development Mode](#development-mode)
@@ -12,7 +12,7 @@
   - [Installing the required packages](#installing-the-required-packages)
   - [Initializing the backend](#initializing-the-backend)
 
-## Getting Started
+# Getting Started
 
 The following guide will walk you through deploying this web app for production.
 
@@ -20,18 +20,18 @@ The following guide will walk you through deploying this web app for production.
 `TODO: FINISH PROD DOCUMENTATION`
 
 
-## Development Mode
+# Development Mode
 
 The following guide will walk you through starting up an instance of this web app for development purposes.
 
-### Requirements
+## Requirements
 
 Before you begin, ensure you have the following installed on your system:
 
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [Node.js](https://nodejs.org/en/download)
 
-### Installing the required packages
+## Installing the required packages
 
 `cd` into the root directory and perform the following:
 
@@ -40,7 +40,7 @@ cd ./frontend && npm i
 cd ../backend && npm i
 ```
 
-### Initializing the backend
+## Initializing the backend
 
 This project uses prisma for its database. To initialize, `cd` into `/backend` and perform the following:
 
