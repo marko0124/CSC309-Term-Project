@@ -28,20 +28,19 @@ const transactionRoutes = require("./routes/transactions");
 const eventRoutes = require("./routes/events");
 const promotionRoutes = require("./routes/promotions");
 
-app.use(cors());
-app.use(express.json());
-app.use("/users", userRoutes);
-app.use("/auth", authRoutes);
-app.use("/transactions", transactionRoutes);
-app.use("/events", eventRoutes);
-app.use("/promotions", promotionRoutes);
-
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
   }));
+
+app.use(express.json());
+app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
+app.use("/transactions", transactionRoutes);
+app.use("/events", eventRoutes);
+app.use("/promotions", promotionRoutes);
 
 const server = app.listen(port, () => {
     console.log(`Server running on port ${port}`);
