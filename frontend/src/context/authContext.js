@@ -43,7 +43,7 @@ export const AuthProvider = ({children}) => {
                     if (response.status !== 200) {
                         throw new Error('Could not fetch user.');
                     }
-                    setUser(response);
+                    setUser(response.data);
                 } catch (err) {
                     setError(err.message);
                     setUser(null);
@@ -70,7 +70,7 @@ export const AuthProvider = ({children}) => {
             if (!userData === 200) {
                 throw new Error("No user.");
             }
-            setUser(userData);
+            setUser(userData.data);
             return {success: true};
         } catch (err) {
             setError(err.message);
