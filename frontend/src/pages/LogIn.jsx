@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {useAuth} from '../context/authContext';
 import './LogIn.css';
 import apiClient from '../api/client';
 
 const LogIn = () => {
     const nav = useNavigate();
+    const {login} = useAuth();
     const [utorid, setUtorid] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -26,10 +28,12 @@ const LogIn = () => {
                 utorid,
                 password
             });
-
-            const data = response;
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("expiresAt", data.expiresAt);
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("expiresAt", response.data.expiresAt);
+            const result = await login(response.data.token);
+            if (!result.success) {
+                throw new Error("No user found.");
+            }
             nav('/home');
         } catch (err) {
             if (err.message.includes("401")) {
@@ -45,53 +49,55 @@ const LogIn = () => {
     };
     
     return (
-        <div className="login-card">
-            <div className="login-container">
-                <form className="login-form" onSubmit={handleLogin}>
-                    <h1>Log In</h1>
-                    
-                    <div className="form-group">
-                        <label>UTORid</label>
-                        <input
-                            type="text"
-                            id="utorid"
-                            value={utorid}
-                            onChange={(e) => setUtorid(e.target.value)}
-                            required
-                        />
-                    </div>
-                    
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+        <div className="login-page">
+            <div className="login-card">
+                <div className="login-container">
+                    <form className="login-form" onSubmit={handleLogin}>
+                        <h1>Log In</h1>
+                        
+                        <div className="form-group">
+                            <label>UTORid</label>
+                            <input
+                                type="text"
+                                id="utorid"
+                                value={utorid}
+                                onChange={(e) => setUtorid(e.target.value)}
+                                required
+                            />
+                        </div>
+                        
+                        <div className="form-group">
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                    {error && <div className="error-message">{error}</div>}
-                    
-                    <div className="form-actions">
-                        <button 
-                            type="submit" 
-                            className="btn-primary"
-                            disabled={loading}
-                        >
-                            {loading ? 'Logging in...' : 'Log In'}
-                        </button>
-                        <button 
-                            type="button" 
-                            className="btn-link"
-                            onClick={() => setResetMode(true)}
-                            disabled={loading}
-                        >
-                            Forgot Password?
-                        </button>
-                    </div>
-                </form>
+                        {error && <div className="error-message">{error}</div>}
+                        
+                        <div className="form-actions">
+                            <button 
+                                type="submit" 
+                                className="btn-primary"
+                                disabled={loading}
+                            >
+                                {loading ? 'Logging in...' : 'Log In'}
+                            </button>
+                            <button 
+                                type="button" 
+                                className="btn-link"
+                                onClick={() => setResetMode(true)}
+                                disabled={loading}
+                            >
+                                Forgot Password?
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );
