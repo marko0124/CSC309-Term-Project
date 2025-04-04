@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import { UserContext } from '../../../context/userContext';
 
-const TransactionsFilters = ({ setSearchParams }) => {
+const TransactionsFilters = ({ setSearchParams, privileged }) => {
     const [amount, setAmount] = useState('');
     const [type, setType] = useState('Any');
     const [relatedId, setRelatedId] = useState("");
+    const { utorid } = useContext(UserContext);
     useEffect(() => {
         if (type === "") {
             setRelatedId("");
@@ -18,6 +20,9 @@ const TransactionsFilters = ({ setSearchParams }) => {
         e.preventDefault();
         const data = new FormData(e.target);
         const entries = Object.fromEntries(data.entries());
+        if (!privileged) {
+            entries.utorid = utorid;
+        }
         setSearchParams(entries);
         return false;
     }
@@ -25,14 +30,18 @@ const TransactionsFilters = ({ setSearchParams }) => {
     return (
         <Form className='p-3' onSubmit={handleApply} action='/'>
             <h3>Filter by</h3>
-            <Form.Group className="mb-3" controlId="formGroupName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="name/utorid" name="name"/>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGroupCreatedBy">
-                <Form.Label>Created By</Form.Label>
-                <Form.Control type="text" placeholder="utorid" name='createdBy' />
-            </Form.Group>
+            {privileged && 
+                <>
+                    <Form.Group className="mb-3" controlId="formGroupName">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" placeholder="name/utorid" name="name"/>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGroupCreatedBy">
+                        <Form.Label>Created By</Form.Label>
+                        <Form.Control type="text" placeholder="utorid" name='createdBy' />
+                    </Form.Group>
+                </>
+            }
             <Row>
                 <Col>
                     <h6>Type</h6>
@@ -95,15 +104,19 @@ const TransactionsFilters = ({ setSearchParams }) => {
                     <Form.Control type="text" placeholder="promotionId" name='promotionId'/>
                 </Form.Group>
             </Row>
-            <Row>
-                <Form.Check className='ms-3'
-                    type="checkbox"
-                    id="suspicious"
-                    label="Suspicious"
-                    name='suspicious'
-                    value="true"
-                />
-            </Row>
+            {privileged && 
+                <>
+                    <Row>
+                        <Form.Check className='ms-3'
+                            type="checkbox"
+                            id="suspicious"
+                            label="Suspicious"
+                            name='suspicious'
+                            value="true"
+                        />
+                    </Row>
+                </>
+            }
             <Button type="submit">Apply Filters</Button>
         </Form>
     );

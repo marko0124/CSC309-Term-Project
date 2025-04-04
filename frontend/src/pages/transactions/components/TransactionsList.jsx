@@ -4,15 +4,19 @@ import TransactionItem from "./TransactionItem";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
-const TransactionsList = ({searchParamsString}) => {
+const TransactionsList = ({ searchParamsString, priviliged }) => {
     const [data, setData] = useState({ count: 0, results: [] });
     const { token } = useContext(UserContext);
     useEffect(() => {
         try {
             setData([]);
+
+            const url = priviliged ? `${process.env.REACT_APP_BASE_URL}transactions?${searchParamsString}` 
+                : `${process.env.REACT_APP_BASE_URL}users/me/transactions?${searchParamsString}`
+
             const fetchData = async () => {
-                const res = await fetch(`${process.env.REACT_APP_BASE_URL}transactions?${searchParamsString}`, {
-                    method: 'get',
+                const res = await fetch(url, {
+                    method: 'GET',
                     headers: new Headers({
                         'Authorization': 'Bearer ' + token
                     })
@@ -38,9 +42,9 @@ const TransactionsList = ({searchParamsString}) => {
             return <div>No results :(</div>
         }
         const transactionsList = data.results.map((transaction) => {
-            return <tr key={transaction.id}>
+            return <ol key={transaction.id}>
                 <TransactionItem transaction={transaction}/>
-            </tr>
+            </ol>
         });
 
         return (

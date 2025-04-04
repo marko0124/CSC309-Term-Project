@@ -4,8 +4,7 @@ import { capitalize } from '../../../utils/stringUtils';
 import { Link } from "react-router-dom";
 
 const TransactionItem = ({ transaction }) => {
-    console.log(transaction.suspicious);
-    if (transaction.type === "purchase") {
+    // if (transaction.type === "purchase") {
         return <>
         <ListGroup.Item
             as="li"
@@ -14,7 +13,7 @@ const TransactionItem = ({ transaction }) => {
             <div className="ms-2 me-auto">
             <div className="fw-bold">{capitalize(transaction.type)}</div>
             <Link to={`/transactions/${transaction.id}`}>go to transaction</Link>
-            UTORID: {transaction.utorid}_
+            UTORID: {transaction.utorid || '?'}_
             AMOUNT: {transaction.amount}_
             SUSPICIOUS: {transaction.suspicious ? 'true' : 'false'}_
             CREATEDBY: {transaction.createdBy}_
@@ -25,8 +24,8 @@ const TransactionItem = ({ transaction }) => {
             </Badge>
         </ListGroup.Item>
         </>
-    }
-    else if (transaction.type === "adjustment") {}
+    // }
+    // else if (transaction.type === "adjustment") {}
 }
 
 export default TransactionItem;
