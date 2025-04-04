@@ -281,17 +281,19 @@ a:hover{
 .promotion-clickable {
     cursor: pointer;
   }
-  
-  
-  .promotion-details-popup {
-    margin: 20px 0;
-  }
-  
+
+
   .promotion-terms {
     margin-top: 20px;
     border-top: 1px solid #eee;
     padding-top: 15px;
   }
+
+.popup-dates{
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--footer-color);
+}
 
 .promotion-clickable:hover{
     opacity: 0.5;
