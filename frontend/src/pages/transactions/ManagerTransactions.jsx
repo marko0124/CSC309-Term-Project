@@ -21,8 +21,8 @@ const ManagerTransactions = () => {
 
     return <>
         <div>ManagerTransactions</div>
-        <TransactionsList searchParamsString={searchParams.toString()}/>
         <TransactionsFilters setSearchParams={setSearchParams}/>
+        <TransactionsList searchParamsString={searchParams.toString()}/>
     </>
 }
 

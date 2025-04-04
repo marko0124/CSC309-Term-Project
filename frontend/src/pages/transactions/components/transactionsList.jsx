@@ -37,7 +37,7 @@ const TransactionsList = ({searchParamsString}) => {
             </tr>
         });
 
-        return <div>
+        return <div className="p-3">
             <h3>Transactions List</h3>
             <Table striped>
                 <thead>
