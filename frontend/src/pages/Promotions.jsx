@@ -44,39 +44,43 @@ const Promotions = () => {
     points: null
   });
   // Add this pagination component
-  const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) => {
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+ // Pagination component with improved stability
+const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) => {
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  
+  const handlePageChange = (newPage) => {
+    if (newPage === currentPage) return; // Prevent unnecessary re-renders
     
-    const handlePageChange = (newPage) => {
-      setCurrentPage(newPage);
-      fetchPromotions(newPage);
-    };
-    
-    return (
-      <div className="pagination">
-        <button 
-          type="button" // Add this attribute
-          onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-          disabled={currentPage === 1}
-          className="pagination-button"
-        >
-          Previous
-    </button>
-        
-        <span className="page-info">
-          Page {currentPage} of {totalPages || 1}
-        </span>
-        
-        <button 
-          onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
-          disabled={currentPage === totalPages || totalPages === 0}
-          className="pagination-button"
-        >
-          Next
-        </button>
-      </div>
-    );
+    setCurrentPage(newPage);
+    fetchPromotions(newPage);
   };
+  
+  return (
+    <div className="pagination">
+      <button 
+        type="button" // Important to prevent form submission behavior
+        onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+        disabled={currentPage === 1}
+        className="pagination-button"
+      >
+        Previous
+      </button>
+      
+      <span className="page-info">
+        Page {currentPage} of {totalPages || 1}
+      </span>
+      
+      <button 
+        type="button" // Important to prevent form submission behavior
+        onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+        disabled={currentPage === totalPages || totalPages === 0}
+        className="pagination-button"
+      >
+        Next
+      </button>
+    </div>
+  );
+};
   
   const applySearch = async (e, page = 1) => {
     if (e) e.preventDefault();
@@ -304,6 +308,8 @@ const handlePromotionClick = (promotion, e) => {
         console.log(editMode ? 'Update success:' : 'Creation success:', result);
         
         // Reset states
+        // Near the end of handleSubmit:
+        // Reset states
         setButtonPopup(false);
         setEditMode(false);
         setFormData({
@@ -317,6 +323,9 @@ const handlePromotionClick = (promotion, e) => {
           points: ''
         });
         setEditingPromotionId(null);
+
+        // Refresh promotions list with current page
+        fetchPromotions(currentPage); // Pass the current page
         // Refresh promotions list
         fetchPromotions();
         
@@ -345,8 +354,8 @@ const handlePromotionClick = (promotion, e) => {
           // Close the details popup
           setSelectedPromotion(null);
           
-          // Refresh the promotions list
-          fetchPromotions();
+          // Refresh the promotions list with current page
+          fetchPromotions(currentPage); // Pass the current page
           
         } catch (error) {
           console.error('Error deleting promotion:', error);
@@ -355,6 +364,10 @@ const handlePromotionClick = (promotion, e) => {
       }
     };
 
+    const closeDetailPopup = () => {
+      // Just close the popup without affecting other state
+      setSelectedPromotion(null);
+    };
 
     const handleEditClick = () => {
       // Save the ID of the promotion being edited
@@ -625,30 +638,35 @@ const handlePromotionClick = (promotion, e) => {
       {selectedPromotion && (
         <>
           <div className="overlay" onClick={() => setSelectedPromotion(null)}></div>
-          <div className="popup">
-            <div className="popup-inner">
-              <h2>{selectedPromotion.name}</h2>
+          <div className="detail-popup">
+            <div className="detail-popup-inner">
+              <div className="detail-popup-header">
+              <div><h2>{selectedPromotion.name}</h2></div>
+              <div>
+                <div className="detail-popup-promotion-tag">{selectedPromotion.type}</div>
+                <div className="popup-dates"> {new Date(selectedPromotion.startTime).toLocaleDateString()} - {new Date(selectedPromotion.endTime).toLocaleDateString()}</div>
+              </div>
+              
+              </div>
+
               
               {selectedPromotion.loading ? (
                 <div className="loading-spinner">Loading details...</div>
               ) : (
                 <div className="promotion-details-popup">
-                  <div className="promotion-tag">{selectedPromotion.type}</div>
-                  <p>Start: {new Date(selectedPromotion.startTime).toLocaleDateString()}</p>
-                  <p>End: {new Date(selectedPromotion.endTime).toLocaleDateString()}</p>
                   
-                  <h3>Description</h3>
-                  <p>{selectedPromotion.description}</p>
-                  
-                  <div className="promotion-terms">
+                    
                     <p>Discount Rate: {selectedPromotion.rate || 'N/A'}</p>
                     <p>Minimum Spending: ${selectedPromotion.minSpending || 0}</p>
-                    <p>Points: {selectedPromotion.points || 'N/A'}</p>
-                  </div>
+                    <p>Points: {selectedPromotion.points || 'N/A'}</p>                  
+                    <h3>Promotion Description</h3>
+                  <div className="promotion-detail-description">{selectedPromotion.description}</div>
+                  
+                  
                 </div>
               )}
               
-              <div id="popup-buttons">
+              <div id="detail-popup-buttons">
                 <button className="popup-btn cancel-btn" onClick={() => setSelectedPromotion(null)}>Close</button>
                 {!selectedPromotion.loading && (
                   <button className="popup-btn submit-btn" onClick={handleEditClick}>Edit Promotion</button>
