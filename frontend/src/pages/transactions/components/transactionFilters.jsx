@@ -5,19 +5,25 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
 const TransactionsFilters = ({ setSearchParams }) => {
-    const handleApply = () => {
-    }
     const [amount, setAmount] = useState('');
     const [type, setType] = useState('Any');
     const [relatedId, setRelatedId] = useState("");
     useEffect(() => {
-        if (type === "Any") {
-          setRelatedId("");
+        if (type === "") {
+            setRelatedId("");
         }
-      }, [type]);
+    }, [type]);
+    
+    const handleApply = (e) => {
+        e.preventDefault();
+        const data = new FormData(e.target);
+        const entries = Object.fromEntries(data.entries());
+        setSearchParams(entries);
+        return false;
+    }
 
     return (
-        <Form className='p-3'>
+        <Form className='p-3' onSubmit={handleApply} action='/'>
             <h3>Filter by</h3>
             <Form.Group className="mb-3" controlId="formGroupName">
                 <Form.Label>Name</Form.Label>
@@ -31,7 +37,7 @@ const TransactionsFilters = ({ setSearchParams }) => {
                 <Col>
                     <h6>Type</h6>
                     <Form.Select aria-label="type" className='mb-3' name='type' value={type} onChange={(e) => setType(e.target.value)}>
-                        <option>Any</option>
+                        <option value="">Any</option>
                         <option value="purchase">Purchase</option>
                         <option value="adjustment">Adjustment</option>
                         <option value="redemption">Redemption</option>
@@ -42,13 +48,13 @@ const TransactionsFilters = ({ setSearchParams }) => {
                     <h6>Related ID</h6>
                     <Form.Control
                         type="text"
-                        placeholder={type === "Any" ? "Must select type" : "relatedId"}
+                        placeholder={type === "" ? "Must select type" : "relatedId"}
                         value={relatedId}
                         onChange={(e) => setRelatedId(e.target.value)}
                         aria-label="relatedId"
                         name='relatedId'
-                        disabled={type === "Any"}
-                        readOnly={type === "Any"}
+                        disabled={type === ""}
+                        readOnly={type === ""}
                     />
                 </Col>
             </Row>
@@ -98,7 +104,7 @@ const TransactionsFilters = ({ setSearchParams }) => {
                     value="true"
                 />
             </Row>
-
+            <Button type="submit">Apply Filters</Button>
         </Form>
     );
 }

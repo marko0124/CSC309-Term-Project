@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../context/userContext";
 import TransactionItem from "./transactionItem";
-import Table from 'react-bootstrap/Table';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Spinner from 'react-bootstrap/Spinner';
 
 const TransactionsList = ({searchParamsString}) => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({ count: 0, results: [] });
     const { token } = useContext(UserContext);
     useEffect(() => {
         try {
+            setData([]);
             const fetchData = async () => {
                 const res = await fetch(`${process.env.REACT_APP_BASE_URL}transactions?${searchParamsString}`, {
                     method: 'get',
@@ -16,7 +18,8 @@ const TransactionsList = ({searchParamsString}) => {
                     })
                 });
                 if (!res.ok) {
-                    throw new Error(`Response status: ${res.status}`);
+                    // throw new Error(`Response status: ${res.status}`);
+                    return setData({ count: 0, results: [] });
                 }
                 
                 const json = await res.json();
@@ -31,36 +34,27 @@ const TransactionsList = ({searchParamsString}) => {
 
     console.log(data.results);
     if (data.results) {
+        if (data.count === 0) {
+            return <div>No results :(</div>
+        }
         const transactionsList = data.results.map((transaction) => {
             return <tr key={transaction.id}>
                 <TransactionItem transaction={transaction}/>
             </tr>
         });
 
-        return <div className="p-3">
-            <h3>Transactions List</h3>
-            <Table striped>
-                <thead>
-                    <tr>
-                    <th>#</th>
-                    <th>utorid</th>
-                    <th>amount</th>
-                    <th>type</th>
-                    <th>spent</th>
-                    <th>relatedId</th>
-                    <th>promotionIds</th>
-                    <th>suspicious</th>
-                    <th>remark</th>
-                    <th>createdBy</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr></tr>
-                    {transactionsList}
-                </tbody>
-            </Table>
-        </div>
+        return (
+            <ListGroup as="ol" className="w-50">
+              {transactionsList}
+            </ListGroup>
+          );
     }
+    return <div className="d-flex justify-content-center">
+            <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>
+        </div>
+    
 }
 
 export default TransactionsList;
