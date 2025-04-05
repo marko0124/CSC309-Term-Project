@@ -84,7 +84,7 @@ const LogIn = () => {
         setLoading(true);
 
         try {
-            const response = await apiClient.post(`/auth/resets/${resetToken}`, {
+            await apiClient.post(`/auth/resets/${resetToken}`, {
                 utorid,
                 password: newPass
             });
