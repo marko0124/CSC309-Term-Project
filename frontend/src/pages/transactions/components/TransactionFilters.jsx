@@ -19,10 +19,7 @@ const TransactionsFilters = ({ setSearchParams, privileged }) => {
     const handleApply = (e) => {
         e.preventDefault();
         const data = new FormData(e.target);
-        const entries = Object.fromEntries(data.entries());
-        if (!privileged) {
-            entries.utorid = utorid;
-        }
+        const entries = Object.fromEntries(data.entries().filter(([_, value]) => value !== ""));
         setSearchParams(entries);
         return false;
     }
