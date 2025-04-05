@@ -112,7 +112,7 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) =
       const response = await fetch(url, {
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
           'Content-Type': 'application/json'
         }
       });
@@ -195,7 +195,7 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) =
       const response = await fetch(`http://localhost:5001/promotions?page=${page}&limit=${itemsPerPage}`, {
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
           'Content-Type': 'application/json'
         }
       });
@@ -226,7 +226,7 @@ const fetchPromotionDetails = async (promotionId) => {
     const response = await fetch(`http://localhost:5001/promotions/${promotionId}`, {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
         'Content-Type': 'application/json'
       }
     });
@@ -294,7 +294,7 @@ const handlePromotionClick = (promotion, e) => {
         const response = await fetch(url, {
           method: method,
           headers: {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(promotionData)
@@ -342,7 +342,7 @@ const handlePromotionClick = (promotion, e) => {
           const response = await fetch(`http://localhost:5001/promotions/${selectedPromotion.id}`, {
             method: 'DELETE',
             headers: {
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0MzcwNjY1NSwiZXhwIjoxNzQzNzkzMDU1fQ.ugo5AUW9YfCRZUumf2c5dtujGGsDH3WFIlGYktYM14w',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
               'Content-Type': 'application/json'
             }
           }); 
