@@ -12,7 +12,7 @@ const TransactionsList = ({ searchParamsString, view, showPagination, searchPara
 
     useEffect(() => {
         try {
-            setData({ count: 0, results: [] });
+            setData([]);
 
             const url = view === "manager" ? `${process.env.REACT_APP_BASE_URL}transactions?${searchParamsString}` 
                 : `${process.env.REACT_APP_BASE_URL}users/me/transactions?${searchParamsString}`
@@ -46,16 +46,16 @@ const TransactionsList = ({ searchParamsString, view, showPagination, searchPara
             return <div>No results :(</div>
         }
         const transactionsList = data.results.map((transaction) => {
-            return <ol key={transaction.id}>
-                <TransactionItem transaction={transaction}/>
-            </ol>
+            return <li key={transaction.id}>
+                <TransactionItem transaction={transaction} view={view}/>
+            </li>
         });
 
         return <>
-            <ListGroup as="ol" className="w-50">
-              {transactionsList}
-            </ListGroup>
-            { showPagination && <PaginationButtons searchParams={searchParams} setSearchParams={setSearchParams} count={data.count} limit={limit} /> }
+                <ListGroup as="ol" style={{ listStyleType: 'none', gap: '2rem', marginBottom: '1rem' }}>
+                {transactionsList}
+                </ListGroup>
+                { showPagination && <PaginationButtons searchParams={searchParams} setSearchParams={setSearchParams} count={data.count} limit={limit} /> }
         </>
           
     }

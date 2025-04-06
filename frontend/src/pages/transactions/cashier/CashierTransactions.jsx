@@ -4,8 +4,8 @@ import TransferTransactionCreator from "./components/TransferTransactionCreator"
 import { useContext, useState } from "react";
 import TransactionsList from "./components/TransactionsList";
 import TransactionsFilters from "./components/TransactionFilters";
-import PaginationButtons from "./components/PaginationButtons";
 import ChangeViewButton from "./components/ChangeViewButton";
+import RedemptionTransactionCreator from "./components/RedemptionTransactionCreator";
 
 const Transactions = () => {
     const { token, role } = useContext(UserContext);
@@ -13,6 +13,8 @@ const Transactions = () => {
     const [view, setView] = useState("manager");
     const [transferAmount, setTransferAmount] = useState("");
     const [transferRemark, setTransferRemark] = useState("");
+    const [redeemAmount, setRedeemAmount] = useState("");
+    const [redeemRemark, setRedeemRemark] = useState("");
     const [transferRecipientId, setTransferRecipientId] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -48,6 +50,38 @@ const Transactions = () => {
         }
     }
 
+    const handleRedeem = () => {
+        try {
+            const createData = async () => {
+                const res = await fetch(`${process.env.REACT_APP_BASE_URL}users/me/transactions`, {
+                    method: 'POST',
+                    body: JSON.stringify({ 
+                        type: "redemption",
+                        amount: redeemAmount,
+                        remark: redeemRemark,
+                    }),
+                    headers: new Headers({
+                        'Authorization': 'Bearer ' + token,
+                        "Content-Type": "application/json"
+                    })
+                });
+                if (!res.ok) {
+                    // throw new Error(`Response status: ${res.status}`);
+                    return <>
+                        {res.status}
+                    </>
+                }
+                
+                const json = await res.json();
+                navigate(`/transactions/${json.id}`);
+            }
+            createData();
+            
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const handleChangeView = (view) => {
         setView(view);
         setSearchParams({});
@@ -58,11 +92,13 @@ const Transactions = () => {
         <div>
             Transfer points
             <TransferTransactionCreator setAmount={setTransferAmount} setRemark={setTransferRemark} setRecipient={setTransferRecipientId} onClick={handleTransfer}/>
+            Redeem points
+            <RedemptionTransactionCreator setAmount={setRedeemAmount} setRemark={setRedeemRemark} onClick={handleRedeem} />
         </div>
         <div className='p-3'>
-            <TransactionsFilters setSearchParams={setSearchParams} view={view}/>
+            <TransactionsFilters setSearchParams={setSearchParams} view={"regular"}/>
             <h3>My Transactions</h3>
-            <TransactionsList searchParamsString={searchParams.toString()} view={view} showPagination={true} searchParams={searchParams} setSearchParams={setSearchParams} />
+            <TransactionsList searchParamsString={searchParams.toString()} view={"regular"} showPagination={true} searchParams={searchParams} setSearchParams={setSearchParams} />
         </div>
     </>
 }

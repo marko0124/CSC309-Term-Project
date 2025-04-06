@@ -104,7 +104,7 @@ const TransactionsFilters = ({ setSearchParams, view }) => {
             {view === "manager" && 
                 <>
                     <Row>
-                        <Form.Check className='ms-3'
+                        <Form.Check className='ms-3 mb-3'
                             type="checkbox"
                             id="suspicious"
                             label="Suspicious"

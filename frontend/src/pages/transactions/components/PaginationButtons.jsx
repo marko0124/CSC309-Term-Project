@@ -46,7 +46,7 @@ const PaginationButtons = ({ searchParams, setSearchParams, count, limit }) => {
   }
   
   return (
-    <Pagination>
+    <Pagination style={{ justifyContent: 'center' }}>
       <Pagination.First onClick={handleFirst}/> 
       { page > 1 && <Pagination.Prev onClick={handlePrev}/>}
 
