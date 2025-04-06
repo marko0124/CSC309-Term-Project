@@ -1,4 +1,5 @@
 import React from 'react';
+import '../Events.css';
 
 const EventForm = ({ 
   formData, 
@@ -13,35 +14,42 @@ const EventForm = ({
         <div className="popup-inner">
           <h2>Create New Event</h2>              
           <form onSubmit={handleSubmit}>
-            <input 
-              id="event-name"
-              type="text" 
-              name="name"
-              placeholder="Event Name" 
-              value={formData.name}
-              onChange={handleInputChange}
-              required
-            />
-            <input 
-              id="event-location"
-              type="text" 
-              name="location"
-              placeholder="Event Location" 
-              value={formData.location}
-              onChange={handleInputChange}
-              required
-            />
-            <textarea 
-              id='event-description'
-              name="description"
-              placeholder="Event Description" 
-              value={formData.description}
-              onChange={handleInputChange}
-              required
-            ></textarea>
+            <div className="event-text">
+              <input 
+                id="event-name"
+                type="text" 
+                name="name"
+                placeholder="Event Name" 
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
+              <input 
+                id="event-location"
+                type="text" 
+                name="location"
+                placeholder="Event Location" 
+                value={formData.location}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="create-event-description">
+              Description
+              <textarea 
+                id='event-description'
+                name="description"
+                placeholder="Event Description" 
+                value={formData.description}
+                onChange={handleInputChange}
+                required
+              ></textarea>
+            </div>
+            
             <div className="event-dates">
-
-              <input
+              <div> 
+                Start Time
+                <input
                 id='promotion-start-time'
                 type="date"
                 name="startTime"
@@ -49,7 +57,10 @@ const EventForm = ({
                 value={formData.startTime}
                 onChange={handleInputChange}
                 required
-              />
+                />
+              </div>
+              <div> 
+              End Time
               <input
                 id='promotion-end-time'
                 type="date"
@@ -59,9 +70,9 @@ const EventForm = ({
                 onChange={handleInputChange}
                 required
               />
-            </div>
-            <div className="event-extras">
+              </div>
               <input 
+                className="event-capacity"
                 type="number"
                 name="capacity"
                 placeholder="Capacity"
@@ -69,6 +80,7 @@ const EventForm = ({
                 onChange={handleInputChange}
               />
               <input 
+                className="event-points"
                 type="number" 
                 name="points"
                 placeholder="Points" 
@@ -76,6 +88,7 @@ const EventForm = ({
                 onChange={handleInputChange}
               />
             </div>
+
           </form>
           <div id="popup-buttons">
             <button className="popup-btn cancel-btn" onClick={onCancel}>Cancel</button>                

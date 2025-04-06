@@ -11,7 +11,7 @@ const useEvents = () => {
   const [locationTerm, setLocationTerm] = useState('');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [activeButtons, setActiveButtons] = useState({
-    full: false,
+    showFull: false,
     published: false,
     started: false,
     ended: false
@@ -21,7 +21,7 @@ const useEvents = () => {
     location: '',
     page: 1,
     limit: itemsPerPage,
-    full: false,
+    showFull: false,
     published: true,
     started: false,
     ended: false,
@@ -52,35 +52,33 @@ const useEvents = () => {
     fetchEvents(currentPage);
   }, [fetchEvents, currentPage]);
 
+  // This function now only updates the activeButtons state without changing filters
   const toggleFilterButton = (buttonKey) => {
-    const newActiveButtons = {
-      ...activeButtons,
-      [buttonKey]: !activeButtons[buttonKey]
-    };
+    setActiveButtons(prev => ({
+      ...prev,
+      [buttonKey]: !prev[buttonKey]
+    }));
     
-    setActiveButtons(newActiveButtons);
-    
-    const newFilter = {
-      ...filter,
-      started: newActiveButtons.started,
-      ended: newActiveButtons.ended
-    };
-    
-    setFilter(newFilter);
   };
 
   const handleSearch = useCallback(async (e) => {
     if (e) e.preventDefault();
     
+    // Apply all active button states when searching
     setFilter({
       ...filter,
       name: searchTerm,
       location: locationTerm,
-      page: 1
+      page: 1,
+      // Include filter button states
+      showFull: activeButtons.showFull,
+      published: activeButtons.published,
+      started: activeButtons.started,
+      ended: activeButtons.ended
     });
     
     setCurrentPage(1);
-  }, [filter, searchTerm, locationTerm]);
+  }, [filter, searchTerm, locationTerm, activeButtons]); // Add activeButtons to dependencies
 
   const handlePageChange = (page) => {
     setCurrentPage(page);

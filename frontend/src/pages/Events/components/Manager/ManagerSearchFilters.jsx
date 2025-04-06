@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
+import '../Events.css';
 
 const ManagerSearchFilters = ({ 
   searchTerm, 
@@ -15,7 +16,7 @@ const ManagerSearchFilters = ({
 }) => {
   return (
     <>
-      <p className='promotion-header'>All Events ({EventCount || 0})</p>
+      <p className='event-header'>All Events ({EventCount || 0})</p>
       <div className='filter'>
         <input 
           type="text" 
@@ -27,7 +28,7 @@ const ManagerSearchFilters = ({
         <input 
           type="text" 
           placeholder="Event Location" 
-          className="search-bar"
+          className="location-bar"
           value={locationTerm}
           onChange={(e) => setLocationTerm(e.target.value)}
         />
@@ -44,8 +45,8 @@ const ManagerSearchFilters = ({
       <div className='filter-button-container'>
         <div className='button-filter'>
           <button 
-            className={`filter-button ${activeButtons.full ? 'active-filter-button' : ''}`}
-            onClick={() => toggleFilterButton('full')}
+            className={`filter-button ${activeButtons.showFull ? 'active-filter-button' : ''}`}
+            onClick={() => toggleFilterButton('showFull')}
           >
             Full
           </button>

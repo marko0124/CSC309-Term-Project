@@ -5,6 +5,7 @@ import useEvents from '../../hooks/useEvents';
 import ManagerSearchFilters from './ManagerSearchFilters';
 import EventsList from '../EventsList';
 import EventsForm from './ManagerEventsForm';
+import eventImage from '../../../../assets/eventImage.png'; 
 
 const ManagerEvents = () => {
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -65,7 +66,7 @@ const ManagerEvents = () => {
             </div>
           </div>
           <div className='header-image'>
-            <img className='himg' alt="event" />
+            <img className='himg' src={eventImage} alt="event" />
           </div>
         </div>
       

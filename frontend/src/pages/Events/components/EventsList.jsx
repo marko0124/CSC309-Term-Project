@@ -18,7 +18,9 @@ const EventsList = ({
         {events.results.map((event, index) => (
           <ul className='event' key={event.id || index}>
             <div className='event-details'> 
-              <div className='event-tag'>{event.type}</div> 
+              <div className='event-tag'>
+                {event.capacity ? `Guest: ${event.numGuests || 0}/${event.capacity}` : `Unlimited`}
+              </div>             
               <p>{new Date(event.startTime).toLocaleDateString()}</p>
             </div>
             <div 
