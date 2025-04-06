@@ -21,7 +21,8 @@ const TransactionItem = ({ transaction, view }) => {
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
-                        <p><b>Spent:</b> {transaction.amount}</p>
+                        <p><b>Spent:</b> {new Intl.NumberFormat("en-US", { style: 'currency', currency: 'USD' }).format(transaction.spent)}</p>
+                        <p><b>Points Earned:</b> {transaction.amount}</p>
                         {transaction.promotionIds.length > 0 && <p><b>Promotions used (IDs):</b> {transaction.promotionIds}</p> }
                     </div>
                     <div style={{ flex: 1 }}>
@@ -48,7 +49,7 @@ const TransactionItem = ({ transaction, view }) => {
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
-                        <p><b>Amount:</b> {transaction.amount}</p>
+                        <p><b>Points Earned:</b> {transaction.amount}</p>
                         <div style={{ display: 'flex', gap: '3rem' }}>
                             <p><b>Sender:</b> {transaction.sender} </p>
                             <p><b>Recipient:</b> {transaction.recipient}</p>
@@ -78,7 +79,7 @@ const TransactionItem = ({ transaction, view }) => {
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
-                        <p><b>Amount:</b> {transaction.amount}</p>
+                        <p><b>Points Earned:</b> {transaction.amount}</p>
                     </div>
                     <div style={{ flex: 1 }}>
                         <p><b>Remark:</b> {transaction.remark == null || transaction.remark === "" ? 'n/a' : transaction.remark}</p>
@@ -103,7 +104,7 @@ const TransactionItem = ({ transaction, view }) => {
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
-                        <p><b>Amount:</b> {transaction.amount}</p>
+                        <p><b>Points Earned:</b> {transaction.amount}</p>
                     </div>
                     <div style={{ flex: 1 }}>
                         <p><b>Remark:</b> {transaction.remark == null || transaction.remark === "" ? 'n/a' : transaction.remark}</p>
@@ -129,7 +130,7 @@ const TransactionItem = ({ transaction, view }) => {
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
-                        <p><b>Amount:</b> {transaction.amount}</p>
+                        <p><b>Points Earned:</b> {transaction.amount}</p>
                     </div>
                     <div style={{ flex: 1 }}>
                         <p><b>Remark:</b> {transaction.remark == null || transaction.remark === "" ? 'n/a' : transaction.remark}</p>

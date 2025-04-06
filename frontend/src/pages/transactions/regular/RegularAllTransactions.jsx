@@ -17,7 +17,8 @@ const RegularAllTransactions = () => {
                     <TransactionsList searchParamsString={searchParams.toString()} view={"regular"} showPagination={true} searchParams={searchParams} setSearchParams={setSearchParams}/>
                 </section>
     
-                <section style={{ display: 'flex', justifyContent: 'center', flex: '1'}}>
+                <section style={{ display: 'flex', padding: '1rem', justifyContent: 'start', flex: '1', flexDirection: 'column'}}>
+                    <h3>Filter by</h3>
                     <TransactionsFilters setSearchParams={setSearchParams} view={"regular"}/>
                 </section>
             </section>

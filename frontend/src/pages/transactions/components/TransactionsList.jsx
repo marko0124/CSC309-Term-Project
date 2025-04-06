@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../context/userContext";
-import TransactionItem from "./TransactionItem";
+import TransactionItem from "./TransactionListItem";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 import PaginationButtons from "./PaginationButtons";

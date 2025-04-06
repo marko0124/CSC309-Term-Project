@@ -26,7 +26,6 @@ const TransactionsFilters = ({ setSearchParams, view }) => {
 
     return (
         <Form className='p-3' onSubmit={handleApply} action='/'>
-            <h3>Filter by</h3>
             {view === "manager" && 
                 <>
                     <Form.Group className="mb-3" controlId="formGroupName">
