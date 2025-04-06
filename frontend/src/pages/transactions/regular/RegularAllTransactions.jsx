@@ -11,8 +11,8 @@ const RegularAllTransactions = () => {
         <header>header</header>
         <nav>Nav bar</nav>
         <div style={{ minHeight: '100vh' }}>
-            <section style={{ display: 'flex', padding:'1rem 10rem', gap: '2rem' }}>
-                <section style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '1rem', justifyContent: 'start', flex: '1', width: '50rem' }}>
+            <section style={{ display: 'flex', padding:'1rem 10rem', gap: '5rem' }}>
+                <section style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '1rem', justifyContent: 'start', flex: '1', width: '40rem' }}>
                 <h3>All My Transactions</h3>
                     <TransactionsList searchParamsString={searchParams.toString()} view={"regular"} showPagination={true} searchParams={searchParams} setSearchParams={setSearchParams}/>
                 </section>

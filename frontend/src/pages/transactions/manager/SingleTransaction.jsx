@@ -167,24 +167,17 @@ const SingleTransaction = () => {
     return <>
         <header>header</header>
         <nav>Nav bar</nav>
-        <div style={{ minHeight: '100vh' }}>
-            <section style={{ display: 'flex', padding:'1rem 10rem', gap: '2rem' }}>
-                <section style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '1rem', justifyContent: 'start', flex: '1', width: '50rem' }}>
-                <h3>Transaction #{transactionId}</h3>
-                    loading...
-                </section>
-
-                <section style={{ display: 'flex', padding: '1rem', justifyContent: 'start', flex: '1', flexDirection: 'column'}}>
-                <h3>Actions</h3>
-                </section>
+        <section style={{ display: 'flex', padding:'1rem 10rem', gap: '2rem' }}>
+            <section style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '1rem', justifyContent: 'start', flex: '1', width: '50rem' }}>
+            <h3>Transaction #{transactionId}</h3>
+                loading...
             </section>
-        </div>
 
+            <section style={{ display: 'flex', padding: '1rem', justifyContent: 'start', flex: '1', flexDirection: 'column'}}>
+            <h3>Actions</h3>
+            </section>
+        </section>
         <footer>footer</footer>
-        <div>transaction</div>
-        {JSON.stringify(data)}
-        <Button variant="primary" onClick={handleSetSuspicious}>set suspicious</Button>
-        <AdjustmentTransactionCreator setAmount={setAmount} setRemark={setRemark} onClick={handleCreateAdjustment}/>
     </>
 }
 
