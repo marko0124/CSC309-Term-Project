@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LogIn from './pages/LogIn.jsx';
 import UserProfile from './pages/UserProfile.jsx';
 import ChangePassword from './pages/ChangePassword.jsx';
+import Home from './pages/Home.jsx';
 import {AuthProvider, useAuth} from './context/authContext.js';
 
 const App = () => {
@@ -26,6 +27,14 @@ const App = () => {
     return (
       <Routes>
         <Route path="/" element={<LogIn />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/profile"
           element={

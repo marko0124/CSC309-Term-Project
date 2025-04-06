@@ -1,13 +1,16 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../context/userContext';
+import React from 'react';
+import {useAuth} from '../context/authContext';
+import HomeNavbar from './HomeNavbar';
 
 const Home = () => {
-  const { utorid, role } = useContext(UserContext);
+  const { user } = useAuth();
+  const {utorid} = user;
   const today = new Date();
   const hour = today.getHours();
   const greeting = hour >= 0 && hour < 12 ? "morning" : (hour < 18 ? "afternoon" : "evening");
   return (
     <>
+      <HomeNavbar />
       <div>
         {/* left panel */}
         <div>
@@ -27,7 +30,6 @@ const Home = () => {
         
         {/* right panel */}
         <div>
-          <h3></h3>
         </div> 
       </div>
     </>
