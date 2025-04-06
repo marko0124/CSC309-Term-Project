@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { UserContext } from '../../../context/userContext';
 
-const TransactionsFilters = ({ setSearchParams, privileged }) => {
+const TransactionsFilters = ({ setSearchParams, view }) => {
     const [amount, setAmount] = useState('');
     const [type, setType] = useState('Any');
     const [relatedId, setRelatedId] = useState("");
@@ -27,7 +27,7 @@ const TransactionsFilters = ({ setSearchParams, privileged }) => {
     return (
         <Form className='p-3' onSubmit={handleApply} action='/'>
             <h3>Filter by</h3>
-            {privileged && 
+            {view === "manager" && 
                 <>
                     <Form.Group className="mb-3" controlId="formGroupName">
                         <Form.Label>Name</Form.Label>
@@ -101,7 +101,7 @@ const TransactionsFilters = ({ setSearchParams, privileged }) => {
                     <Form.Control type="text" placeholder="promotionId" name='promotionId'/>
                 </Form.Group>
             </Row>
-            {privileged && 
+            {view === "manager" && 
                 <>
                     <Row>
                         <Form.Check className='ms-3'

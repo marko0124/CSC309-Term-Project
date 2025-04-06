@@ -1,6 +1,6 @@
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { capitalize } from '../../../utils/stringUtils';
+// import { capitalize } from '../../../utils/stringUtils';
 import { Link } from "react-router-dom";
 
 const TransactionItem = ({ transaction }) => {
@@ -11,7 +11,7 @@ const TransactionItem = ({ transaction }) => {
             className="d-flex justify-content-between align-items-start"
         >
             <div className="ms-2 me-auto">
-            <div className="fw-bold">{capitalize(transaction.type)}</div>
+            <div className="fw-bold">{transaction.type}</div>
             <Link to={`/transactions/${transaction.id}`}>go to transaction</Link>
             UTORID: {transaction.utorid || '?'}_
             AMOUNT: {transaction.amount}_

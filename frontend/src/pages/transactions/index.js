@@ -4,14 +4,18 @@ import TransferTransactionCreator from "./components/TransferTransactionCreator"
 import { useContext, useState } from "react";
 import TransactionsList from "./components/TransactionsList";
 import TransactionsFilters from "./components/TransactionFilters";
+import PaginationButtons from "./components/PaginationButtons";
+import ChangeViewButton from "./components/ChangeViewButton";
 
 const Transactions = () => {
-    const { token } = useContext(UserContext);
+    const { token, role } = useContext(UserContext);
     const navigate = useNavigate();
+    const [view, setView] = useState("manager");
     const [transferAmount, setTransferAmount] = useState("");
     const [transferRemark, setTransferRemark] = useState("");
     const [transferRecipientId, setTransferRecipientId] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
+
     const handleTransfer = () => {
         try {
             const createData = async () => {
@@ -44,15 +48,21 @@ const Transactions = () => {
         }
     }
 
+    const handleChangeView = (view) => {
+        setView(view);
+        setSearchParams({});
+    }
+
     return <>
+    { role === "manager" && <ChangeViewButton handleChangeView={handleChangeView} /> }
         <div>
             Transfer points
             <TransferTransactionCreator setAmount={setTransferAmount} setRemark={setTransferRemark} setRecipient={setTransferRecipientId} onClick={handleTransfer}/>
         </div>
         <div className='p-3'>
-            <TransactionsFilters setSearchParams={setSearchParams} privileged={false}/>
+            <TransactionsFilters setSearchParams={setSearchParams} view={view}/>
             <h3>My Transactions</h3>
-            <TransactionsList searchParamsString={searchParams.toString()} priviliged={false}/>
+            <TransactionsList searchParamsString={searchParams.toString()} view={view} showPagination={true} searchParams={searchParams} setSearchParams={setSearchParams} />
         </div>
     </>
 }

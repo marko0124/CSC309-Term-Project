@@ -3,15 +3,18 @@ import { UserContext } from "../../../context/userContext";
 import TransactionItem from "./TransactionItem";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
+import PaginationButtons from "./PaginationButtons";
 
-const TransactionsList = ({ searchParamsString, priviliged }) => {
+const TransactionsList = ({ searchParamsString, view, showPagination, searchParams, setSearchParams }) => {
     const [data, setData] = useState({ count: 0, results: [] });
     const { token } = useContext(UserContext);
+    const [limit, setLimit] = useState(10);
+
     useEffect(() => {
         try {
-            setData([]);
+            setData({ count: 0, results: [] });
 
-            const url = priviliged ? `${process.env.REACT_APP_BASE_URL}transactions?${searchParamsString}` 
+            const url = view === "manager" ? `${process.env.REACT_APP_BASE_URL}transactions?${searchParamsString}` 
                 : `${process.env.REACT_APP_BASE_URL}users/me/transactions?${searchParamsString}`
 
             const fetchData = async () => {
@@ -34,9 +37,10 @@ const TransactionsList = ({ searchParamsString, priviliged }) => {
         } catch (error) {
             console.error(error);
         }
-    }, [searchParamsString]);
+    }, [searchParamsString, view]);
 
     console.log(data.results);
+    console.log(data.count);
     if (data.results) {
         if (data.count === 0) {
             return <div>No results :(</div>
@@ -47,11 +51,13 @@ const TransactionsList = ({ searchParamsString, priviliged }) => {
             </ol>
         });
 
-        return (
+        return <>
             <ListGroup as="ol" className="w-50">
               {transactionsList}
             </ListGroup>
-          );
+            { showPagination && <PaginationButtons searchParams={searchParams} setSearchParams={setSearchParams} count={data.count} limit={limit} /> }
+        </>
+          
     }
     return <div className="d-flex justify-content-center">
             <Spinner animation="border" role="status">

@@ -3,6 +3,7 @@ import { UserContext } from '../../context/userContext';
 import TransactionsList from './components/TransactionsList';
 import TransactionsFilters from './components/TransactionFilters';
 import { useSearchParams } from 'react-router-dom';
+import PaginationButtons from './components/PaginationButtons';
 
 const ManagerTransactions = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -11,9 +12,9 @@ const ManagerTransactions = () => {
     return <>
         <div>ManagerTransactions</div>
         <div className='p-3'>
-            <TransactionsFilters setSearchParams={setSearchParams} privileged={true}/>
+            <TransactionsFilters setSearchParams={setSearchParams} view={"manager"}/>
             <h3>Transactions List</h3>
-            <TransactionsList searchParamsString={searchParams.toString()} priviliged={true}/>
+            <TransactionsList searchParamsString={searchParams.toString()} view={"manager"} showPagination={true} searchParams={searchParams} setSearchParams={setSearchParams}/>
         </div>
     </>
 }
