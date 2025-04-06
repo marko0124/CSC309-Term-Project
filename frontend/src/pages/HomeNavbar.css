@@ -24,10 +24,6 @@
     color: var(--intense) !important;
 }
 
-.custom-nav-link:hover {
-    font-weight: bold;
-}
-
 .dropdown-toggle::after {
     color: var;
 }
