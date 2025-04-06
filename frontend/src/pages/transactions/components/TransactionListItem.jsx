@@ -2,6 +2,7 @@ import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { capitalize } from '../../../utils/stringUtils';
 import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 const TransactionItem = ({ transaction, view }) => {
     if (transaction.type === "purchase") {
@@ -12,12 +13,17 @@ const TransactionItem = ({ transaction, view }) => {
                 className="d-flex justify-content-between align-items-start"
             >
 
-                { view === "manager" && <Link to={`/transactions/manage/${transaction.id}`}>go to transaction</Link> }
-
                 <div style={{ display: 'flex', marginBottom: '1rem', justifyContent: 'space-between', width: '100%' }}>
                     <div style={{ padding: '0.2rem 0.8rem', backgroundColor: '#E15D44', borderRadius: '1rem', color: 'white' }}>
                         {capitalize(transaction.type)}
                     </div>
+                    { view === "manager" && 
+                        <Link to={`/transactions/manage/${transaction.id}`}
+                              style={ {textDecoration: 'none', color:'black', } } 
+                        >
+                            <Button style={{ fontSize: '0.8rem', backgroundColor: '' }}>Edit Transaction</Button>
+                        </Link> 
+                    }
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
@@ -41,11 +47,18 @@ const TransactionItem = ({ transaction, view }) => {
                 className="d-flex justify-content-between align-items-start"
             >
 
-                { view === "manager" && <Link to={`/transactions/manage/${transaction.id}`}>go to transaction</Link> }
+            
                 <div style={{ display: 'flex', marginBottom: '1rem', justifyContent: 'space-between', width: '100%' }}>
                     <div style={{ padding: '0.2rem 0.8rem', backgroundColor: '#D65076', borderRadius: '1rem', color: 'white' }}>
                         {capitalize(transaction.type)}
                     </div>
+                    { view === "manager" && 
+                        <Link to={`/transactions/manage/${transaction.id}`}
+                              style={ {textDecoration: 'none', color:'black', } } 
+                        >
+                            <Button style={{ fontSize: '0.8rem', backgroundColor: '' }}>Edit Transaction</Button>
+                        </Link> 
+                    }
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
@@ -71,11 +84,18 @@ const TransactionItem = ({ transaction, view }) => {
                 className="d-flex justify-content-between align-items-start"
             >
 
-                { view === "manager" && <Link to={`/transactions/manage/${transaction.id}`}>go to transaction</Link> }
+                
                 <div style={{ display: 'flex', marginBottom: '1rem', justifyContent: 'space-between', width: '100%' }}>
                     <div style={{ padding: '0.2rem 0.8rem', backgroundColor: '#00A591', borderRadius: '1rem', color: 'white' }}>
                         {capitalize(transaction.type)}
                     </div>
+                    { view === "manager" && 
+                        <Link to={`/transactions/manage/${transaction.id}`}
+                              style={ {textDecoration: 'none', color:'black', } } 
+                        >
+                            <Button style={{ fontSize: '0.8rem', backgroundColor: '' }}>Edit Transaction</Button>
+                        </Link> 
+                    }
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
@@ -96,11 +116,18 @@ const TransactionItem = ({ transaction, view }) => {
                 as="li"
                 className="d-flex justify-content-between align-items-start"
             >
-                { view === "manager" && <Link to={`/transactions/manage/${transaction.id}`}>go to transaction</Link> }
+                
                 <div style={{ display: 'flex', marginBottom: '1rem', justifyContent: 'space-between', width: '100%' }}>
                     <div style={{ padding: '0.2rem 0.8rem', backgroundColor: '#FFD662', borderRadius: '1rem', color: 'white' }}>
                         {capitalize(transaction.type)}
                     </div>
+                    { view === "manager" && 
+                        <Link to={`/transactions/manage/${transaction.id}`}
+                              style={ {textDecoration: 'none', color:'black', } } 
+                        >
+                            <Button style={{ fontSize: '0.8rem', backgroundColor: '' }}>Edit Transaction</Button>
+                        </Link> 
+                    }
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
@@ -122,11 +149,18 @@ const TransactionItem = ({ transaction, view }) => {
                 className="d-flex justify-content-between align-items-start"
             >
 
-                { view === "manager" && <Link to={`/transactions/manage/${transaction.id}`}>go to transaction</Link> }
+                
                 <div style={{ display: 'flex', marginBottom: '1rem', justifyContent: 'space-between', width: '100%' }}>
                     <div style={{ padding: '0.2rem 0.8rem', backgroundColor: '#6F9FD8', borderRadius: '1rem', color: 'white' }}>
                         {capitalize(transaction.type)}
                     </div>
+                    { view === "manager" && 
+                        <Link to={`/transactions/manage/${transaction.id}`}
+                              style={ {textDecoration: 'none', color:'black', } } 
+                        >
+                            <Button style={{ fontSize: '0.8rem', backgroundColor: '' }}>Edit Transaction</Button>
+                        </Link> 
+                    }
                 </div>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%', paddingLeft: '0.5rem'}}>
                     <div style={{ flex: 2  }}>
