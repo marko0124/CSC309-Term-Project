@@ -1,0 +1,228 @@
+:root {
+    --intense: #292f63;
+    --summer: #428dc6;
+    --just-vibe: #53b2d4;
+    --cloro: #aae5f2;
+    --smooth: #d2eff7;
+    --white: #ffffff;
+    --error: #ff4d4d;
+    --success: green;
+    --font-type: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-type);
+}
+
+.page{
+    display: flexbox;
+    flex-direction: column;
+}
+
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-card {
+  position: relative;
+  align-self: center;
+  background-color: var(--white);
+  border-color: var(--just-vibe);
+  border-radius: 20px;
+  border-style: solid;
+  border-width: 1px;
+  padding: 40px;
+  width: 90%;
+  max-width: 450px;
+  z-index: 10;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+}
+
+.profile-header h1 {
+    color: var(--intense);
+    margin: 0;
+    font-size: 28px;
+}
+
+.btn-edit {
+    padding: 8px 16px;
+    background-color: var(--intense);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-edit:hover {
+    background-color: var(--just-vibe);
+}
+
+.btn-cancel {
+    background-color: var(--intense);
+}
+
+.btn-cancel:hover {
+    background-color: var(--just-vibe);
+}
+
+.btn-save {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--summer);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 20px;
+}
+
+.btn-save:hover {
+    background-color: var(--just-vibe);
+}
+
+.btn-primary {
+    padding: 12px 20px;
+    background-color: var(--summer);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background-color: var(--just-vibe);
+}
+
+.profile-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.profile-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.profile-section h2 {
+    color: var(--intense);
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.label {
+    flex: 1;
+    font-weight: 500;
+    color: #555;
+}
+
+.value {
+    flex: 2;
+    color: #333;
+}
+
+.qr-section {
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.qr-section h2 {
+    color: var(--intense);
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.qr-container {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 10px;
+}
+  
+.edit-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: var(--intense);
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--intense);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: var(--summer);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(34, 173, 198, 0.2);
+}
+
+.error-message {
+    padding: 10px;
+    margin-bottom: 15px;
+    color: var(--error);
+    background-color: rgba(255, 77, 77, 0.1);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.success-message {
+    padding: 10px;
+    margin-bottom: 15px;
+    color: var(--success);
+    background-color: rgba(77, 255, 151, 0.1);
+    border-radius: 8px;
+    font-size: 14px;
+}

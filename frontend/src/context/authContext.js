@@ -23,7 +23,7 @@ export const AuthProvider = ({children}) => {
                     setLoading(false);
                     return;
                 }
-
+    
                 const expiry = new Date(expiresAt);
                 const now = new Date();
                 if (now > expiry) {
@@ -33,7 +33,7 @@ export const AuthProvider = ({children}) => {
                     setLoading(false);
                     return;
                 }
-
+    
                 try {
                     const response = await apiClient.get('/users/me', {
                         headers: {
@@ -43,7 +43,10 @@ export const AuthProvider = ({children}) => {
                     if (response.status !== 200) {
                         throw new Error('Could not fetch user.');
                     }
-                    setUser(response.data);
+                    setUser({
+                        ...response.data,
+                        token
+                    });
                 } catch (err) {
                     setError(err.message);
                     setUser(null);
@@ -70,7 +73,10 @@ export const AuthProvider = ({children}) => {
             if (!userData === 200) {
                 throw new Error("No user.");
             }
-            setUser(userData.data);
+            setUser({
+                ...userData.data,
+                token
+            });
             return {success: true};
         } catch (err) {
             setError(err.message);
