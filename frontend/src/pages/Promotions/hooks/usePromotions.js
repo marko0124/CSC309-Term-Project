@@ -52,44 +52,46 @@ const usePromotions = () => {
     fetchPromotions(currentPage);
   }, [fetchPromotions, currentPage]);
 
-  const toggleFilterButton = (buttonKey) => {
-    const newActiveButtons = {
-      ...activeButtons,
-      [buttonKey]: !activeButtons[buttonKey]
-    };
-    
-    setActiveButtons(newActiveButtons);
-    
+  // Update the toggleFilterButton function
+const toggleFilterButton = (buttonKey) => {
+  // Just update the active buttons state, don't search yet
+  setActiveButtons(prev => ({
+    ...prev,
+    [buttonKey]: !prev[buttonKey]
+  }));
+};
+
+  // Add this new function to apply filters when the user wants to search
+  const applyFilters = useCallback(() => {
+    // Convert active buttons to filter type
     let filterType = null;
-    if (newActiveButtons.oneTime && !newActiveButtons.automatic) {
+    if (activeButtons.oneTime && !activeButtons.automatic) {
       filterType = 'one-time';
-    } else if (!newActiveButtons.oneTime && newActiveButtons.automatic) {
+    } else if (!activeButtons.oneTime && activeButtons.automatic) {
       filterType = 'automatic';
-    } else if (newActiveButtons.oneTime && newActiveButtons.automatic) {
+    } else if (activeButtons.oneTime && activeButtons.automatic) {
       filterType = 'both';
     }
     
-    const newFilter = {
-      ...filter,
-      type: filterType,
-      started: newActiveButtons.started,
-      ended: newActiveButtons.ended
-    };
-    
-    setFilter(newFilter);
-  };
-
-  const handleSearch = useCallback(async (e) => {
-    if (e) e.preventDefault();
-    
+    // Apply all filters at once
     setFilter({
       ...filter,
       name: searchTerm,
-      page: 1
+      type: filterType,
+      started: activeButtons.started,
+      ended: activeButtons.ended,
+      page: 1 // Reset to first page when applying filters
     });
     
+    // Reset current page
     setCurrentPage(1);
-  }, [filter, searchTerm]);
+  }, [activeButtons, filter, searchTerm]);
+
+  // Update the handleSearch function to use applyFilters
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    applyFilters(); // Apply all filters including search term and button filters
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);

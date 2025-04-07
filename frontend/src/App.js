@@ -1,22 +1,64 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-// Import page components
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/authContext.js'; 
+import PromotionsRouter from './pages/Promotions/PromotionsRouter.jsx';
 import LogIn from './pages/LogIn.jsx';
-import Promotions from './pages/Promotions'; // Changed from './pages/Promotions.jsx'
 
 const App = () => {
+  // Role-based protected route
+  const RoleBasedRoute = ({ children, allowedRoles = [] }) => {
+    const { user, isAuthenticated, loading } = useAuth();
 
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+
+    if (!isAuthenticated) {
+      return <Navigate to="/" replace />;
+    }
+
+    // If no roles specified, allow any authenticated user
+    if (allowedRoles.length === 0) {
+      return children;
+    }
+
+    // Check if user has one of the allowed roles
+    if (user && allowedRoles.includes(user.role)) {
+      return children;
+    }
+    
+    // Add this missing return statement
+    return <Navigate to="/unauthorized" replace />;
+  };
+
+  const AppRoutes = () => {
+    return (
+      <Routes>
+        <Route
+          path="/"
+          element={
+              <LogIn />
+          }
+        />
+        {/* Organizer specific routes */}
+        <Route
+          path="/promotions"
+          element={
+              <PromotionsRouter />
+          }
+        />
+      </Routes>
+    );
+  };
+  
+  // Add this missing return statement
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LogIn />} />
-        <Route path="/promotions" element={<Promotions />} />
-
-        {/* Add more routes as needed */}
-      </Routes>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </Router>
   );
 };
-
+  
 export default App;
