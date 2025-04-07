@@ -13,7 +13,7 @@ function HomeNavbar() {
 
   if (role === "cashier") {
     options.push(
-      <NavDropdown title="Users" id="navbarScrollingDropdown" className="custom-nav-link" style={{color: "#292f63"}}>
+      <NavDropdown title="Users" id="navbarScrollingDropdown" className="custom-nav-link" style={{color: "#292f63"}} key="cashierDropdown">
         <NavDropdown.Item href="/create-user" className="custom-nav-link">Create User</NavDropdown.Item>
       </NavDropdown>
     );
@@ -21,7 +21,7 @@ function HomeNavbar() {
 
   if (role === "manager" || role === "superuser") {
     options.push(
-      <NavDropdown title="Users" id="navbarScrollingDropdown" className="custom-nav-link" style={{color: "#292f63"}}>
+      <NavDropdown title="Users" id="navbarScrollingDropdown" className="custom-nav-link" style={{color: "#292f63"}} key="managerDropdown">
         <NavDropdown.Item href="/create-user" className="custom-nav-link">Create User</NavDropdown.Item>
         <NavDropdown.Item href="/users" className="custom-nav-link">View Users</NavDropdown.Item>
       </NavDropdown>
@@ -29,16 +29,20 @@ function HomeNavbar() {
   }
 
   options.push(
-    <>
-      <Nav.Link href="/promotions" className="custom-nav-link">Promotions</Nav.Link>
-      <Nav.Link href="/events" className="custom-nav-link">Events</Nav.Link>
-      <Nav.Link href="/transactions" className="custom-nav-link">Transactions</Nav.Link>
-      <Nav.Link href="/profile" className="custom-nav-link">Profile</Nav.Link>
-    </>
+    <Nav.Link href="/promotions" className="custom-nav-link" key="promotions">Promotions</Nav.Link>
+  );
+  options.push(
+    <Nav.Link href="/events" className="custom-nav-link" key="events">Events</Nav.Link>
+  );
+  options.push(
+    <Nav.Link href="/transactions" className="custom-nav-link" key="transactions">Transactions</Nav.Link>
+  );
+  options.push(
+    <Nav.Link href="/profile" className="custom-nav-link" key="profile">Profile</Nav.Link>
   );
 
   return (
-      <Navbar bg="#primary" data-bs-theme="light" fixed="top" style={{backgroundColor: "#ffffff"}}>
+      <Navbar bg="#primary" data-bs-theme="light" sticky="top" style={{backgroundColor: "#ffffff"}}>
         <Container fluid style={{marginLeft: "5px", marginRight: "5px", width: "100%"}}>
           <Navbar.Brand href="/home" style={{color: "#292f63"}}>Home</Navbar.Brand>
           <Navbar.Collapse className="justify-content-end">
