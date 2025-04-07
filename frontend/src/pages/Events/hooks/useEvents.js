@@ -12,7 +12,7 @@ const useEvents = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [activeButtons, setActiveButtons] = useState({
     showFull: false,
-    published: false,
+    published: true,
     started: false,
     ended: false
   });

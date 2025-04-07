@@ -240,7 +240,6 @@
 
 .participant-item:hover {
   background-color: #f0f2f5;
-  transform: translateX(4px);
 }
 
 .participant-info {

@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:5001';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzk3MTU1OCwiZXhwIjoxNzQ0MDU3OTU4fQ.mwmwYvmz8A-XgaaGA4rYOrNJK_N2vL0UnqHnUhwOStY';
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwicm9sZSI6InJlZ3VsYXIiLCJpYXQiOjE3NDQwNTA3NDUsImV4cCI6MTc0NDEzNzE0NX0.rXMXGqK8YE5mxqQnUsu01X0xDuH6-inFb4pymxlUx3c';
 
 const headers = {
   'Authorization': `Bearer ${TOKEN}`,
@@ -103,6 +103,40 @@ export const updateEvent = async (eventId, eventData) => {
   }
   
   return await response.json();
+};
+
+export const rsvpUser = async (eventId) => {
+  console.log("RSVPing for user with ID:", headers.Authorization);
+  const response = await fetch(`${API_URL}/events/${eventId}/guests/me`, {
+    method: 'POST',
+    headers
+  });
+  if (!response.ok) {
+    throw new Error(`Server responded with ${response.status}`);
+  }
+  return await response.json();
+}
+
+export const cancelRsvp = async (eventId) => {
+  try {
+    const response = await fetch(`${API_URL}/events/${eventId}/guests/me`, {
+      method: 'DELETE',
+      headers
+    });
+    if (!response.ok) {
+      // Try to get detailed error message from response
+      try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Server responded with ${response.status}`);
+      } catch (e) {
+        throw new Error(`Server responded with ${response.status}`);
+      }
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error canceling RSVP:', error);
+    throw error;
+  }
 };
 
 export const deleteEvent = async (eventId) => {

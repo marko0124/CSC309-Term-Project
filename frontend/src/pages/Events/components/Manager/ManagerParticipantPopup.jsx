@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faUserPlus, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import * as eventService from '../../services/eventService';
-import './ParticipantPopup.css';
+import '../controller/ParticipantPopup.css';
 
 const ParticipantPopup = ({ 
   trigger, 

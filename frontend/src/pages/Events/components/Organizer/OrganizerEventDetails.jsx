@@ -2,9 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import * as eventService from '../../services/eventService';
 import '../../../navbar.css';
-import ManagerParticipantPopup from './ManagerParticipantPopup';
+import OrganizerParticipantPopup from './OrganizerParticipantPopup';
 import AwardPoints from '../controller/AwardPoints';
-import './ManagerEventDetails.css';
+import './OrganizerEventDetails.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faTrash, 
@@ -15,8 +15,9 @@ import {
     faMapMarkerAlt, 
     faStar,
     faCheck 
-  } from '@fortawesome/free-solid-svg-icons';
-const ManagerEventDetails = ({ eventId: eventIdProp }) => {
+} from '@fortawesome/free-solid-svg-icons';
+
+const OrganizerEventDetails = ({ eventId: eventIdProp }) => {
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -29,43 +30,16 @@ const ManagerEventDetails = ({ eventId: eventIdProp }) => {
     const [deleteConfirm, setDeleteConfirm] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [deleteError, setDeleteError] = useState(null);
-    const navigate = useNavigate(); // Import this from react-router-dom
+    const navigate = useNavigate();
     
     const eventId = eventIdProp || eventIdParam;
+    
     const handleClosePopup = () => {
         setButtonPopup(false);
         // Force a refresh when closing the popup
         fetchEventDetails();
     };
 
-    const handleDeleteClick = () => {
-        if (event.published) {
-            alert('You cannot delete a published event.');
-            return;
-        }
-        setDeleteConfirm(true);
-    };
-    
-    const handleCancelDelete = () => {
-        setDeleteConfirm(false);
-        setDeleteError(null);
-    };
-    
-    const handleConfirmDelete = async () => {
-        try {
-            setDeleteLoading(true);
-            setDeleteError(null);
-            
-            await eventService.deleteEvent(eventId);
-            
-            // Redirect to events list after successful deletion
-            navigate('/events');
-        } catch (error) {
-            console.error('Error deleting event:', error);
-            setDeleteError(error.message || 'Failed to delete event. Please try again.');
-            setDeleteLoading(false);
-        }
-    };
     const fetchEventDetails = useCallback(async () => {
         setLoading(true);
         try {
@@ -109,34 +83,42 @@ const ManagerEventDetails = ({ eventId: eventIdProp }) => {
         }
     };
 
-    // Add this code inside your ManagerEventDetails component
-
-const validateForm = () => {
-    // Check for required fields
-    if (!editFormData.name || !editFormData.description || 
-        !editFormData.location || !editFormData.startTime || 
-        !editFormData.endTime) {
-      setUpdateError('Please fill in all required fields');
-      return false;
-    }
+    const validateForm = () => {
+        // Check for required fields
+        if (!editFormData.name || !editFormData.description || 
+            !editFormData.location || !editFormData.startTime || 
+            !editFormData.endTime) {
+            setUpdateError('Please fill in all required fields');
+            return false;
+        }
     
-    // Check that start time is before end time
-    const startDate = new Date(editFormData.startTime);
-    const endDate = new Date(editFormData.endTime);
+        // Check that start time is before end time
+        const startDate = new Date(editFormData.startTime);
+        const endDate = new Date(editFormData.endTime);
+        
+        if (startDate >= endDate) {
+            setUpdateError('End time must be after start time');
+            return false;
+        }
+        
+        // Check that points is a positive number
+        if (editFormData.points <= 0) {
+            setUpdateError('Points must be greater than zero');
+            return false;
+        }
+        
+        return true;
+    };
     
-    if (startDate >= endDate) {
-      setUpdateError('End time must be after start time');
-      return false;
-    }
-    
-    // Check that points is a positive number
-    if (editFormData.points <= 0) {
-      setUpdateError('Points must be greater than zero');
-      return false;
-    }
-    
-    return true;
-  };
+    // Function to check if the current user is an organizer
+    const isCurrentUserOrganizer = () => {
+        if (!event || !event.organizers || !event.currentUser) return false;
+        
+        return event.organizers.some(organizer => 
+            organizer.id === event.currentUser || 
+            organizer.utorid === event.currentUser
+        );
+    };
   
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
@@ -144,39 +126,38 @@ const validateForm = () => {
         
         // Validate the form
         if (!validateForm()) {
-        return;
+            return;
         }
         
         setUpdateLoading(true);
         
         try {
-        // Prepare the event data for the API
-        const updatedEventData = {
-            name: editFormData.name,
-            description: editFormData.description,
-            location: editFormData.location,
-            startTime: new Date(editFormData.startTime).toISOString(),
-            endTime: new Date(editFormData.endTime).toISOString(),
-            capacity: editFormData.capacity !== '' ? editFormData.capacity : null,
-            points: parseInt(editFormData.points),
-            published: editFormData.published
-        };
-        
-        // Call the API to update the event
-        await eventService.updateEvent(eventId, updatedEventData);
-        
-        // Exit edit mode and refresh event data
-        setIsEditing(false);
-        fetchEventDetails();
-        
+            // Prepare the event data for the API
+            const updatedEventData = {
+                name: editFormData.name,
+                description: editFormData.description,
+                location: editFormData.location,
+                startTime: new Date(editFormData.startTime).toISOString(),
+                endTime: new Date(editFormData.endTime).toISOString(),
+                capacity: editFormData.capacity !== '' ? editFormData.capacity : null,
+                points: parseInt(editFormData.points),
+                published: editFormData.published
+            };
+            
+            // Call the API to update the event
+            await eventService.updateEvent(eventId, updatedEventData);
+            
+            // Exit edit mode and refresh event data
+            setIsEditing(false);
+            fetchEventDetails();
+            
         } catch (error) {
-        console.error('Error updating event:', error);
-        setUpdateError(error.message || 'Failed to update event. Please try again.');
+            console.error('Error updating event:', error);
+            setUpdateError(error.message || 'Failed to update event. Please try again.');
         } finally {
-        setUpdateLoading(false);
+            setUpdateLoading(false);
         }
     };
-
 
     if (loading) return (
         <div className="loading-container">
@@ -307,7 +288,7 @@ const validateForm = () => {
                                         onChange={handleInputChange}
                                         min="0"
                                         placeholder={`${event.pointsRemain || 0} Points Remain`}
-                                        />
+                                    />
                                     <small className="helper-text">
                                         <div><strong>Total points allocated:</strong> {event.pointsRemain + (event.pointsAwarded || 0)} points</div>
                                         <div><strong>Currently remaining:</strong> {event.pointsRemain || 0} points</div>
@@ -315,21 +296,6 @@ const validateForm = () => {
                                     </small>
                                 </div>
                             </div>
-                            
-                            {!event.published && (
-                                <div className="form-group checkbox-group">
-                                    <label htmlFor="published">
-                                        <input
-                                            type="checkbox"
-                                            id="published"
-                                            name="published"
-                                            checked={editFormData.published}
-                                            onChange={handleInputChange}
-                                        />
-                                        Publish Event
-                                    </label>
-                                </div>
-                            )}
                             
                             <div className="button-group">
                                 <button
@@ -351,140 +317,106 @@ const validateForm = () => {
                         </form>
                     ) : (
                         // Regular view
-                    // Regular view
-                    <>
-                        <div className="event-details"> 
-                            <div className="title-div">
-                                <h1>{event.name}</h1> 
-                                {event.published ? 
-                                    <div className='publish-tag'>Published <FontAwesomeIcon icon={faCheck} /></div> : 
-                                    <div className='draft-tag'>Draft</div>
-                                }
-                            </div>
-                            
-                            {/* Moved info grid to be directly below title */}
-                            <div className="event-info-grid">
-                                <div className="info-item">
-                                    <h4>Location</h4>
-                                    <p><FontAwesomeIcon icon={faMapMarkerAlt} /> {event.location}</p>
+                        <>
+                            <div className="event-details"> 
+                                <div className="title-div">
+                                    <h1>{event.name}</h1> 
+                                    {event.published ? 
+                                        <div className='publish-tag'>Published <FontAwesomeIcon icon={faCheck} /></div> : 
+                                        <div className='draft-tag'>Draft</div>
+                                    }
                                 </div>
                                 
-                                <div className="info-item">
-                                    <h4>Capacity</h4>
-                                    <p>
-                                        {(event.guests && event.capacity) ? 
-                                            `${event.guests.length}/${event.capacity || 'Unlimited'}` : 
-                                            `${event.numGuests || 0}/${event.capacity || 'Unlimited'}`
-                                        }
-                                    </p>
+                                <div className="event-info-grid">
+                                    <div className="info-item">
+                                        <h4>Location</h4>
+                                        <p><FontAwesomeIcon icon={faMapMarkerAlt} /> {event.location}</p>
+                                    </div>
+                                    
+                                    <div className="info-item">
+                                        <h4>Capacity</h4>
+                                        <p>
+                                            {(event.guests && event.capacity) ? 
+                                                `${event.guests.length}/${event.capacity || 'Unlimited'}` : 
+                                                `${event.numGuests || 0}/${event.capacity || 'Unlimited'}`
+                                            }
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="info-item">
+                                        <h4>Points Available</h4>
+                                        <p><FontAwesomeIcon icon={faStar} /> {event.pointsRemain}</p>
+                                    </div>
                                 </div>
                                 
-                                <div className="info-item">
-                                    <h4>Points Available</h4>
-                                    <p><FontAwesomeIcon icon={faStar} /> {event.pointsRemain}</p>
+                                <span className='event-meta'>
+                                    <FontAwesomeIcon icon={faCalendarAlt} /> {formatDate(event.startTime)} - {formatDate(event.endTime)}
+                                </span>
+                            </div>
+                            
+                            <div className='event-content'>
+                                <h3>Event Description</h3>
+                                <p className="event-detail-description">{event.description}</p>
+                                
+                                <div className="event-buttons">
+                                    <button 
+                                        className="event-participants-button" 
+                                        onClick={() => setButtonPopup(true)}
+                                    >
+                                        <FontAwesomeIcon icon={faUsers} /> View Participants
+                                    </button>
+                                    
+                                    {/* Only show Edit button if current user is an organizer */}
+                                    {isCurrentUserOrganizer() && (
+                                        <button 
+                                            className="event-edit-button"
+                                            onClick={handleEditClick}
+                                        >
+                                            <FontAwesomeIcon icon={faPencilAlt} /> Edit Event
+                                        </button>
+                                    )}
                                 </div>
                                 
+                                <div className="points-stats">
+                                    <div className="stat-item">
+                                        <h4>Total Point Allocated</h4>
+                                        <p>{event.pointsRemain + event.pointsAwarded}</p>
+                                    </div>
+                                    <div className="stat-item">
+                                        <h4>Points Remaining</h4>
+                                        <p>{event.pointsRemain || 0}</p>
+                                    </div>
+                                    <div className="stat-item">
+                                        <h4>Points Awarded</h4>
+                                        <p>{event.pointsAwarded || 0}</p>
+                                    </div>
+                                </div>
+                                
+                                <AwardPoints 
+                                    eventGuests={event.guests}
+                                    eventId={event.id}
+                                    pointsRemain={event.pointsRemain} 
+                                    onPointsAwarded={fetchEventDetails} 
+                                />
                             </div>
-                            
-                            {/* Date information now appears after the info grid */}
-                            <span className='event-meta'>
-                                <FontAwesomeIcon icon={faCalendarAlt} /> {formatDate(event.startTime)} - {formatDate(event.endTime)}
-                            </span>
-                        </div>
-                        
-                        <div className='event-content'>
-                            <h3>Event Description</h3>
-                            <p className="event-detail-description">{event.description}</p>
-                            
-                            <div className="event-buttons">
-                                <button 
-                                    className="event-participants-button" 
-                                    onClick={() => setButtonPopup(true)}
-                                >
-                                    <FontAwesomeIcon icon={faUsers} /> View Participants
-                                </button>
-                                <button 
-                                    className="event-edit-button"
-                                    onClick={handleEditClick}
-                                >
-                                    <FontAwesomeIcon icon={faPencilAlt} /> Edit Event
-                                </button>
-                                <button 
-                                    className="event-delete-button"
-                                    onClick={handleDeleteClick}
-                                >
-                                    <FontAwesomeIcon icon={faTrash} /> Delete Event
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div className="points-stats">
-                            <div className="stat-item">
-                                <h4>Total Point Allocated</h4>
-                                <p>{event.pointsRemain + event.pointsAwarded}</p>
-                            </div>
-                            <div className="stat-item">
-                                <h4>Points Remaining</h4>
-                                <p>{event.pointsRemain || 0}</p>
-                            </div>
-                            <div className="stat-item">
-                                <h4>Points Awarded</h4>
-                                <p>{event.pointsAwarded || 0}</p>
-                            </div>
-                        </div>
-                        
-                        <AwardPoints 
-                        eventGuests={event.guests}
-                        eventId={event.id}
-                        pointsRemain={event.pointsRemain} 
-                        onPointsAwarded={fetchEventDetails} 
-                        />
-                    </>
+                        </>
                     )}
                 </div>
             </main>
             
             {/* Popups */}
             {buttonPopup && (
-                <ManagerParticipantPopup
-                trigger={buttonPopup}
-                setTrigger={handleClosePopup}
-                eventGuests={event.guests}
-                eventOrganizers={event.organizers}
-                eventId={event.id}
-                onUpdateParticipants={fetchEventDetails}
+                <OrganizerParticipantPopup
+                    trigger={buttonPopup}
+                    setTrigger={handleClosePopup}
+                    eventGuests={event.guests}
+                    eventOrganizers={event.organizers}
+                    eventId={event.id}
+                    onUpdateParticipants={fetchEventDetails}
                 />
             )}
-            {deleteConfirm && (
-            <div className="delete-confirmation-overlay">
-                <div className="delete-confirmation-modal">
-                    <h3>Delete Event</h3>
-                    <p>Are you sure you want to delete this event? This action cannot be undone.</p>
-                    
-                    {deleteError && <div className="error-message">{deleteError}</div>}
-                    
-                    <div className="confirmation-buttons">
-                        <button 
-                            className="cancel-button"
-                            onClick={handleCancelDelete}
-                            disabled={deleteLoading}
-                        >
-                            Cancel
-                        </button>
-                        <button 
-                            className="delete-button"
-                            onClick={handleConfirmDelete}
-                            disabled={deleteLoading}
-                        >
-                            {deleteLoading ? 'Deleting...' : 'Delete Event'}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )}
         </div>
-        
     );
 };
 
-export default ManagerEventDetails;
+export default OrganizerEventDetails;
