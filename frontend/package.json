@@ -12,7 +12,6 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.4",
-    "cdbreact": "^1.5.19",
     "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.9",

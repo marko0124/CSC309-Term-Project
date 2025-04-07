@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {QRCodeSVG} from 'qrcode.react';
 import './UserProfile.css';
 import apiClient from '../api/client';
-import ProfileSidebar from './ProfileSidebar';
+import HomeNavbar from './HomeNavbar';
 
 const Users = () => {
     const {user} = useAuth();
@@ -12,6 +12,7 @@ const Users = () => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [editing, setEditing] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -49,6 +50,8 @@ const Users = () => {
 
     const handleEdit = () => {
         setEditing(!editing);
+        setSuccess("");
+        setError("");
         if (!editing) {
             setFormData({
                 name: userData?.name || "",
@@ -69,6 +72,8 @@ const Users = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError("");
+        setSuccess("");
 
         try {
             const changed = {};
@@ -91,6 +96,7 @@ const Users = () => {
                 throw new Error(`Failed to update user data. With status ${response.status}`);
             }
             setUserData(response.data);
+            setSuccess("Profile updated successfully!");
             setEditing(false);
         } catch (err) {
             setError(err.message);
@@ -98,6 +104,8 @@ const Users = () => {
             setLoading(false);
         }
     };
+
+    const fullDescription = "View and manage your profile information.";
 
     if (loading) {
         return (
@@ -121,106 +129,226 @@ const Users = () => {
     }
 
     return (
-        <div className="page">
-            <ProfileSidebar />
-            <div className="profile-page">
-                <div className="profile-card">
-                    <div className="profile-header">
-                        <h1>My Profile</h1>
-                        <button
-                            className={`btn-edit ${editing ? 'btn-cancel' : ''}`}
-                            onClick={handleEdit}
-                        >
-                            {editing ? 'Cancel' : 'Edit Profile'}
-                        </button>
+        <div className='profile-page'>
+            <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
+            <HomeNavbar />
+            
+            {/* Header Section */}
+            <div className='header-container'> 
+                <div className='header-text'>
+                    <h1>My Profile</h1>
+                    <div className='header-text-details'>
+                        <p className='user-tag'>{String(userData?.role || "").charAt(0).toUpperCase() + String(userData?.role || "").slice(1)}</p>
+                        <p>Account Management</p>
                     </div>
-
+                    <div className='expandable-text'>
+                        <p className='header-text-description'>
+                            {fullDescription}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        
+            <div className="custom-shape-divider-top-1743545933">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
+                </svg>
+            </div>
+            
+            {/* Main Content */}
+            <div className='profile-container'>
+                <div className='profile-card-wrapper'>
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                        </div>
+                    )}
+                    
+                    {success && (
+                        <div className="success-message">
+                            {success}
+                        </div>
+                    )}
+                    
                     {editing ? (
-                        <form onSubmit={handleSubmit} className='edit-form'>
-                            <div className="form-group">
-                                <label>Name</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                />
+                        <div className="profile-form-wrapper">
+                            <div className="profile-form-header">
+                                <h2>Edit Profile</h2>
+                                <button 
+                                    className="cancel-button" 
+                                    onClick={handleEdit}
+                                    disabled={loading}
+                                >
+                                    Cancel
+                                </button>
                             </div>
+                            
+                            <form onSubmit={handleSubmit} className='profile-form'>
+                                <div className="form-group">
+                                    <label>Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        disabled={loading}
+                                    />
+                                </div>
 
-                            <div className="form-group">
-                                <label>Email</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                />
-                            </div>
+                                <div className="form-group">
+                                    <label>Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        disabled={loading}
+                                    />
+                                    <div className="form-help">Must end with @mail.utoronto.ca</div>
+                                </div>
 
-                            <div className="form-group">
-                                <label>Birthday</label>
-                                <input
-                                    type="date"
-                                    id="birthday"
-                                    name="birthday"
-                                    value={formData.birthday}
-                                    onChange={handleChange}
-                                />
-                            </div>
+                                <div className="form-group">
+                                    <label>Birthday</label>
+                                    <input
+                                        type="date"
+                                        id="birthday"
+                                        name="birthday"
+                                        value={formData.birthday}
+                                        onChange={handleChange}
+                                        disabled={loading}
+                                    />
+                                </div>
 
-                            <button
-                                type="submit"
-                                className="btn-save"
-                                disabled={loading}
-                            >
-                                {loading ? 'Saving...' : 'Save Changes'}
-                            </button>
-                        </form>
+                                <div className="form-actions">
+                                    <button
+                                        type="submit"
+                                        className="save-button"
+                                        disabled={loading}
+                                    >
+                                        {loading ? 'Saving...' : 'Save Changes'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     ) : (
-                        <div className="profile-content">
-                            <div className="profile-info">
-                                <div className="info-row">
-                                    <span className="label">UTORid:</span>
-                                    <span className="value">{userData?.utorid}</span>
+                        <div className="profile-info-wrapper">
+                            <div className="profile-info-header">
+                                <h2>Profile Information</h2>
+                                <button
+                                    className="edit-button"
+                                    onClick={handleEdit}
+                                >
+                                    Edit Profile
+                                </button>
+                            </div>
+                            
+                            <div className="profile-info-grid">
+                                <div className="info-card">
+                                    <div className="info-section">
+                                        <h3>Account Details</h3>
+                                        <div className="info-row">
+                                            <span className="info-label">UTORid:</span>
+                                            <span className="info-value">{userData?.utorid}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Name:</span>
+                                            <span className="info-value">{userData?.name}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Email:</span>
+                                            <span className="info-value">{userData?.email}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Birthday:</span>
+                                            <span className="info-value">{userData?.birthday}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Role:</span>
+                                            <span className="info-value">{userData?.role}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="info-row">
-                                    <span className="label">Name:</span>
-                                    <span className="value">{userData?.name}</span>
+                                
+                                <div className="info-card">
+                                    <div className="info-section">
+                                        <h3>Loyalty Information</h3>
+                                        <div className="info-row">
+                                            <span className="info-label">Points:</span>
+                                            <span className="info-value points">{userData?.points}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Verified:</span>
+                                            <span className="info-value">{userData?.verified ? "Yes" : "No"}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Created:</span>
+                                            <span className="info-value">{new Date(userData?.createdAt).toLocaleDateString()}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Last Login:</span>
+                                            <span className="info-value">{userData?.lastLogin ? new Date(userData?.lastLogin).toLocaleDateString() : "Never"}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="info-row">
-                                    <span className="label">Email:</span>
-                                    <span className="value">{userData?.email}</span>
+                                
+                                <div className="info-card qr-card">
+                                    <div className="info-section">
+                                        <h3>My QR Code</h3>
+                                        <div className="qr-container">
+                                            <QRCodeSVG
+                                                value={`${userData?.id}`}
+                                                size={150}
+                                                bgColor={"#ffffff"}
+                                                fgColor={"#000000"}
+                                                level={"L"}
+                                            />
+                                        </div>
+                                        <div className="qr-info">
+                                            <p>Show this QR code to earn or redeem points</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="info-row">
-                                    <span className="label">Birthday:</span>
-                                    <span className="value">{userData?.birthday}</span>
-                                </div>
-                                <div className="info-row">
-                                    <span className="label">Role:</span>
-                                    <span className="value">{userData?.role}</span>
-                                </div>
-                                <div className="info-row">
-                                    <span className="label">Points:</span>
-                                    <span className="value">{userData?.points}</span>
-                                </div>
-                                <div className="info-row">
-                                    <span className="label">Created At:</span>
-                                    <span className="value">{userData?.createdAt}</span>
-                                </div>
-                                <div className="info-row">
-                                    <span className="label">Last Login:</span>
-                                    <span className="value">{userData?.lastLogin}</span>
-                                </div>
+                                
+                                <div className="info-card action-card">
+                                    <div className="info-section">
+                                        <h3>Account Actions</h3>
+                                        <div className="action-buttons">
+                                            <button 
+                                                className="action-button"
+                                                onClick={() => nav('/change-password')}
+                                            >
+                                                Change Password
+                                            </button>
+                                            
+                                            {userData?.role === 'superuser' && (
+                                                <button 
+                                                    className="action-button"
+                                                    onClick={() => nav('/home/manager')}
+                                                >
+                                                    Manager View
+                                                </button>
+                                            )}
 
-                                <div className="qr-section">
-                                    <h2>My QR Code</h2>
-                                    <div className="qr-container">
-                                        <QRCodeSVG
-                                            value={`${userData?.id}`}
-                                            size={200}
-                                        />
+                                            {(userData?.role === 'superuser' || userData?.role === "manager") && (
+                                                <button 
+                                                    className="action-button"
+                                                    onClick={() => nav('/home/cashier')}
+                                                >
+                                                    Cashier View
+                                                </button>
+                                            )}
+
+                                            {(userData?.role === 'superuser' || userData?.role === "manager" || userData?.role === "cashier") && (
+                                                <button 
+                                                    className="action-button"
+                                                    onClick={() => nav('/home/regular')}
+                                                >
+                                                    Regular User View
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -228,8 +356,9 @@ const Users = () => {
                     )}
                 </div>
             </div>
+            
+            <div className='footer'>Footer</div>
         </div>
-        
     );
 };
 

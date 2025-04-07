@@ -1,3 +1,5 @@
+@import './Users.css';
+
 :root {
     --intense: #292f63;
     --summer: #428dc6;
@@ -17,212 +19,305 @@
     font-family: var(--font-type);
 }
 
-.page{
-    display: flexbox;
-    flex-direction: column;
-}
-
 .profile-page {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    overflow: hidden;
-    position: relative;
 }
 
-.profile-card {
-  position: relative;
-  align-self: center;
-  background-color: var(--white);
-  border-color: var(--just-vibe);
-  border-radius: 20px;
-  border-style: solid;
-  border-width: 1px;
-  padding: 40px;
-  width: 90%;
-  max-width: 450px;
-  z-index: 10;
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
 }
 
-.profile-header {
+.loading-indicator {
+    font-size: 20px;
+    color: var(--text-color);
+}
+
+.profile-container {
+    width: 100%;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.profile-card-wrapper {
+    width: 63%;
+    max-width: 1000px;
+    margin-bottom: 3rem;
+}
+
+.profile-form-wrapper {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
 }
 
-.profile-header h1 {
+.profile-form-header h2 {
+    font-size: 24px;
+    font-weight: 700;
     color: var(--intense);
     margin: 0;
-    font-size: 28px;
 }
 
-.btn-edit {
-    padding: 8px 16px;
-    background-color: var(--intense);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-edit:hover {
-    background-color: var(--just-vibe);
-}
-
-.btn-cancel {
-    background-color: var(--intense);
-}
-
-.btn-cancel:hover {
-    background-color: var(--just-vibe);
-}
-
-.btn-save {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--summer);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 20px;
-}
-
-.btn-save:hover {
-    background-color: var(--just-vibe);
-}
-
-.btn-primary {
-    padding: 12px 20px;
-    background-color: var(--summer);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 20px;
-}
-
-.btn-primary:hover {
-    background-color: var(--just-vibe);
-}
-
-.profile-content {
+.profile-form {
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.profile-info {
-    flex: 1;
-    min-width: 300px;
+.profile-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
-.profile-section h2 {
+.profile-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.profile-info-header h2 {
+    font-size: 24px;
+    font-weight: 700;
     color: var(--intense);
-    font-size: 20px;
+    margin: 0;
+}
+
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.info-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--intense);
     margin-top: 0;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
 }
 
 .info-row {
     display: flex;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
 }
 
-.info-row:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-.label {
-    flex: 1;
+.info-label {
     font-weight: 500;
     color: #555;
 }
 
-.value {
-    flex: 2;
+.info-value {
     color: #333;
+    font-weight: 400;
 }
 
-.qr-section {
-    min-width: 250px;
+.info-value.points {
+    font-weight: 700;
+    color: var(--summer);
+    font-size: 1.2rem;
+}
+
+.qr-card {
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-.qr-section h2 {
-    color: var(--intense);
-    font-size: 20px;
-    margin-bottom: 10px;
 }
 
 .qr-container {
-    background-color: var(--white);
-    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
     border-radius: 10px;
+    margin: 0 auto 1rem auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
-  
-.edit-form {
-    max-width: 600px;
-    margin: 0 auto;
+
+.qr-info {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-top: 1rem;
+    margin-top: auto;
+}
+
+.action-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.action-button {
+    padding: 0.8rem 1rem;
+    background-color: var(--just-vibe);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    background-color: var(--summer);
+}
+
+.edit-button, .cancel-button, .save-button {
+    height: 40px;
+    padding: 0 1.5rem;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.edit-button {
+    background-color: var(--just-vibe);
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: var(--summer);
+}
+
+.cancel-button {
+    background-color: #f0f0f0;
+    color: var(--intense);
+}
+
+.cancel-button:hover {
+    background-color: #e0e0e0;
+}
+
+.save-button {
+    background-color: var(--just-vibe);
+    color: white;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.save-button:hover {
+    background-color: var(--summer);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.error-message {
+    background-color: #fdeaea;
+    border-left: 4px solid #e74c3c;
+    color: #c0392b;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+
+.success-message {
+    background-color: #eafaf1;
+    border-left: 4px solid #2ecc71;
+    color: #27ae60;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-group label {
-    display: block;
-    color: var(--intense);
     font-weight: 500;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
+    font-size: 16px;
 }
 
 .form-group input {
     width: 100%;
-    padding: 12px;
-    border: 1px solid var(--intense);
-    border-radius: 8px;
+    height: 48px;
+    border-radius: 10px;
     font-size: 16px;
-    transition: border-color 0.2s;
+    color: var(--intense);
+    border: 1px solid var(--intense);
+    padding: 10px;
 }
 
 .form-group input:focus {
-    border-color: var(--summer);
+    border-color: var(--just-vibe);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(34, 173, 198, 0.2);
+    box-shadow: 0 0 0 2px rgba(75, 172, 245, 0.2);
 }
 
-.error-message {
-    padding: 10px;
-    margin-bottom: 15px;
-    color: var(--error);
-    background-color: rgba(255, 77, 77, 0.1);
-    border-radius: 8px;
-    font-size: 14px;
+.form-help {
+    font-size: 12px;
+    color: #666;
+    margin-top: 0.5rem;
 }
 
-.success-message {
-    padding: 10px;
-    margin-bottom: 15px;
-    color: var(--success);
-    background-color: rgba(77, 255, 151, 0.1);
-    border-radius: 8px;
-    font-size: 14px;
+@media (max-width: 768px) {
+  .profile-card-wrapper {
+    width: 90%;
+  }
+  
+  .profile-info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .profile-form-header, .profile-info-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .edit-button, .cancel-button {
+    width: 100%;
+  }
 }
