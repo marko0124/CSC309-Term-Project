@@ -1,6 +1,5 @@
 const API_URL = 'http://localhost:5001';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwicm9sZSI6InJlZ3VsYXIiLCJpYXQiOjE3NDQwNTA3NDUsImV4cCI6MTc0NDEzNzE0NX0.rXMXGqK8YE5mxqQnUsu01X0xDuH6-inFb4pymxlUx3c';
-
+const TOKEN = localStorage.getItem('token') || '';
 const headers = {
   'Authorization': `Bearer ${TOKEN}`,
   'Content-Type': 'application/json'

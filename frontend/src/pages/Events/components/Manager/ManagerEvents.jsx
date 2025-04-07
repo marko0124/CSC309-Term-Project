@@ -4,12 +4,11 @@ import '../../../navbar.css';
 import useEvents from '../../hooks/useEvents';
 import ManagerSearchFilters from './ManagerSearchFilters';
 import EventsList from '../EventsList';
-import EventsForm from './ManagerEventsForm';
+import ManagerEventsForm from './ManagerEventsForm';
 import eventImage from '../../../../assets/eventImage.png'; 
 
 const ManagerEvents = () => {
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const [editMode, setEditMode] = useState(false);
   
   const {
     events,
@@ -30,6 +29,7 @@ const ManagerEvents = () => {
     formData,
     setFormData,
     handleInputChange,
+    handleCreateClick,
     handleSubmit,
     resetForm
   } = useEvents();
@@ -43,7 +43,7 @@ const ManagerEvents = () => {
     <div className='events-page'>
       <main>
         <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-        <div className='navbar'> NAVBAR </div>
+        <div className='navbar'> NAVBAR  </div>
         
         {/* Header Section */}
         <div className='header-container'> 
@@ -87,7 +87,7 @@ const ManagerEvents = () => {
               activeButtons={activeButtons}
               toggleFilterButton={toggleFilterButton}
               onSearch={handleSearch}
-              onCreateClick={() => setButtonPopup(true)}
+              handleCreateClick={handleCreateClick}
               EventCount={events.count}
             />
             
@@ -104,13 +104,11 @@ const ManagerEvents = () => {
         <div className='footer'>Footer</div>
       </main>
 
-      {/* Popups */}
       {buttonPopup && (
-        <EventsForm 
+        <ManagerEventsForm
           formData={formData}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
-          editMode={editMode}
           onCancel={resetForm}
         />
       )}

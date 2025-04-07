@@ -205,7 +205,7 @@ const validateForm = () => {
         <div className='event-details-page'>
             <main>
                 <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-                <div className='navbar'> NAVBAR </div>
+                <div className='navbar'> NAVBAR (Manager) </div>
                 
                 <div className='event-details-container'>
                     <Link to="/events" className="back-button">

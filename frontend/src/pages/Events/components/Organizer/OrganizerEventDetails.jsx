@@ -27,10 +27,6 @@ const OrganizerEventDetails = ({ eventId: eventIdProp }) => {
     const [updateLoading, setUpdateLoading] = useState(false);
     const [updateError, setUpdateError] = useState(null);
     const { eventId: eventIdParam } = useParams();
-    const [deleteConfirm, setDeleteConfirm] = useState(false);
-    const [deleteLoading, setDeleteLoading] = useState(false);
-    const [deleteError, setDeleteError] = useState(null);
-    const navigate = useNavigate();
     
     const eventId = eventIdProp || eventIdParam;
     
@@ -110,16 +106,6 @@ const OrganizerEventDetails = ({ eventId: eventIdProp }) => {
         return true;
     };
     
-    // Function to check if the current user is an organizer
-    const isCurrentUserOrganizer = () => {
-        if (!event || !event.organizers || !event.currentUser) return false;
-        
-        return event.organizers.some(organizer => 
-            organizer.id === event.currentUser || 
-            organizer.utorid === event.currentUser
-        );
-    };
-  
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
         setUpdateError(null);
@@ -186,7 +172,7 @@ const OrganizerEventDetails = ({ eventId: eventIdProp }) => {
         <div className='event-details-page'>
             <main>
                 <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-                <div className='navbar'> NAVBAR </div>
+                <div className='navbar'> NAVBAR (Organizer) </div>
                 
                 <div className='event-details-container'>
                     <Link to="/events" className="back-button">
@@ -367,14 +353,12 @@ const OrganizerEventDetails = ({ eventId: eventIdProp }) => {
                                     </button>
                                     
                                     {/* Only show Edit button if current user is an organizer */}
-                                    {isCurrentUserOrganizer() && (
-                                        <button 
-                                            className="event-edit-button"
-                                            onClick={handleEditClick}
-                                        >
-                                            <FontAwesomeIcon icon={faPencilAlt} /> Edit Event
-                                        </button>
-                                    )}
+                                    <button 
+                                        className="event-edit-button"
+                                        onClick={handleEditClick}
+                                    >
+                                        <FontAwesomeIcon icon={faPencilAlt} /> Edit Event
+                                    </button>
                                 </div>
                                 
                                 <div className="points-stats">

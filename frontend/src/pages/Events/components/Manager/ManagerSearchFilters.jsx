@@ -11,7 +11,7 @@ const ManagerSearchFilters = ({
   activeButtons, 
   toggleFilterButton,
   onSearch,
-  onCreateClick,
+  handleCreateClick,
   EventCount
 }) => {
   return (
@@ -72,7 +72,13 @@ const ManagerSearchFilters = ({
             Ended
           </button>
         </div>
-        <button className='filter-button create' onClick={onCreateClick}>
+        <button 
+          className="filter-button create" 
+          onClick={() => {
+            console.log('Create button clicked');
+            handleCreateClick();
+          }}
+        >
           Create Event <FontAwesomeIcon icon={faPlus}/>
         </button>
       </div>

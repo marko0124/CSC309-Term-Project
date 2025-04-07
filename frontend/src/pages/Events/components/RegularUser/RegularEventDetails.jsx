@@ -8,12 +8,13 @@ import {
     faArrowLeft, 
     faCalendarAlt, 
     faMapMarkerAlt, 
-    faStar,
+    faUsers,
     faCheck 
 } from '@fortawesome/free-solid-svg-icons';
 
 const RegularEventDetails = ({ eventId: eventIdProp }) => {
     const [event, setEvent] = useState(null);
+    const [buttonPopup, setButtonPopup] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { eventId: eventIdParam } = useParams();
@@ -64,7 +65,7 @@ const RegularEventDetails = ({ eventId: eventIdProp }) => {
         <div className='event-details-page'>
             <main>
                 <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-                <div className='navbar'> NAVBAR </div>
+                <div className='navbar'> NAVBAR (Regular) </div>
                 
                 <div className='event-details-container'>
                     <Link to="/events" className="back-button">
@@ -74,10 +75,7 @@ const RegularEventDetails = ({ eventId: eventIdProp }) => {
                     <div className="event-details"> 
                         <div className="title-div">
                             <h1>{event.name}</h1> 
-                            {event.published ? 
                                 <div className='publish-tag'>Published <FontAwesomeIcon icon={faCheck} /></div> : 
-                                <div className='draft-tag'>Draft</div>
-                            }
                         </div>
                         
                         <div className="event-info-grid">
@@ -95,11 +93,6 @@ const RegularEventDetails = ({ eventId: eventIdProp }) => {
                                     }
                                 </p>
                             </div>
-                            
-                            <div className="info-item">
-                                <h4>Points Available</h4>
-                                <p><FontAwesomeIcon icon={faStar} /> {event.pointsRemain}</p>
-                            </div>
                         </div>
                         
                         <span className='event-meta'>
@@ -113,6 +106,12 @@ const RegularEventDetails = ({ eventId: eventIdProp }) => {
                         
                         {/* Regular attendee options here - like register for event */}
                         <div className="event-buttons">
+                            <button 
+                                className="event-participants-button" 
+                                onClick={() => setButtonPopup(true)}
+                            >
+                                <FontAwesomeIcon icon={faUsers} /> View Participants
+                            </button>
                             <button 
                                 className="event-register-button" 
                                 onClick={() => {/* Logic to register for event */}}

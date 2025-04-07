@@ -6,7 +6,7 @@ import RegularSearchFilter from '../controller/RegularSearchFilter';
 import EventsList from '../EventsList';
 import eventImage from '../../../../assets/eventImage.png'; 
 
-const OrganizerEvents = () => {
+const DefaultEvents = () => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [editMode, setEditMode] = useState(false);
   
@@ -36,7 +36,7 @@ const OrganizerEvents = () => {
     <div className='events-page'>
       <main>
         <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-        <div className='navbar'> NAVBAR </div>
+        <div className='navbar'> NAVBAR (Regular) </div>
         
         {/* Header Section */}
         <div className='header-container'> 
@@ -100,4 +100,4 @@ const OrganizerEvents = () => {
   );
 };
 
-export default OrganizerEvents;
+export default DefaultEvents;

@@ -23,8 +23,8 @@ const useEvents = () => {
     limit: itemsPerPage,
     showFull: false,
     published: true,
-    started: false,
-    ended: false,
+    started: null,
+    ended: null,
   });
   const [formData, setFormData] = useState({
     name: '',
@@ -40,6 +40,7 @@ const useEvents = () => {
     setLoading(true);
     try {
       const data = await eventService.fetchEvents(page, itemsPerPage, filter);
+      console.log('Fetched events:', data);
       setEvents(data);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -100,6 +101,29 @@ const useEvents = () => {
     }));
   };
 
+  const handleCreateClick = () => {
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Reset form data to empty values for a new event
+    setFormData({
+      name: '',
+      description: '',
+      location: '',
+      startTime: today + 'T10:00', // Default to 10:00 today
+      endTime: today + 'T12:00',   // Default to 12:00 today
+      capacity: '',
+      points: ''
+    });
+    
+    // Clear any selected event (in case there was one)
+    setSelectedEvent(null);
+    
+    // Show the popup
+    setButtonPopup(true);
+    
+    console.log('Create event button clicked, buttonPopup set to:', true); // Debug
+  };
+
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     
@@ -113,8 +137,8 @@ const useEvents = () => {
       name: formData.name,
       location: formData.location,
       description: formData.description,
-      startTime: new Date(formData.startTime + 'T00:00:00').toISOString(),
-      endTime: new Date(formData.endTime + 'T00:00:00').toISOString(),
+      startTime: new Date(formData.startTime).toISOString(),
+      endTime: new Date(formData.endTime).toISOString(),
       capacity: formData.capacity || null,
       points: formData.points || null,
     };
@@ -198,6 +222,7 @@ const useEvents = () => {
     handleEditClick, 
     handleDeleteClick,
     toggleFilterButton,
+    handleCreateClick,
     resetForm
   };
 };

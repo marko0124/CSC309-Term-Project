@@ -1,7 +1,8 @@
 import React from 'react';
 import '../Events.css';
+import './ManagerEventsForm.css'; // Add this import
 
-const EventForm = ({ 
+const ManagerEventsForm = ({ 
   formData, 
   handleInputChange, 
   handleSubmit, 
@@ -12,34 +13,41 @@ const EventForm = ({
       <div className="overlay" onClick={onCancel}></div>
       <div className="popup">
         <div className="popup-inner">
-          <h2>Create New Event</h2>              
+          <h2>{formData.id ? 'Edit Event' : 'Create New Event'}</h2>              
           <form onSubmit={handleSubmit}>
             <div className="event-text">
-              <input 
-                id="event-name"
-                type="text" 
-                name="name"
-                placeholder="Event Name" 
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-              />
-              <input 
-                id="event-location"
-                type="text" 
-                name="location"
-                placeholder="Event Location" 
-                value={formData.location}
-                onChange={handleInputChange}
-                required
-              />
+              <div className="form-field">
+                <label htmlFor="event-name">Event Name</label>
+                <input 
+                  id="event-name"
+                  type="text" 
+                  name="name"
+                  placeholder="Enter event name" 
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-field">
+                <label htmlFor="event-location">Location</label>
+                <input 
+                  id="event-location"
+                  type="text" 
+                  name="location"
+                  placeholder="Enter event location" 
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
             </div>
+            
             <div className="create-event-description">
-              Description
+              <label htmlFor="event-description">Description</label>
               <textarea 
-                id='event-description'
+                id="event-description"
                 name="description"
-                placeholder="Event Description" 
+                placeholder="Provide details about your event" 
                 value={formData.description}
                 onChange={handleInputChange}
                 required
@@ -47,59 +55,73 @@ const EventForm = ({
             </div>
             
             <div className="event-dates">
-              <div> 
-                Start Time
+              <div className="form-field"> 
+                <label htmlFor="event-start-time">Start Time</label>
                 <input
-                id='promotion-start-time'
-                type="date"
-                name="startTime"
-                placeholder="Start Time"
-                value={formData.startTime}
-                onChange={handleInputChange}
-                required
+                  id="event-start-time"
+                  type="datetime-local"
+                  name="startTime"
+                  value={formData.startTime}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
-              <div> 
-              End Time
-              <input
-                id='promotion-end-time'
-                type="date"
-                name="endTime"
-                placeholder="End Time"
-                value={formData.endDate}
-                onChange={handleInputChange}
-                required
-              />
+              
+              <div className="form-field"> 
+                <label htmlFor="event-end-time">End Time</label>
+                <input
+                  id="event-end-time"
+                  type="datetime-local"
+                  name="endTime"
+                  value={formData.endTime}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
-              <input 
-                className="event-capacity"
-                type="number"
-                name="capacity"
-                placeholder="Capacity"
-                value={formData.capacity}
-                onChange={handleInputChange}
-              />
-              <input 
-                className="event-points"
-                type="number" 
-                name="points"
-                placeholder="Points" 
-                value={formData.points}
-                onChange={handleInputChange}
-              />
+              
+              <div className="form-field">
+                <label htmlFor="event-capacity">Capacity (optional)</label>
+                <input 
+                  id="event-capacity"
+                  className="event-capacity"
+                  type="number"
+                  name="capacity"
+                  placeholder="Maximum attendees" 
+                  value={formData.capacity}
+                  onChange={handleInputChange}
+                  min="0"
+                />
+              </div>
+              
+              <div className="form-field">
+                <label htmlFor="event-points">Points</label>
+                <input 
+                  id="event-points"
+                  className="event-points"
+                  type="number" 
+                  name="points"
+                  placeholder="Points to award" 
+                  value={formData.points}
+                  onChange={handleInputChange}
+                  min="0"
+                  required
+                />
+              </div>
             </div>
-
+            
+            <div id="popup-buttons">
+              <button type="button" className="popup-btn cancel-btn" onClick={onCancel}>
+                Cancel
+              </button>                
+              <button type="submit" className="popup-btn submit-btn">
+                Create Event
+              </button>
+            </div>
           </form>
-          <div id="popup-buttons">
-            <button className="popup-btn cancel-btn" onClick={onCancel}>Cancel</button>                
-            <button className="popup-btn submit-btn" onClick={handleSubmit}>
-              Create Event
-            </button>
-          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default EventForm;
+export default ManagerEventsForm;

@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import * as eventService from '../services/eventService';
-import OrganizerEventDetails from './Organizer/OrganizerEventDetails';
-import RegularEventDetails from './RegularUser/RegularEventDetails';
-import ManagerEventDetails from './Manager/ManagerEventDetails';
+import * as eventService from './services/eventService';
+import { useAuth } from '../../context/authContext';
+import OrganizerEventDetails from './components/Organizer/OrganizerEventDetails';
+import RegularEventDetails from './components/RegularUser/RegularEventDetails';
+import ManagerEventDetails from './components/Manager/ManagerEventDetails';
 
 const EventDetailRouter = () => {
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { eventId } = useParams();
-    const navigate = useNavigate();
-
+    const {user} = useAuth();
     const fetchEventDetails = useCallback(async () => {
         setLoading(true);
         try {
@@ -31,18 +31,21 @@ const EventDetailRouter = () => {
 
     // Check if current user is an organizer
     const isCurrentUserOrganizer = () => {
-        if (!event || !event.organizers || !event.currentUser) return false;
+        if (!event || !event.organizers || !user) return false;
         
         return event.organizers.some(organizer => 
-            organizer.id === event.currentUser || 
-            organizer.utorid === event.currentUser
+            organizer.id === user.id || 
+            organizer.utorid === user.utorid
         );
     };
 
     // Check if current user is a manager
     const isCurrentUserManager = () => {
-        if (!event || !event.currentUser) return false;
-        return event.currentUserRole === 'manager';
+        if (!event || !user ) return false;
+        if (user.role === 'manager' || user.role === 'superuser') return true;
+        else {
+            return false
+        }
     };
 
     if (loading) {
