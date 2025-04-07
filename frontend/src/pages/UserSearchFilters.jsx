@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const UserSearchFilters = ({ 
   searchTerm, 
@@ -8,7 +8,6 @@ const UserSearchFilters = ({
   activeButtons, 
   toggleFilterButton,
   onSearch,
-  onCreateClick,
   userCount
 }) => {
   return (
@@ -76,9 +75,6 @@ const UserSearchFilters = ({
             Activated
           </button>
         </div>
-        <button className='filter-button create' onClick={onCreateClick}>
-          Create <FontAwesomeIcon icon={faPlus}/>
-        </button>
       </div>
     </>
   );

@@ -73,8 +73,8 @@ router.get('/', auth.login, auth.checkRole('manager'), async (req, res) => {
     
         if (name) {
             conditions.OR = [
-                {utorid: name},
-                {name: name}
+                {utorid: {contains: name}},
+                {name: {contains: name}}
             ];
         }
     

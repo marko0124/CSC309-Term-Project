@@ -8,6 +8,7 @@ import UserDetails from './UserDetails';
 import HomeNavbar from './HomeNavbar.jsx';
 import useUsers from './useUsers.js';
 import {useAuth} from '../context/authContext.js'
+import { useNavigate } from 'react-router-dom';
 
 const Users = () => {
   const {
@@ -33,8 +34,12 @@ const Users = () => {
     toggleFilterButton,
     resetForm
   } = useUsers();
-
+  const nav = useNavigate();
   const {user} = useAuth();
+  if (user.role !== "manager" && user.role !== "superuser") {
+    nav("/home");
+    return;
+  }
 
   const fullDescription = "View all users and make changes to their information.";
 
