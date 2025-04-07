@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:5001';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzg5NDI0OSwiZXhwIjoxNzQzOTgwNjQ5fQ.IuefKqa2g7T6xskOY5LN5h6JwxA5tw6VsoP0NJYmVes';
+const TOKEN = localStorage.getItem('token');
 
 const headers = {
   'Authorization': `Bearer ${TOKEN}`,
@@ -75,7 +75,6 @@ export const updatePromotion = async (id, data) => {
     throw new Error(`Server responded with ${response.status}`);
   }
   
-  return await response.json();
 };
 
 export const deletePromotion = async (id) => {
@@ -87,6 +86,4 @@ export const deletePromotion = async (id) => {
   if (!response.ok) {
     throw new Error(`Server responded with ${response.status}`);
   }
-  
-  return await response.json();
 };

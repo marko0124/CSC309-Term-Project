@@ -6,9 +6,16 @@ const PromotionList = ({
   currentPage, 
   itemsPerPage, 
   onPageChange, 
-  onPromotionClick 
+  onPromotionClick,
+  isLoading = false // Add this prop with a default value
 }) => {
-  if (!promotions.results || promotions.results.length === 0) {
+  // Show loading indicator when data is being fetched
+  if (isLoading) {
+    return <div className="loading-promotions">Loading promotions...</div>;
+  }
+  
+  // Only show "no results" when we're sure data has loaded and is empty
+  if (!isLoading && (!promotions.results || promotions.results.length === 0)) {
     return <div className="no-results">No promotions available :(</div>;
   }
   
