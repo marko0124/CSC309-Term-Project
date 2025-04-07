@@ -7,7 +7,7 @@ import RedemptionTransactionCreator from "../components/RedemptionTransactionCre
 import Card from 'react-bootstrap/Card';
 import { Button } from "react-bootstrap";
 
-const Transactions = () => {
+const RegularTransactions = () => {
     const { token, role } = useContext(UserContext);
     const navigate = useNavigate();
     const [transferAmount, setTransferAmount] = useState("");
@@ -40,7 +40,7 @@ const Transactions = () => {
                 }
                 
                 const json = await res.json();
-                navigate(`/transactions/manage/${json.id}`);
+                navigate(`/transactions/${json.id}`);
             }
             createData();
             
@@ -72,7 +72,7 @@ const Transactions = () => {
                 }
                 
                 const json = await res.json();
-                navigate(`/transactions/manage/${json.id}`);
+                navigate(`/transactions/${json.id}`);
             }
             createData();
             
@@ -126,4 +126,4 @@ const Transactions = () => {
     </>
 }
 
-export default Transactions;
+export default RegularTransactions;

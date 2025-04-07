@@ -1,16 +1,13 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { UserContext } from "../../context/userContext";
-import TransferTransactionCreator from "./components/TransferTransactionCreator";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { UserContext } from "../../../context/userContext";
 import { useContext, useState } from "react";
-import TransactionsList from "./components/TransactionsList";
-import TransactionsFilters from "./components/TransactionFilters";
-import ChangeViewButton from "./components/ChangeViewButton";
-import RedemptionTransactionCreator from "./components/RedemptionTransactionCreator";
+import TransactionsList from "../components/TransactionsList";
+import Card from 'react-bootstrap/Card';
+import { Button } from "react-bootstrap";
 
-const Transactions = () => {
+const CashierTransactions = () => {
     const { token, role } = useContext(UserContext);
     const navigate = useNavigate();
-    const [view, setView] = useState("manager");
     const [transferAmount, setTransferAmount] = useState("");
     const [transferRemark, setTransferRemark] = useState("");
     const [redeemAmount, setRedeemAmount] = useState("");
@@ -41,7 +38,7 @@ const Transactions = () => {
                 }
                 
                 const json = await res.json();
-                navigate(`/transactions/${json.id}`);
+                navigate(`/transactions/manage/${json.id}`);
             }
             createData();
             
@@ -73,7 +70,7 @@ const Transactions = () => {
                 }
                 
                 const json = await res.json();
-                navigate(`/transactions/${json.id}`);
+                navigate(`/transactions/manage/${json.id}`);
             }
             createData();
             
@@ -82,25 +79,50 @@ const Transactions = () => {
         }
     }
 
-    const handleChangeView = (view) => {
-        setView(view);
-        setSearchParams({});
-    }
+
 
     return <>
-    { role === "manager" && <ChangeViewButton handleChangeView={handleChangeView} /> }
-        <div>
-            Transfer points
-            <TransferTransactionCreator setAmount={setTransferAmount} setRemark={setTransferRemark} setRecipient={setTransferRecipientId} onClick={handleTransfer}/>
-            Redeem points
-            <RedemptionTransactionCreator setAmount={setRedeemAmount} setRemark={setRedeemRemark} onClick={handleRedeem} />
-        </div>
-        <div className='p-3'>
-            <TransactionsFilters setSearchParams={setSearchParams} view={"regular"}/>
-            <h3>My Transactions</h3>
-            <TransactionsList searchParamsString={searchParams.toString()} view={"regular"} showPagination={true} searchParams={searchParams} setSearchParams={setSearchParams} />
-        </div>
+        <header>header</header>
+        <nav>Nav bar</nav>
+        <section style={{ padding:'1rem 10rem' }}>
+            <section style={{ display: 'flex', justifyContent: 'center' }}>
+                <Card style={{ width: '66vw', padding: '2rem', maxWidth: '50rem' }}>
+                <Card.Body>
+                    <Card.Title>Quick Actions</Card.Title>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+                        <Link to={'/transactions/cashier/create'}>
+                            <Button>Create a Purchase</Button>
+                        </Link>
+                    </div>
+                </Card.Body>
+                </Card>
+            </section>
+            <section style={{ marginBottom: '5rem' }}/>
+            <section style={{ display: 'flex', justifyContent: 'center'}}>
+                <div style={{ display: 'flex', alignContent: 'center', flexDirection: 'column', width: '50rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                        <h3>My Recent Transactions</h3>
+                        <Link to={"/transactions/all"}>
+                            <Button variant="outline-primary">View All</Button>
+                        </Link>
+
+                    </div>
+                    <div>
+                        <TransactionsList 
+                            searchParamsString={searchParams.toString()} 
+                            view={"regular"} 
+                            showPagination={false} 
+                            searchParams={searchParams} 
+                            setSearchParams={setSearchParams} 
+
+                        />
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <footer>footer</footer>
     </>
 }
 
-export default Transactions;
+export default CashierTransactions;
