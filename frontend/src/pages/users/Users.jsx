@@ -5,9 +5,9 @@ import UserSearchFilters from './UserSearchFilters.jsx';
 import UserList from './UserList.jsx';
 import UserForm from './UserForm';
 import UserDetails from './UserDetails';
-import HomeNavbar from './HomeNavbar.jsx';
+import HomeNavbar from '../navbar/HomeNavbar.jsx';
 import useUsers from './useUsers.js';
-import {useAuth} from '../context/authContext.js'
+import {useAuth} from '../../context/authContext.js'
 import { useNavigate } from 'react-router-dom';
 
 const Users = () => {

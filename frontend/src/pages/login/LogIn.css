@@ -45,6 +45,12 @@
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
+  font-weight: 900;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group {
@@ -146,7 +152,28 @@
 
 .form-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between !important;
   align-items: center;
   margin-top: 25px;
+}
+
+@media screen and (max-width: 480px) {
+  .login-card {
+    padding: 20px;
+  }
+  
+  .login-card h1 {
+    font-size: 22px;
+  }
+  
+  .forgot-password {
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (max-height: 350px) {
+  .login-card {
+    padding: 20px;
+    border: none;
+  }
 }

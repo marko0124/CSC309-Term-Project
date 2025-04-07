@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {useAuth} from '../context/authContext';
+import {useAuth} from '../../context/authContext';
 import './LogIn.css';
-import apiClient from '../api/client';
+import apiClient from '../../api/client';
 
 const LogIn = () => {
     const nav = useNavigate();

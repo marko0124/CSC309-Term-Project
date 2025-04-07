@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import "./HomeNavbar.css"
-import {useAuth} from '../context/authContext';
+import {useAuth} from '../../context/authContext';
 
 function HomeNavbar() {
   const {user} = useAuth();
@@ -22,8 +22,8 @@ function HomeNavbar() {
   if (role === "manager" || role === "superuser") {
     options.push(
       <NavDropdown title="Users" id="navbarScrollingDropdown" className="custom-nav-link" style={{color: "#292f63"}} key="managerDropdown">
-        <NavDropdown.Item href="/create-user" className="custom-nav-link">Create User</NavDropdown.Item>
-        <NavDropdown.Item href="/users" className="custom-nav-link">View Users</NavDropdown.Item>
+        <NavDropdown.Item href="/create-user" className="custom-nav-link" style={{color: "#292f63"}}>Create User</NavDropdown.Item>
+        <NavDropdown.Item href="/users" className="custom-nav-link" style={{color: "#292f63"}}>View Users</NavDropdown.Item>
       </NavDropdown>
     );
   }

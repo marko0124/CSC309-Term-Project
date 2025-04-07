@@ -1,6 +1,6 @@
 import React from 'react';
 import {useAuth} from '../context/authContext';
-import HomeNavbar from './HomeNavbar';
+import HomeNavbar from './navbar/HomeNavbar';
 
 const Home = () => {
   const { user } = useAuth();

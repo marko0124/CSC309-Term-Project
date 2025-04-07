@@ -2,12 +2,12 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Import page components
-import LogIn from './pages/LogIn.jsx';
-import UserProfile from './pages/UserProfile.jsx';
-import ChangePassword from './pages/ChangePassword.jsx';
+import LogIn from './pages/login/LogIn.jsx';
+import UserProfile from './pages/profile/UserProfile.jsx';
+import ChangePassword from './pages/profile/ChangePassword.jsx';
 import Home from './pages/Home.jsx';
-import Users from './pages/Users.jsx';
-import CreateUser from './pages/CreateUser.jsx';
+import Users from './pages/users/Users.jsx';
+import CreateUser from './pages/users/CreateUser.jsx';
 import {AuthProvider, useAuth} from './context/authContext.js';
 
 const App = () => {

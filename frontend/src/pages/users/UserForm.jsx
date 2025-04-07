@@ -1,5 +1,5 @@
 import React from 'react';
-import {useAuth} from '../context/authContext';
+import {useAuth} from '../../context/authContext';
 
 const UserForm = ({ 
   formData, 
@@ -117,7 +117,7 @@ const UserForm = ({
       <div className="popup">
         <div className="popup-inner">
           <h2>{editMode ? 'Edit User' : 'Create New User'}</h2>              
-          <form onSubmit={handleSubmit}>
+          <form className="popup-form" onSubmit={handleSubmit}>
             {form}
           </form>
           <div id="popup-buttons">

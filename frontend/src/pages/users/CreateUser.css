@@ -128,3 +128,34 @@
     margin-bottom: 1.5rem;
     border-radius: 4px;
 }
+
+@media screen and (max-width: 480px) {
+    .create-user-form-wrapper {
+        width: 95%;
+        padding: 1.2rem;
+    }
+    
+    .create-user-title {
+        font-size: 20px;
+        margin-bottom: 1rem;
+    }
+    
+    .create-user-form {
+        gap: 1rem;
+    }
+    
+    .form-group input {
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .cancel-button, .create-button {
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .error-message, .success-message {
+        padding: 0.8rem;
+        font-size: 14px;
+    }
+}

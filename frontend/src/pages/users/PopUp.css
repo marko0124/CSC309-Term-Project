@@ -23,17 +23,6 @@
     padding: 10px;
 }
 
-/* .popup textarea{
-    margin: 30px 0;
-    width: 100%;
-    height: 100px;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 18px;
-    color: var(--footer-color);
-    border: 1px solid var(--footer-color);
-} */
-
 .popup {
     position: fixed;
     top: 50%;
@@ -50,24 +39,7 @@
 
 }
 
-/* .user-dates{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    width: 100%;
-    gap: 20px;
-
-}
-
-.user-unrequired{
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    width: 100%;
-} */
-
-form{
+.popup-form{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -303,3 +275,46 @@ form{
     background-color: white;
     appearance: menulist;
   }
+
+@media screen and (max-width: 480px) {
+  .popup {
+    width: 98%;
+    height: 90%;
+    padding: 12px;
+  }
+  
+  .popup-inner h2 {
+    font-size: 16px;
+    margin-bottom: 5%;
+  }
+  
+  .detail-popup-header h2 {
+    font-size: 20px;
+  }
+  
+  .detail-popup-user-tag {
+    min-width: 100px;
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  
+  .user-detail-description {
+    font-size: 14px;
+    padding: 12px;
+    max-height: 150px;
+  }
+  
+  #detail-popup-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  #detail-popup-buttons .popup-btn {
+    width: 100%;
+  }
+  
+  .popup-dates {
+    font-size: 20px;
+  }
+}

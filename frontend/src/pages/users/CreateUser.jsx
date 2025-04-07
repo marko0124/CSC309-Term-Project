@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import HomeNavbar from './HomeNavbar';
-import { useAuth } from '../context/authContext';
+import HomeNavbar from '../navbar/HomeNavbar.jsx';
+import { useAuth } from '../../context/authContext.js';
 import {createUser} from './userService.js';
 import './CreateUser.css';
 

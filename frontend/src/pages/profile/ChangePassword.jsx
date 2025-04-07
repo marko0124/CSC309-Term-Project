@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {useAuth} from '../context/authContext';
+import {useAuth} from '../../context/authContext';
 import './ChangePassword.css';
-import apiClient from '../api/client';
-import HomeNavbar from './HomeNavbar';
+import apiClient from '../../api/client';
+import HomeNavbar from '../navbar/HomeNavbar';
 import { useNavigate } from 'react-router-dom';
 
 const ChangePassword = () => {

@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {useAuth} from '../context/authContext';
+import {useAuth} from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
 import {QRCodeSVG} from 'qrcode.react';
 import './UserProfile.css';
-import apiClient from '../api/client';
-import HomeNavbar from './HomeNavbar';
+import apiClient from '../../api/client';
+import HomeNavbar from '../navbar/HomeNavbar';
 
 const Users = () => {
-    const {user} = useAuth();
+    const {user, logout} = useAuth();
     const nav = useNavigate();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -60,6 +60,10 @@ const Users = () => {
             });
         }
     };
+
+    const handleLogout = () => {
+        logout();
+    }
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -348,6 +352,13 @@ const Users = () => {
                                                     Regular User View
                                                 </button>
                                             )}
+
+                                            <button 
+                                                className="action-button"
+                                                onClick={handleLogout}
+                                            >
+                                                Logout
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

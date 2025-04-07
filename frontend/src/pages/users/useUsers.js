@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import * as userService from './userService';
-import {useAuth} from '../context/authContext';
+import {useAuth} from '../../context/authContext';
 
 const useUsers = () => {
   const {user} = useAuth();
