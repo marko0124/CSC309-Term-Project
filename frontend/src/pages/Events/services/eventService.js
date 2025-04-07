@@ -45,13 +45,13 @@ export const fetchEvents = async (page = 1, limit = 5, filters = {}) => {
 };
 
 export const fetchEventDetails = async (id) => {
-  const response = await fetch(`${API_URL}/events/${id}`, {
+  const response = await fetch(`${API_URL}/events/${id}?include=guests,organizers`, {
     method: 'GET',
     headers
   });
   
   if (!response.ok) {
-    throw new Error(`Failed to fetch promotion details: ${response.status}`);
+    throw new Error(`Failed to fetch event details: ${response.status}`);
   }
   
   return await response.json();
@@ -105,8 +105,9 @@ export const updateEvent = async (eventId, eventData) => {
   return await response.json();
 };
 
-export const deleteEvent = async (id) => {
-  const response = await fetch(`${API_URL}/events/${id}`, {
+export const deleteEvent = async (eventId) => {
+  console.log("Deleting event with ID:", eventId);
+  const response = await fetch(`${API_URL}/events/${eventId}`, {
     method: 'DELETE',
     headers
   });
@@ -114,26 +115,41 @@ export const deleteEvent = async (id) => {
   if (!response.ok) {
     throw new Error(`Server responded with ${response.status}`);
   }
-  
-  return await response.json();
 };
-export const deleteOrganizer = async (eventId, organizerId) => {
-  const response = await fetch(`${API_URL}/events/${eventId}/organizers/${organizerId}`, {
-    method: 'DELETE',
-    headers
-  });
-  
-  if (!response.ok) {
-    throw new Error(`Server responded with ${response.status}`);
+
+// Rename this function from deleteOrganizer to removeOrganizer for consistency
+export const deleteOrganizer = async (eventId, utorid) => {
+  try {
+    console.log("Removing organizer with ID:", utorid);
+    console.log("Event ID:", eventId);
+    const response = await fetch(`${API_URL}/events/${eventId}/organizers/${utorid}`, {
+      method: 'DELETE',
+      headers
+    });
+    
+    if (!response.ok) {
+      // Try to get more detailed error information
+      const errorText = await response.text();
+      console.error("Server error response when removing organizer:", errorText);
+      
+      try {
+        const errorData = JSON.parse(errorText);
+        throw new Error(errorData.message || `Server responded with ${response.status}`);
+      } catch (e) {
+        throw new Error(`Failed to remove organizer (${response.status}): ${errorText}`);
+      }
+    }
+    
+    console.log("Organizer removed successfully:", utorid);
+    // Handle 204 No Content responses
+    if (response.status === 204) {
+      return { success: true };
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error removing organizer:', error);
+    throw error;
   }
-  
-  // Don't try to parse JSON for 204 No Content responses
-  if (response.status === 204) {
-    return { success: true };
-  }
-  
-  // Only try to parse JSON if there's content
-  return await response.json();
 };
 
 export const deleteGuest = async (eventId, guestId) => {
@@ -170,33 +186,80 @@ export const addOrganizer = async (eventId, utorid) => {
 };
 
 export const addGuest = async (eventId, utorid) => {
-  const response = await fetch(`${API_URL}/events/${eventId}/guests`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ utorid })
-  });
-  
-  if (!response.ok) {
-    throw new Error(`Server responded with ${response.status}`);
+  try {
+    const response = await fetch(`${API_URL}/events/${eventId}/guests`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ utorid })
+    });
+    
+    if (!response.ok) {
+      // Try to get more detailed error information
+      const errorText = await response.text();
+      console.error("Server error response when adding guest:", errorText);
+      
+      try {
+        const errorData = JSON.parse(errorText);
+        throw new Error(errorData.message || `Server responded with ${response.status}`);
+      } catch (e) {
+        throw new Error(`Failed to add guest (${response.status}): ${errorText}`);
+      }
+    }
+    
+    console.log("Guest added successfully:", utorid);
+    return await response.json();
+  } catch (error) {
+    console.error('Error adding guest:', error);
+    throw error;
   }
-  
-  return await response.json();
 };
 
 export const awardPoints = async (eventId, guestId, points) => {
-  const response = await fetch(`${API_URL}/events/${eventId}/transactions`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ 
-      type: 'event',
-      utorid: guestId === 'all' ? null : guestId, // FIXED: Send null when 'all' is selected
-      amount: parseInt(points)
-    })
-  });
-  
-  if (!response.ok) {
-    throw new Error(`Server responded with ${response.status}`);
+  try {
+    // Convert points to a number to ensure correct type
+    const pointsNum = parseInt(points);
+    
+    // Create the payload according to the API documentation
+    let payload = {
+      type: "event",     // Required field per API docs: must be "event"
+      amount: pointsNum  // API expects "amount", not "points"
+    };
+    
+    // For individual guest, add the utorid
+    // When utorid is not provided, points are awarded to all guests
+    if (guestId !== 'all') {
+      // Find the guest's utorid from the eventGuests array
+      // Note: This assumes you have the guest's utorid available
+      // If you only have their ID, you might need to fetch their details first
+      payload.utorid = guestId;
+    }
+    
+    console.log("Correct API Payload:", payload);
+    
+    const response = await fetch(`${API_URL}/events/${eventId}/transactions`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(payload)
+    });
+
+    // For debugging, try to log the exact response
+    if (!response.ok) {
+      // Try to get more detailed error information
+      const errorText = await response.text();
+      console.error("Server error response:", errorText);
+      
+      try {
+        const errorData = JSON.parse(errorText);
+        throw new Error(errorData.message || `Server responded with ${response.status}`);
+      } catch (e) {
+        // If we can't parse the error as JSON, use the raw text
+        throw new Error(`Server error (${response.status}): ${errorText}`);
+      }
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error awarding points:', error);
+    throw error;
   }
-  
-  return await response.json();
-}
+};

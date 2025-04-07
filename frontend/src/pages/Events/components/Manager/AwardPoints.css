@@ -11,6 +11,20 @@
   align-items: center;
   z-index: 1000;
 }
+.award-btn{
+  background-color: #4a6fa5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.award-btn:hover{
+  background-color: #3a5b85;
+  transition: 0.2s;
+}
 
 .award-points-popup {
   background-color: white;

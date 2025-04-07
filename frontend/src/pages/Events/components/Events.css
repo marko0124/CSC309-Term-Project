@@ -200,11 +200,9 @@ a:hover{
 }
 
 .event-header{
-    font-size: 24px;
+    font-size: 20px;
     color: var(--text-color);
-    width: 520px;
-    font-weight: 900;
-    margin-top: 20px;
+    display:flex;
 }
 
 .events-list{
@@ -225,16 +223,23 @@ a:hover{
     padding: 0; /* Remove default padding */
     width: 100%;
 }
-.event-details{
+.event-list-details{
     display: flex;
     justify-content: space-between;
 }
+
+
 .event-title{
     font-size: 28px;
     color: var(--text-color);
     width: 100%;
     font-weight: bold;
     margin-top: 12px;
+    display: flex;
+}
+
+.icon{
+    size: 30px;
 }
 
 .event-description{

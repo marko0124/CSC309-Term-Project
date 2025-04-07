@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Pagination from './Pagination';
+import './Events.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 const EventsList = ({ 
   events, 
@@ -8,6 +11,16 @@ const EventsList = ({
   onPageChange, 
   onEventClick 
 }) => {
+  const [numGuests, setNumGuests] = useState(0);
+  
+  // Move the state update to useEffect
+  useEffect(() => {
+    // Check if events has a guests property
+    if (events && events.guests) {
+      setNumGuests(events.guests.length || 0);
+    }
+  }, [events]); 
+
   if (!events.results || events.results.length === 0) {
     return <div className="no-results">No Events Found :(</div>;
   }
@@ -17,7 +30,7 @@ const EventsList = ({
       <div className='events'>
         {events.results.map((event, index) => (
           <ul className='event' key={event.id || index}>
-            <div className='event-details'> 
+            <div className='event-list-details'> 
               <div className='event-tag'>
                 {event.capacity ? `Guest: ${event.numGuests || 0}/${event.capacity}` : `Unlimited`}
               </div>             
@@ -27,7 +40,13 @@ const EventsList = ({
               className="event-clickable"
               onClick={(e) => onEventClick(event, e)}
             >
-              <div className='event-title'>{event.name || 'Some title'}</div>
+              <div className="event-header">
+                <div className='event-title'> 
+                  {event.name || 'Event '} &nbsp;               
+                </div>
+                {event.published && <div className="icon" ><FontAwesomeIcon icon={faCircleCheck} /></div>}
+              </div>
+              
               <p className='event-description'>
                 Attend {event.name} happening at {event.location || 0} for only {event.points || 0} points!
                 Only available until {new Date(event.endTime).toLocaleDateString()}
