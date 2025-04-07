@@ -17,7 +17,7 @@ const UserSearchFilters = ({
       <div className='filter'>
         <input 
           type="text" 
-          placeholder="Search by name" 
+          placeholder="Search by name or UTORid" 
           className="search-bar"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -28,7 +28,7 @@ const UserSearchFilters = ({
           className="search-button" 
           onClick={onSearch}
         >
-          Search <FontAwesomeIcon icon={faSearch}/>
+          <FontAwesomeIcon icon={faSearch}/>
         </button>
       </div>
       
@@ -77,7 +77,7 @@ const UserSearchFilters = ({
           </button>
         </div>
         <button className='filter-button create' onClick={onCreateClick}>
-          Create User <FontAwesomeIcon icon={faPlus}/>
+          Create <FontAwesomeIcon icon={faPlus}/>
         </button>
       </div>
     </>

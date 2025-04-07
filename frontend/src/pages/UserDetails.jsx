@@ -1,10 +1,14 @@
 import React from 'react';
+import {useAuth} from '../context/authContext';
 
 const UserDetails = ({ 
   user, 
   onClose, 
   onEdit 
 }) => {
+  const {user: curr} = useAuth();
+  const {role} = curr;
+  const valid_roles = ["regular", "cashier", "manager", "superuser"];
   return (
     <>
       <div className="overlay" onClick={onClose}></div>
@@ -36,7 +40,7 @@ const UserDetails = ({
           
           <div id="detail-popup-buttons">
             <button className="popup-btn cancel-btn" onClick={onClose}>Close</button>
-            {!user.loading && (
+            {!user.loading && ((role === "manager" && valid_roles.indexOf(user.role) < valid_roles.indexOf(role)) || role === "superuser") && (
               <button className="popup-btn submit-btn" onClick={onEdit}>Edit User</button>
             )}
           </div>

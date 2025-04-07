@@ -21,11 +21,8 @@
     width: 200px;
     height: 100vh;
     z-index: 1000;
+    justify-content: center;
 }
-
-/* .pro-menu-item:hover {
-    background-color: var(--just-vibe) !important;
-} */
 
 .sidebar-btn-wrapper {
     cursor: pointer;
@@ -41,6 +38,19 @@
 }
 
 .pro-sidebar {
-    position: fixed;
     height: 100% !important;
+}
+
+.hQSxZz {
+    display: flex;
+    justify-content: center;
+}
+
+.hQSxZz toggled {
+    margin-left: 5%;
+    margin-right: 5%
+}
+
+.gmeTLe {
+    padding: 8px 2px 8px 2px !important;
 }

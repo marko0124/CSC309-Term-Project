@@ -88,6 +88,7 @@ const useUsers = () => {
     };
     
     setFilter(newFilter);
+    setCurrentPage(1);
   };
 
   const handleSearch = useCallback(async (e) => {

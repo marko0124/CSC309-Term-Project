@@ -1,4 +1,5 @@
 import React from 'react';
+import {useAuth} from '../context/authContext';
 
 const UserForm = ({ 
   formData, 
@@ -7,6 +8,7 @@ const UserForm = ({
   editMode, 
   onCancel 
 }) => {
+  const {user} = useAuth();
   const form = [];
   if (!editMode) {
     form.push(
@@ -63,7 +65,7 @@ const UserForm = ({
       </div>
     );
     form.push(
-      <div className='form-group' key="verified" id="verified-group">
+      <div className='form-group' key="checkbox" id="checkbox-group">
         <label>Verified:</label>
         <input 
           id='verified'
@@ -73,10 +75,6 @@ const UserForm = ({
           value={formData.verified}
           onChange={handleInputChange}
         />
-      </div>
-    );
-    form.push(
-      <div className='form-group' key="suspicious" id="suspicious-group">
         <label>Suspicious:</label>
         <input 
           id='suspicious'
@@ -90,13 +88,25 @@ const UserForm = ({
     form.push(
       <div className='form-group' key="role">
         <label>Role:</label>
-        <input 
+        <select 
           id='role'
-          type="text"
           name="role"
           value={formData.role}
           onChange={handleInputChange}
-        />
+        >
+          <option value="regular">Regular</option>
+          <option value="cashier">Cashier</option>
+          {
+            user.role === "superuser" && (
+              <option value="manager">Manager</option>
+            )
+          }
+          {
+            user.role === "superuser" && (
+              <option value="superuser">Superuser</option>
+            )
+          }
+        </select>
       </div>
     );
   }
