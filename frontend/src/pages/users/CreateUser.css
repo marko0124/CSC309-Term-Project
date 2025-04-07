@@ -1,0 +1,161 @@
+@import './Users.css';
+
+.create-user-container {
+    width: 100%;
+    color: var(--intense);
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.create-user-form-wrapper {
+    width: 63%;
+    max-width: 800px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 3rem;
+}
+
+.create-user-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--intense);
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.create-user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    height: 48px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: var(--intense);
+    border: 1px solid var(--intense);
+    padding: 10px;
+}
+
+.form-group input:focus {
+    border-color: var(--just-vibe);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(75, 172, 245, 0.2);
+}
+
+.form-help {
+    font-size: 12px;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.required {
+    color: #e74c3c;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cancel-button, .create-button {
+    height: 48px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.cancel-button {
+    background-color: #f0f0f0;
+    color: var(--intense);
+}
+
+.cancel-button:hover {
+    background-color: #e0e0e0;
+}
+
+.create-button {
+    background-color: var(--just-vibe);
+    color: white;
+}
+
+.create-button:hover {
+    background-color: var(--summer);
+}
+
+.create-button:disabled, .cancel-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.error-message {
+    background-color: #fdeaea;
+    border-left: 4px solid #e74c3c;
+    color: #c0392b;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+
+.success-message {
+    background-color: #eafaf1;
+    border-left: 4px solid #2ecc71;
+    color: #27ae60;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+
+@media screen and (max-width: 480px) {
+    .create-user-form-wrapper {
+        width: 95%;
+        padding: 1.2rem;
+    }
+    
+    .create-user-title {
+        font-size: 20px;
+        margin-bottom: 1rem;
+    }
+    
+    .create-user-form {
+        gap: 1rem;
+    }
+    
+    .form-group input {
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .cancel-button, .create-button {
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .error-message, .success-message {
+        padding: 0.8rem;
+        font-size: 14px;
+    }
+}
