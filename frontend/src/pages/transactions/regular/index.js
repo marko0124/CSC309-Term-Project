@@ -1,10 +1,11 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../../../context/userContext";
 import TransferTransactionCreator from "../components/TransferTransactionCreator";
 import { useContext, useState } from "react";
 import TransactionsList from "../components/TransactionsList";
 import RedemptionTransactionCreator from "../components/RedemptionTransactionCreator";
 import Card from 'react-bootstrap/Card';
+import { Button } from "react-bootstrap";
 
 const Transactions = () => {
     const { token, role } = useContext(UserContext);
@@ -99,16 +100,24 @@ const Transactions = () => {
             </section>
             <section style={{ marginBottom: '5rem' }}/>
             <section style={{ display: 'flex', justifyContent: 'center'}}>
-                <div style={{ display: 'flex', alignContent: 'center', flexDirection: 'column', maxWidth: '50rem' }}>
-                    <h3 className="mb-3">My Recent Transactions</h3>
-                    <TransactionsList 
-                        searchParamsString={searchParams.toString()} 
-                        view={"regular"} 
-                        showPagination={false} 
-                        searchParams={searchParams} 
-                        setSearchParams={setSearchParams} 
+                <div style={{ display: 'flex', alignContent: 'center', flexDirection: 'column', width: '50rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                        <h3>My Recent Transactions</h3>
+                        <Link to={"/transactions/all"}>
+                            <Button variant="outline-primary">View All</Button>
+                        </Link>
 
-                    />
+                    </div>
+                    <div>
+                        <TransactionsList 
+                            searchParamsString={searchParams.toString()} 
+                            view={"regular"} 
+                            showPagination={false} 
+                            searchParams={searchParams} 
+                            setSearchParams={setSearchParams} 
+
+                        />
+                    </div>
                 </div>
             </section>
         </section>
