@@ -130,13 +130,13 @@ const SingleTransactionManager = () => {
                 {/* Header Section */}
                 <div className='header-container'>
                     <div className='header-text'>
-                        <h1>Transactions Dashboard</h1>
+                        <h1>Manage Transaction</h1>
                         <div className='header-text-details'>
 
                         </div>
                         <div className='expandable-text'>
                             <p className='header-text-description'>
-                                View and manage your transactions
+                                View and manage a transaction
                             </p>
                         </div>
                     </div>
