@@ -40,13 +40,21 @@ cd ./frontend && npm i
 cd ../backend && npm i
 ```
 
+The following packages were added:
+  - axios for routing
+  - bootstrap and react-bootstrap for easier front-end development
+  - qrcode.react for the displaying of QR codes
+
+To install, simply follow the instructions above.
+
 ## Initializing the backend
 
 This project uses prisma for its database. To initialize, `cd` into `/backend` and perform the following:
 
 ```sh
 # /backend
-npx prisma migrate dev
+npx prisma generate
+npx prisma db push
 ```
 
 - Optionally, seed the database with pre-made mock data:
