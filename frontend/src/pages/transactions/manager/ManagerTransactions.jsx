@@ -1,14 +1,12 @@
 import React from 'react';
 import TransactionsList from '../components/TransactionsList';
 import TransactionsFilters from '../components/TransactionFilters';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import HomeNavbar from '../../navbar/HomeNavbar';
-import { useAuth } from '../../../context/authContext';
 
 
 const ManagerTransactions = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const { user } = useAuth();
     return <>
         <div className='profile-page'>
             <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
@@ -54,18 +52,14 @@ const ManagerTransactions = () => {
                     </div>
                 </div>
                 <div className="info-card">
-                    <div className="info-section">
                     <h3>Filter by</h3>
                     <TransactionsFilters setSearchParams={setSearchParams} view={"manager"} />
-
-                    </div>
                 </div>
 
             </section>
 
             <div className='footer'>Footer</div>
         </div>
-
     </>
 
 

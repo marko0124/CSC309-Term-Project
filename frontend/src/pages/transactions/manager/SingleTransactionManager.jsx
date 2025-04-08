@@ -5,7 +5,8 @@ import TransactionItemExpanded from "../components/TransactionItemExpanded";
 import { Card, Form, InputGroup } from "react-bootstrap";
 import { useAuth } from "../../../context/authContext";
 import apiClient from "../../../api/client";
-
+import HomeNavbar from "../../navbar/HomeNavbar";
+import './SingleTransaction.css'
 
 const SingleTransactionManager = () => {
     const { transactionId } = useParams();
@@ -120,6 +121,75 @@ const SingleTransactionManager = () => {
     }, [transactionId]);
 
     if (data.id) {
+
+        return <>
+            <div className='profile-page'>
+                <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
+                <HomeNavbar />
+
+                {/* Header Section */}
+                <div className='header-container'>
+                    <div className='header-text'>
+                        <h1>Transactions Dashboard</h1>
+                        <div className='header-text-details'>
+
+                        </div>
+                        <div className='expandable-text'>
+                            <p className='header-text-description'>
+                                View and manage your transactions
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="custom-shape-divider-top-1743545933">
+                    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
+                    </svg>
+                </div>
+
+                {/* Main Content */}
+                <section className="page-layout">
+                    <div className="info-card d-flex flex-column transaction-expanded">
+
+                        <h3>Transaction #{transactionId}</h3>
+                        <TransactionItemExpanded transaction={data} />
+                    </div>
+                    <div className="info-card">
+                        <div className="info-section">
+                            <h3>Set status</h3>
+                            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'space-around', marginBottom: '1rem' }}>
+                                <Button variant="success" onClick={handleSetValid}>Set Valid</Button>
+                                <Button variant="danger" onClick={handleSetSuspicious}>Set Suspicious</Button>
+                            </div>
+                            <div>
+                                <h3>Adjust Transaction</h3>
+                                <div>
+                                    <InputGroup className="mb-3">
+                                        <InputGroup.Text id="amount">Amount</InputGroup.Text>
+                                        <Form.Control
+                                            placeholder="Enter number of points"
+                                            aria-label="Amount"
+                                            aria-describedby="amount"
+                                            onChange={(e) => { setAmount(e.target.value) }}
+                                        />
+                                    </InputGroup>
+                                    <InputGroup className='mb-3'>
+                                        <InputGroup.Text>Comments</InputGroup.Text>
+                                        <Form.Control as="textarea" aria-label="With textarea" onChange={(e) => { setRemark(e.target.value) }} />
+                                    </InputGroup>
+                                    <button onClick={handleAdjust} className="edit-button">Adjust</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <div className='footer'>Footer</div>
+            </div>
+        </>
+
         return <>
             <header>header</header>
             <nav>Nav bar</nav>
@@ -150,12 +220,12 @@ const SingleTransactionManager = () => {
                                         placeholder="Enter number of points"
                                         aria-label="Amount"
                                         aria-describedby="amount"
-                                        onChange={(e) => {setAmount(e.target.value)}}
+                                        onChange={(e) => { setAmount(e.target.value) }}
                                     />
                                 </InputGroup>
                                 <InputGroup className='mb-3'>
                                     <InputGroup.Text>Comments</InputGroup.Text>
-                                    <Form.Control as="textarea" aria-label="With textarea" onChange={(e) => {setRemark(e.target.value)}}/>
+                                    <Form.Control as="textarea" aria-label="With textarea" onChange={(e) => { setRemark(e.target.value) }} />
                                 </InputGroup>
                             </Card.Body>
                             <Card.Footer style={{ display: 'flex', justifyContent: 'end' }}>
