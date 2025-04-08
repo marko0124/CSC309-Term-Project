@@ -7,7 +7,7 @@ import apiClient from '../../api/client';
 import HomeNavbar from '../navbar/HomeNavbar';
 
 const Users = () => {
-    const {user, logout} = useAuth();
+    const {user, logout, changeRole, originalRole} = useAuth();
     const nav = useNavigate();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -24,19 +24,11 @@ const Users = () => {
     useEffect(() => {
         const getUserData = async () => {
             try {
-                const response = await apiClient.get('/users/me', {
-                    headers: {
-                        'Authorization': `Bearer ${user.token}`
-                    }
-                });
-                if (response.status !== 200) {
-                    throw new Error("Failed to get user data.");
-                }
-                setUserData(response.data);
+                setUserData(user);
                 setFormData({
-                    name: response.data.name || "",
-                    email: response.data.email || "",
-                    birthday: response.data.birthday || ""
+                    name: user.name || "",
+                    email: user.email || "",
+                    birthday: user.birthday || ""
                 });
             } catch (err) {
                 setError(err.message);
@@ -46,7 +38,7 @@ const Users = () => {
         };
 
         getUserData();
-    }, [nav, user]);
+    }, [nav, user, originalRole]);
 
     const handleEdit = () => {
         setEditing(!editing);
@@ -107,6 +99,11 @@ const Users = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleRole = (role) => {
+        changeRole(role);
+        nav(`/home/${role}`);
     };
 
     const fullDescription = "View and manage your profile information.";
@@ -270,7 +267,7 @@ const Users = () => {
                                         </div>
                                         <div className="info-row">
                                             <span className="info-label">Role:</span>
-                                            <span className="info-value">{userData?.role}</span>
+                                            <span className="info-value">{originalRole}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -325,29 +322,38 @@ const Users = () => {
                                             >
                                                 Change Password
                                             </button>
-                                            
-                                            {userData?.role === 'superuser' && (
+
+                                            {originalRole === 'superuser' && user.role !== "superuser" && (
                                                 <button 
                                                     className="action-button"
-                                                    onClick={() => nav('/home/manager')}
+                                                    onClick={() => handleRole("superuser")}
+                                                >
+                                                    Superuser View
+                                                </button>
+                                            )}
+                                            
+                                            {originalRole === 'superuser' && user.role !== "manager" && (
+                                                <button 
+                                                    className="action-button"
+                                                    onClick={() => handleRole("manager")}
                                                 >
                                                     Manager View
                                                 </button>
                                             )}
 
-                                            {(userData?.role === 'superuser' || userData?.role === "manager") && (
+                                            {(originalRole === 'superuser' || originalRole === "manager") && user.role !== "cashier" && (
                                                 <button 
                                                     className="action-button"
-                                                    onClick={() => nav('/home/cashier')}
+                                                    onClick={() => handleRole("cashier")}
                                                 >
                                                     Cashier View
                                                 </button>
                                             )}
 
-                                            {(userData?.role === 'superuser' || userData?.role === "manager" || userData?.role === "cashier") && (
+                                            {(originalRole === 'superuser' || originalRole === "manager" || originalRole === "cashier") && user.role !== "regular" && (
                                                 <button 
                                                     className="action-button"
-                                                    onClick={() => nav('/home/regular')}
+                                                    onClick={() => handleRole("regular")}
                                                 >
                                                     Regular User View
                                                 </button>

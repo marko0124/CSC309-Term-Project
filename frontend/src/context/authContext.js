@@ -8,6 +8,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
+    const [originalRole, setOriginalRole] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const nav = useNavigate();
@@ -20,6 +21,7 @@ export const AuthProvider = ({children}) => {
                 const expiresAt = localStorage.getItem('expiresAt');
                 if (!token || !expiresAt) {
                     setUser(null);
+                    setOriginalRole("");
                     setLoading(false);
                     return;
                 }
@@ -29,12 +31,15 @@ export const AuthProvider = ({children}) => {
                 if (now > expiry) {
                     localStorage.removeItem('token');
                     localStorage.removeItem('expiresAt');
+                    sessionStorage.removeItem("currRole");
                     setUser(null);
+                    setOriginalRole("");
                     setLoading(false);
                     return;
                 }
     
                 try {
+                    const currRole = sessionStorage.getItem("currRole");
                     const response = await apiClient.get('/users/me', {
                         headers: {
                             'Authorization': `Bearer ${token}`
@@ -45,11 +50,14 @@ export const AuthProvider = ({children}) => {
                     }
                     setUser({
                         ...response.data,
+                        role: currRole || response.data.role,
                         token
                     });
+                    setOriginalRole(response.data.role);
                 } catch (err) {
                     setError(err.message);
                     setUser(null);
+                    setOriginalRole("");
                 }
             } catch (err) {
                 setError("Not authorized.");
@@ -63,6 +71,7 @@ export const AuthProvider = ({children}) => {
     const login = async (token) => {
         setLoading(true);
         setError("");
+        setOriginalRole("");
 
         try {
             const userData = await apiClient.get('/users/me', {
@@ -77,6 +86,7 @@ export const AuthProvider = ({children}) => {
                 ...userData.data,
                 token
             });
+            setOriginalRole(userData.data.role);
             return {success: true};
         } catch (err) {
             setError(err.message);
@@ -89,16 +99,32 @@ export const AuthProvider = ({children}) => {
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('expiresAt');
+        sessionStorage.removeItem("currRole");
         setUser(null);
+        setOriginalRole("");
         nav('/');
     };
 
+    const changeRole = (role) => {
+        if (role === originalRole) {
+            sessionStorage.removeItem("currRole");
+        } else {
+            sessionStorage.setItem("currRole", role);
+        }
+        setUser({
+            ...user,
+            role
+        });
+    }
+
     const value = {
         user,
+        originalRole,
         loading,
         error,
         login,
         logout,
+        changeRole,
         isAuthenticated: !!user
     };
 
