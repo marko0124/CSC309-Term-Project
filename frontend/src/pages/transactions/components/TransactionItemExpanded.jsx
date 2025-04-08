@@ -2,7 +2,7 @@ import { Card } from "react-bootstrap"
 import { capitalize } from "../../../utils/stringUtils"
 import Badge from 'react-bootstrap/Badge';
 
-const TransactionItemExpanded = ({ transaction }) => {
+const TransactionItemExpanded = ({ transaction, view }) => {
 
     const backgroundColor = transaction.type === "purchase" ? '#E15D44'
                             : transaction.type === "transfer" ? '#D65076' 
@@ -25,8 +25,11 @@ const TransactionItemExpanded = ({ transaction }) => {
                         { transaction.type === "redemption" && <span><b>User:</b> {transaction.createdBy}</span> }
                         { transaction.type === "adjustment" && <span><b>Authorizer:</b> {transaction.createdBy}</span> }
                         { transaction.type === "event" && <span><b>Authorizer:</b> {transaction.createdBy}</span> }
-                        { transaction.suspicious && <Badge bg="danger">Suspicious</Badge> }
-                        { !transaction.suspicious && <Badge bg="success">Valid</Badge> }
+                        <div style={{ display: 'flex', gap: '1rem'}}>
+                            { transaction.type === "redemption" && !transaction.relatedId && <Badge bg="warning">Pending</Badge> }
+                            { transaction.suspicious && view === "manager" && <Badge bg="danger">Suspicious</Badge> }
+                            { !transaction.suspicious && view === "manager" && <Badge bg="success">Valid</Badge> }
+                        </div>
                     </div>
                 </Card.Title>
                 <div style={{ display:'flex', flexDirection: 'row', width: '100%'}}>
