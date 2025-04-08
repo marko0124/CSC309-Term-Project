@@ -1,12 +1,11 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import { UserContext } from "../../../context/userContext";
-import AdjustmentTransactionCreator from "../components/AdjustmentTransactionCreator";
 import TransactionItemExpanded from "../components/TransactionItemExpanded";
-import { Card } from "react-bootstrap";
+import { Card, Form, InputGroup } from "react-bootstrap";
 import { useAuth } from "../../../context/authContext";
 import apiClient from "../../../api/client";
+
 
 const SingleTransactionManager = () => {
     const { transactionId } = useParams();
@@ -64,7 +63,7 @@ const SingleTransactionManager = () => {
         }
     }
 
-    const handleCreateAdjustment = async () => {
+    const handleAdjust = async () => {
         try {
             const response = await apiClient.post(
                 'transactions',
@@ -83,7 +82,7 @@ const SingleTransactionManager = () => {
                     }
                 }
             );
-            navigate(`/transactions/${response.data.id}`);
+            navigate(`/transactions/manage/${response.data.id}`);
         } catch (error) {
             console.error(error);
             return (
@@ -142,7 +141,27 @@ const SingleTransactionManager = () => {
                                 </div>
                             </Card.Body>
                         </Card>
-                        <AdjustmentTransactionCreator setAmount={setAmount} setRemark={setRemark} onClick={handleCreateAdjustment} />
+                        <Card>
+                            <Card.Header as="h5">Adjust Transaction Amount</Card.Header>
+                            <Card.Body>
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Text id="amount">Amount</InputGroup.Text>
+                                    <Form.Control
+                                        placeholder="Enter number of points"
+                                        aria-label="Amount"
+                                        aria-describedby="amount"
+                                        onChange={(e) => {setAmount(e.target.value)}}
+                                    />
+                                </InputGroup>
+                                <InputGroup className='mb-3'>
+                                    <InputGroup.Text>Comments</InputGroup.Text>
+                                    <Form.Control as="textarea" aria-label="With textarea" onChange={(e) => {setRemark(e.target.value)}}/>
+                                </InputGroup>
+                            </Card.Body>
+                            <Card.Footer style={{ display: 'flex', justifyContent: 'end' }}>
+                                <Button variant="primary" onClick={handleAdjust}>Adjust</Button>
+                            </Card.Footer>
+                        </Card>
 
                     </div>
                 </section>

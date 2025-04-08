@@ -1,6 +1,5 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserContext } from "../../../context/userContext";
 import TransactionItemExpanded from "../components/TransactionItemExpanded";
 import { useAuth } from "../../../context/authContext";
 import apiClient from "../../../api/client";

@@ -22,6 +22,7 @@ import {AuthProvider, useAuth} from './context/authContext.js';
 import SingleTransactionRegular from './pages/transactions/regular/SingleTransactionRegular.jsx';
 import SingleTransactionManager from './pages/transactions/manager/SingleTransactionManager.jsx';
 import RequestRedemptionPage from './pages/transactions/regular/RequestRedemptionPage.jsx';
+import TransferPointsPage from './pages/transactions/regular/TransferPointsPage.jsx';
 
 const App = () => {
   const ProtectedRoute = ({children}) => {
@@ -136,6 +137,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <RequestRedemptionPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transactions/transfer"
+          element={
+            <ProtectedRoute>
+              <TransferPointsPage />
             </ProtectedRoute>
           }
         />
