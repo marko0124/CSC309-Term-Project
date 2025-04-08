@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import * as eventService from '../../services/eventService';
+import { useAuth } from '../../../../context/authContext';
 import '../../../navbar.css';
-import './RegularEventDetails.css'; // Create this file by copying and modifying OrganizerEventDetails.css
+import './RegularEventDetails.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faArrowLeft, 
     faCalendarAlt, 
     faMapMarkerAlt, 
     faUsers,
-    faCheck 
+    faCheck,
+    faPlus
 } from '@fortawesome/free-solid-svg-icons';
+import RegularParticipantPopup from './RegularParticipantPopup'; // Add this import
 
 const RegularEventDetails = ({ eventId: eventIdProp }) => {
     const [event, setEvent] = useState(null);
@@ -18,8 +21,9 @@ const RegularEventDetails = ({ eventId: eventIdProp }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { eventId: eventIdParam } = useParams();
-    
     const eventId = eventIdProp || eventIdParam;
+    const {user} = useAuth();
+    const [isRegistered, setIsRegistered] = useState(false);
 
     const fetchEventDetails = useCallback(async () => {
         setLoading(true);
@@ -34,9 +38,84 @@ const RegularEventDetails = ({ eventId: eventIdProp }) => {
         }
     }, [eventIdParam, eventIdProp]);
 
+    const RSVPuser = async () => {
+        setLoading(true);
+        try {
+            if (isRegistered) {
+                console.log('Unregistering user from event');
+                // Unregister the user
+                await eventService.unrsvpUser(parseInt(eventIdProp || eventIdParam));
+                
+                // Update registration state immediately for better UX
+                setIsRegistered(false);
+                
+                // Update the event state locally if needed for capacity display
+                if (event.numGuests) {
+                    setEvent(prevEvent => ({
+                        ...prevEvent,
+                        numGuests: Math.max(0, (prevEvent.numGuests || 1) - 1)
+                    }));
+                }
+            } else {
+                console.log('Registering user for event');
+                // Register the user
+                await eventService.rsvpUser(parseInt(eventIdProp || eventIdParam));
+                
+                // Update registration state immediately for better UX
+                setIsRegistered(true);
+                
+                // Update the event state locally if needed for capacity display
+                if (event.numGuests !== undefined) {
+                    setEvent(prevEvent => ({
+                        ...prevEvent,
+                        numGuests: (prevEvent.numGuests || 0) + 1
+                    }));
+                }
+            }
+            
+            // Refresh event details and user registration status after a short delay
+            setTimeout(() => {
+                fetchEventDetails();
+                isUserRegistered(); // Re-check registration status from server
+            }, 500);
+            
+        } catch (err) {
+            console.error('RSVP error:', err);
+            setError(err.message || 'Failed to update registration');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const isUserRegistered = async () => {
+        try {
+          const userInfo = await eventService.getUserInfo();
+          console.log("User info attended:", userInfo.attended);
+          
+          if (userInfo && userInfo.attended && Array.isArray(userInfo.attended)) {
+            // Check if the current event is in the attended array
+            const isRegistered = userInfo.attended.some(event => 
+              event.id === Number(eventId)
+            );
+            setIsRegistered(isRegistered);
+            console.log("User is registered:", isRegistered);
+          } else {
+            setIsRegistered(false);
+          }
+        } catch (error) {
+          console.error('Error fetching user info:', error);
+          setIsRegistered(false);
+        }
+    }
     useEffect(() => {
         fetchEventDetails();
+        isUserRegistered();
     }, [fetchEventDetails]);
+
+
+    const handleClosePopup = () => {
+        setButtonPopup(false);
+    };
 
     if (loading) return (
         <div className="loading-container">
@@ -60,6 +139,8 @@ const RegularEventDetails = ({ eventId: eventIdProp }) => {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
+    
+    
 
     return (
         <div className='event-details-page'>
@@ -113,15 +194,29 @@ const RegularEventDetails = ({ eventId: eventIdProp }) => {
                                 <FontAwesomeIcon icon={faUsers} /> View Participants
                             </button>
                             <button 
-                                className="event-register-button" 
-                                onClick={() => {/* Logic to register for event */}}
+                                className={`event-register-button ${isRegistered ? 'registered' : ''}`}
+                                onClick={() => RSVPuser()}
+                                disabled={loading}
                             >
-                                Register
+                                {isRegistered ? 
+                                    <span><FontAwesomeIcon icon={faCheck} /> Registered</span> : 
+                                    <span><FontAwesomeIcon icon={faPlus} /> RSVP Me!</span>
+                                }
                             </button>
                         </div>
                     </div>
                 </div>
             </main>
+                {/* Add this at the end of your component */}
+                {buttonPopup && (
+                <RegularParticipantPopup
+                    trigger={buttonPopup}
+                    setTrigger={handleClosePopup}
+                    eventGuests={event.guests || []}
+                    eventOrganizers={event.organizers || []}
+                    eventId={event.id}
+                />
+            )}
         </div>
     );
 };

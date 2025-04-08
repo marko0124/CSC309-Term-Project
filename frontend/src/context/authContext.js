@@ -11,6 +11,7 @@ export const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const nav = useNavigate();
+    
 
     useEffect(() => {
         const checkLogin = async () => {

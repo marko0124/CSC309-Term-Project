@@ -1,3 +1,5 @@
+import { use } from "react";
+
 const API_URL = 'http://localhost:5001';
 const TOKEN = localStorage.getItem('token') || '';
 const headers = {
@@ -115,6 +117,36 @@ export const rsvpUser = async (eventId) => {
   }
   return await response.json();
 }
+
+export const unrsvpUser = async (eventId) => {
+  const response = await fetch(`${API_URL}/events/${eventId}/guests/me`, {
+    method: 'DELETE',
+    headers
+  });
+  if (!response.ok) {
+    throw new Error(`Server responded with ${response.status}`);
+  }
+  return response;
+}
+
+export const getUserInfo = async () => {
+  const response = await fetch(`${API_URL}/users/me`, {
+    method: 'GET',
+    headers
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Server responded with ${response.status}`);
+  }
+  
+  // Parse the JSON first, then use the data
+  const userData = await response.json();
+  console.log("User info response:", userData);
+  
+  // Return the entire userData object
+  return userData;
+};
+
 
 export const cancelRsvp = async (eventId) => {
   try {
