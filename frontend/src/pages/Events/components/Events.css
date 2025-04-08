@@ -218,9 +218,8 @@ a:hover{
 }
 
 .event{
-    list-style-type: none; /* Remove bullet points */
-
-    padding: 0; /* Remove default padding */
+    list-style-type: none; 
+    padding: 0; 
     width: 100%;
 }
 .event-list-details{
