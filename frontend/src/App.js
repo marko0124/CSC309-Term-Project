@@ -114,6 +114,7 @@ const App = () => {
     )
   }
   
+  // Add this missing return statement
   return (
     <Router>
       <AuthProvider>
