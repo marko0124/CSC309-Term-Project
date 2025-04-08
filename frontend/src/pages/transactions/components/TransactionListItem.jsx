@@ -40,6 +40,7 @@ const TransactionItem = ({ transaction, view }) => {
 
                     { transaction.type === "purchase" &&
                         <div style={{ flex: 2  }}>
+                            { view === "manager" && <p><b>utorid:</b> {transaction.utorid}</p> }
                             <p><b>Spent:</b> {new Intl.NumberFormat("en-US", { style: 'currency', currency: 'USD' }).format(transaction.spent)}</p>
                             <p><b>Points Earned:</b> {transaction.amount}</p>
                             {transaction.promotionIds.length > 0 && <p><b>Promotions used (IDs):</b> {transaction.promotionIds}</p> }
@@ -58,18 +59,21 @@ const TransactionItem = ({ transaction, view }) => {
 
                     { transaction.type === "redemption" &&
                         <div style={{ flex: 2  }}>
+                        { view === "manager" && <p><b>utorid:</b> {transaction.utorid}</p> }
                         <p><b>Points Earned:</b> {transaction.amount}</p>
                         </div>
                     }
 
                     { transaction.type === "adjustment" &&
                         <div style={{ flex: 2  }}>
+                        { view === "manager" && <p><b>utorid:</b> {transaction.utorid}</p> }
                         <p><b>Points Earned:</b> {transaction.amount}</p>
                         </div>
                     }
 
                     { transaction.type === "event" &&
                         <div style={{ flex: 2  }}>
+                        { view === "manager" && <p><b>utorid:</b> {transaction.utorid}</p> }
                         <p><b>Points Earned:</b> {transaction.amount}</p>
                         </div>
                     }

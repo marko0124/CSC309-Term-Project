@@ -19,7 +19,7 @@ const RegularTransactions = () => {
             {/* Header Section */}
             <div className='header-container'>
                 <div className='header-text'>
-                    <h1>My Transactions</h1>
+                    <h1>Transactions Dashboard</h1>
                     <div className='header-text-details'>
 
                     </div>
