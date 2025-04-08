@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import '../Promotions.css';
 import '../PopUp.css';
-import '../navbar.css'; 
 import usePromotions from '../../hooks/usePromotions';
 import ManagerSearchFilters from './ManagerSearchFilters';
 import PromotionList from '../PromotionList';
 import PromotionForm from './PromotionForm';
 import ManagerPromotionDetails from './ManagerPromotionDetails';
 import supermarketImage from '../../assets/supermarket.avif';
+import HomeNavbar from '../../../navbar/HomeNavbar.jsx';
 
 const ManagerPromotions = () => {
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -45,7 +45,7 @@ const ManagerPromotions = () => {
     <div className='promotion-page'>
       <main>
         <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-        <div className='navbar'> NAVBAR </div>
+        <HomeNavbar />
         
         {/* Header Section */}
         <div className='header-container'> 
