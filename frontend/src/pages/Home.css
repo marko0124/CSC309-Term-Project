@@ -1,0 +1,398 @@
+@import './users/Users.css';
+
+:root {
+    --intense: #292f63;
+    --summer: #428dc6;
+    --just-vibe: #53b2d4;
+    --cloro: #aae5f2;
+    --smooth: #d2eff7;
+    --white: #ffffff;
+    --error: #ff4d4d;
+    --success: green;
+    --font-type: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-type);
+}
+
+.profile-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.loading-indicator {
+    font-size: 20px;
+    color: var(--text-color);
+}
+
+.profile-container {
+    width: 100%;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.profile-card-wrapper {
+    width: 63%;
+    max-width: 1000px;
+    margin-bottom: 3rem;
+}
+
+.profile-form-wrapper {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.profile-form-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--intense);
+    margin: 0;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.profile-info-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--intense);
+    margin: 0;
+}
+
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50rem, 1fr));
+    gap: 1.5rem;
+}
+
+.info-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.info-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--intense);
+    margin-top: 0;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #555;
+}
+
+.info-value {
+    color: #333;
+    font-weight: 400;
+}
+
+.info-value.points {
+    font-weight: 700;
+    color: var(--summer);
+    font-size: 4rem;
+}
+
+.qr-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.qr-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 10px;
+    margin: 0 auto 1rem auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.qr-info {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-top: 1rem;
+    margin-top: auto;
+}
+
+.action-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.action-button {
+    padding: 0.8rem 1rem;
+    background-color: var(--just-vibe);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    background-color: var(--summer);
+}
+
+.edit-button, .cancel-button, .save-button {
+    width: 100%;
+    height: 40px;
+    padding: 0 1.5rem;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.edit-button {
+    background-color: var(--just-vibe);
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: var(--summer);
+}
+
+.cancel-button {
+    background-color: #f0f0f0;
+    color: var(--intense);
+}
+
+.cancel-button:hover {
+    background-color: #e0e0e0;
+}
+
+.save-button {
+    background-color: var(--just-vibe);
+    color: white;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.save-button:hover {
+    background-color: var(--summer);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.error-message {
+    background-color: #fdeaea;
+    border-left: 4px solid #e74c3c;
+    color: #c0392b;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+
+.success-message {
+    background-color: #eafaf1;
+    border-left: 4px solid #2ecc71;
+    color: #27ae60;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    height: 48px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: var(--intense);
+    border: 1px solid var(--intense);
+    padding: 10px;
+}
+
+.form-group input:focus {
+    border-color: var(--just-vibe);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(75, 172, 245, 0.2);
+}
+
+.form-help {
+    font-size: 12px;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .profile-card-wrapper {
+        width: 90%;
+    }
+
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-form-header, .profile-info-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .profile-form-header h2, .profile-info-header h2 {
+        font-size: 22px;
+    }
+
+    .edit-button, .cancel-button {
+        width: 100%;
+    }
+
+    .info-section h3 {
+        font-size: 16px;
+    }
+
+    .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+    }
+
+    .form-group label {
+        font-size: 15px;
+    }
+
+    .form-group input {
+        height: 44px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-card-wrapper {
+        width: 95%;
+    }
+
+    .profile-form-wrapper, .info-card {
+        padding: 1.5rem;
+    }
+
+    .profile-form-header h2, .profile-info-header h2 {
+        font-size: 20px;
+    }
+
+    .profile-form {
+        gap: 1rem;
+    }
+
+    .info-section h3 {
+        font-size: 15px;
+        margin-bottom: 0.8rem;
+    }
+
+    .info-row {
+        margin-bottom: 0.7rem;
+    }
+
+    .info-label, .info-value {
+        font-size: 14px;
+    }
+
+    .action-button {
+        padding: 0.7rem 0.8rem;
+        font-size: 14px;
+    }
+
+    .form-group input {
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .save-button {
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .error-message, .success-message {
+        padding: 0.8rem;
+        font-size: 13px;
+    }
+}
