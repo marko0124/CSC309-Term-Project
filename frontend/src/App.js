@@ -8,6 +8,7 @@ import ChangePassword from './pages/profile/ChangePassword.jsx';
 import Home from './pages/Home.jsx';
 import Users from './pages/users/Users.jsx';
 import CreateUser from './pages/users/CreateUser.jsx';
+import PromotionsRouter from './pages/Promotions/PromotionsRouter.jsx';
 import {AuthProvider, useAuth} from './context/authContext.js';
 
 const App = () => {
@@ -101,6 +102,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/promotions"
+          element={
+            <ProtectedRoute>
+              <PromotionsRouter />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     )
   }
@@ -113,5 +122,5 @@ const App = () => {
     </Router>
   );
 };
-
+  
 export default App;

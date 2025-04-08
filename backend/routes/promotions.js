@@ -30,10 +30,7 @@ router.post('/', auth.login, auth.checkRole('manager'), async (req, res) => {
         if (start >= end) {
             return res.status(400).json({"error": "Bad Request"});
         }
-        const pts = parseInt(points, 10);
-        if (isNaN(pts) || pts < 0) {
-            return res.status(400).json({"error": "Bad Request"});
-        }
+
         const data = {
             name,
             description,

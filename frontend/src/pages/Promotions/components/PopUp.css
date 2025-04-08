@@ -1,28 +1,40 @@
+/* Overlay styles */
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.75); /* Darker background */
+    backdrop-filter: blur(4px); /* Blur effect */
+    -webkit-backdrop-filter: blur(4px); /* For Safari */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1000; /* Below popup but above everything else */
 }
 
 .popup input{
     width: 100%;
     height: 48px;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 18px;
     color: var(--footer-color);
     border: 1px solid var(--footer-color);
     padding: 10px;
 }
 
+.popup textarea{
+    margin: 30px 0;
+    width: 100%;
+    height: 100px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 18px;
+    color: var(--footer-color);
+    border: 1px solid var(--footer-color);
+}
+/* Keep your existing popup styles but adjust z-index to be above overlay */
 .popup {
     position: fixed;
     top: 50%;
@@ -30,37 +42,40 @@
     transform: translate(-50%, -50%);
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    z-index: 1001;
-    height: 70%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* Enhanced shadow */
+    padding: 100px;
+    z-index: 1001; /* Above the overlay */
+    height: 60%;
     border: 2px solid black;
     width: 80%;
+
+}
+.promotion-dates{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    width: 100%;
+    gap: 30px;
+
 }
 
-.popup-form{
+
+.promotion-unrequired{
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+form{
     width: 100%;
     display: flex;
     flex-direction: column;
-    font-size: 20px;
 }
-
-.form-group {
-  margin-top: 0%;
-  margin-bottom: auto;
-}
-
-#checkbox-group {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
-.popup input[type="checkbox"]{
-  scale: 0.3;
-  margin: 0px;
-  padding: 0px;
+.popup-inner{
+    margin-top: -60px;
+    background-color: white;
 }
 
 #popup-buttons{
@@ -70,16 +85,13 @@
 }
 
 .popup-inner {
-    right: 0px !important;
-    background-color: transparent !important;
-    border: none !important;
-    font-size: 15px !important;
+    right: 0px;
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
 }
 
-.popup-inner h2{
-  font-size: 20px !important;
-  margin-bottom: 1% !important;
-}
 
 .popup-btn{
     height: 40px;
@@ -144,7 +156,7 @@
     gap: 15px;
   }
   
-  .detail-popup-user-tag {
+  .detail-popup-promotion-tag {
     height: 34px;
     min-width: 120px;
     background-color: var(--tertiary-color);
@@ -159,8 +171,9 @@
     color: #666;
   }
   
-.user-details-popup h3 {
-    margin: 10px 0 5px;
+/* Fix the heading before description */
+.promotion-details-popup h3 {
+    margin: 10px 0 5px; /* Reduced margins */
     font-size: 18px;
     font-weight: bold;
     padding-bottom: 5px;
@@ -207,32 +220,39 @@
     background-color: var(--quaternary-color);
   }
 
-.user-detail-description {
+/* 1. First, delete ALL existing .promotion-detail-description rules */
+
+/* 2. Then add this single definition for the description box */
+/* Updated description box with improved scrolling */
+.promotion-detail-description {
     max-height: 200px;
     border-radius: 12px;
-    padding: 20px;
-    padding-top: 25px;
+    padding: 20px; /* Keep existing padding */
+    padding-top: 25px; /* Add extra paddig at the top */
     width: 100%;
     overflow-y: auto;
     line-height: 1.6;
     background-color: #f8f9fa;
-    font-size: 18px;
+    font-size: 18px; /* Increased from 12px for better readability */
     margin: 0 0 25px 0;
+    /* Add these scroll properties to fix the scrolling issue */
     scroll-padding-top: 20px;
     overscroll-behavior: contain;
   }
 
-  .user-detail-description::before {
+  .promotion-detail-description::before {
     content: "";
     display: block;
-    height: 10px;
+    height: 10px; /* Invisible space at the top */
     margin-top: -10px;
   }
-
-.user-detail-description p:first-child {
-    margin-top: 5px;
+  /* Also adjust the content inside the description */
+.promotion-detail-description p:first-child {
+    margin-top: 5px; /* Add margin to first paragraph */
   }
   
+  
+  /* 3. To make the box wider, increase the parent container width */
   .detail-popup {
     position: fixed;
     top: 50%;
@@ -242,9 +262,9 @@
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     padding: 0;
-    width: 850px;
-    max-width: 95vw;
-    max-height: 70vh;
+    width: 850px; /* Increased from 750px */
+    max-width: 95vw; /* Increased from 90vw */
+    max-height: 85vh;
     overflow-y: auto;
     border: none;
     display: flex;
@@ -252,68 +272,22 @@
     z-index: 1001;
   }
   
-  .user-details-popup {
-    padding: 20px 30px;
+  /* 4. Also fix the promotion-details-popup to use more width */
+  .promotion-details-popup {
+    padding: 20px 30px; /* Reduced top padding */
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 15px; /* Reduced gap */
   }
   
-  .user-details-popup p {
+  /* 5. Fix the duplicate promotion-details-popup p definitions */
+  .promotion-details-popup p {
     margin: 8px 0;
     font-size: 16px;
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: 800px;
+    max-width: 800px; /* Increased from 400px */
     margin-left: 0;
   }
-
-  .form-group select {
-    background-color: white;
-    appearance: menulist;
-  }
-
-@media screen and (max-width: 480px) {
-  .popup {
-    width: 98%;
-    height: 90%;
-    padding: 12px;
-  }
-  
-  .popup-inner h2 {
-    font-size: 16px;
-    margin-bottom: 5%;
-  }
-  
-  .detail-popup-header h2 {
-    font-size: 20px;
-  }
-  
-  .detail-popup-user-tag {
-    min-width: 100px;
-    height: 30px;
-    padding: 5px 10px;
-    font-size: 14px;
-  }
-  
-  .user-detail-description {
-    font-size: 14px;
-    padding: 12px;
-    max-height: 150px;
-  }
-  
-  #detail-popup-buttons {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  #detail-popup-buttons .popup-btn {
-    width: 100%;
-  }
-  
-  .popup-dates {
-    font-size: 20px;
-  }
-}
