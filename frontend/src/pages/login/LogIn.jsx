@@ -128,97 +128,105 @@ const LogIn = () => {
         }
         if (resetReq) {
             return (
-                <div className="login-container">
-                    <form className="login-form" onSubmit={completePasswordReset}>
-                        <h1>Reset Your Password</h1>
-                        <p>Enter your new password</p>
+                <div className="login-page">
+                    <div className="login-card">
+                        <div className="login-container">
+                            <form className="login-form" onSubmit={completePasswordReset}>
+                                <h1>Reset Your Password</h1>
+                                <p>Enter your new password</p>
 
-                        <div className='form-group'>
-                            <label>New Password</label>
-                            <input 
-                                type="password"
-                                id="newPass"
-                                value={newPass}
-                                onChange={(e) => setNewPass(e.target.value)}
-                                required
-                            />
+                                <div className='form-group'>
+                                    <label>New Password</label>
+                                    <input 
+                                        type="password"
+                                        id="newPass"
+                                        value={newPass}
+                                        onChange={(e) => setNewPass(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                <div className='form-group'>
+                                    <label>Confirm Password</label>
+                                    <input 
+                                        type="password"
+                                        id="confirmPass"
+                                        value={confirmPass}
+                                        onChange={(e) => setConfirmPass(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                {error && <div className="error-message">{error}</div>}
+
+                                <div className="form-actions">
+                                    <button 
+                                        type="submit" 
+                                        className="btn-primary"
+                                        disabled={loading}
+                                    >
+                                        {loading ? 'Loading...' : 'Reset Password'}
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        className="btn-link"
+                                        onClick={() => {
+                                            setReset(false);
+                                            setResetReq(false);
+                                        }}
+                                        disabled={loading}
+                                    >
+                                        Back to Login
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-
-                        <div className='form-group'>
-                            <label>Confirm Password</label>
-                            <input 
-                                type="password"
-                                id="confirmPass"
-                                value={confirmPass}
-                                onChange={(e) => setConfirmPass(e.target.value)}
-                                required
-                            />
-                        </div>
-
-                        {error && <div className="error-message">{error}</div>}
-
-                        <div className="form-actions">
-                            <button 
-                                type="submit" 
-                                className="btn-primary"
-                                disabled={loading}
-                            >
-                                {loading ? 'Loading...' : 'Reset Password'}
-                            </button>
-                            <button 
-                                type="button" 
-                                className="btn-link"
-                                onClick={() => {
-                                    setReset(false);
-                                    setResetReq(false);
-                                }}
-                                disabled={loading}
-                            >
-                                Back to Login
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             );
         }
 
         return (
-            <div className="login-container">
-                <form className="login-form" onSubmit={reqPasswordReset}>
-                    <h1>Reset Your Password</h1>
-                    <p>Enter UTORid for password reset.</p>
+            <div className="login-page">
+                <div className="login-card">
+                    <div className="login-container">
+                        <form className="login-form" onSubmit={reqPasswordReset}>
+                            <h1>Reset Your Password</h1>
+                            <p>Enter UTORid for password reset.</p>
 
-                    <div className='form-group'>
-                        <label>UTORid</label>
-                        <input 
-                            type="text"
-                            id="utorid"
-                            value={utorid}
-                            onChange={(e) => setUtorid(e.target.value)}
-                            required
-                        />
+                            <div className='form-group'>
+                                <label>UTORid</label>
+                                <input 
+                                    type="text"
+                                    id="utorid"
+                                    value={utorid}
+                                    onChange={(e) => setUtorid(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            {error && <div className="error-message">{error}</div>}
+
+                            <div className="form-actions">
+                                <button 
+                                    type="submit" 
+                                    className="btn-primary"
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Loading...' : 'Request Reset'}
+                                </button>
+                                <button 
+                                    type="button" 
+                                    className="btn-link"
+                                    onClick={() => setReset(false)}
+                                    disabled={loading}
+                                >
+                                    Back to Login
+                                </button>
+                            </div>
+                        </form>
                     </div>
-
-                    {error && <div className="error-message">{error}</div>}
-
-                    <div className="form-actions">
-                        <button 
-                            type="submit" 
-                            className="btn-primary"
-                            disabled={loading}
-                        >
-                            {loading ? 'Loading...' : 'Request Reset'}
-                        </button>
-                        <button 
-                            type="button" 
-                            className="btn-link"
-                            onClick={() => setReset(false)}
-                            disabled={loading}
-                        >
-                            Back to Login
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
         );
     }
