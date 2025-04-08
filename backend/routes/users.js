@@ -73,18 +73,23 @@ router.get('/', auth.login, auth.checkRole('manager'), async (req, res) => {
     
         if (name) {
             conditions.OR = [
-                {utorid: name},
-                {name: name}
+                {utorid: {contains: name}},
+                {name: {contains: name}}
             ];
         }
     
         if (role) {
-            const lowerRole = role.toLowerCase();
-            const roles = ["regular", "cashier", "manager", "superuser"];
-            if (!roles.includes(lowerRole)) {
-                return res.status(400).json({"error": "Bad Request"});
+            const roles = role.split(" ");
+            if (roles.length === 1) {
+                const lowerRole = roles[0].toLowerCase();
+                const validRoles = ["regular", "cashier", "manager", "superuser"];
+                if (!validRoles.includes(lowerRole)) {
+                    return res.status(400).json({"error": "Bad Request"});
+                }
+                conditions.role = {equals: lowerRole};
+            } else {
+                conditions.role = {in: roles};
             }
-            conditions.role = {equals: lowerRole};
         }
         if (verified) {
             if (verified === 'true' || verified === 'false') {
@@ -126,7 +131,8 @@ router.get('/', auth.login, auth.checkRole('manager'), async (req, res) => {
                 createdAt: user.createdAt.toISOString(),
                 lastLogin: user.lastLogin ? user.lastLogin.toISOString() : null,
                 verified: user.verified,
-                avatarUrl: user.avatarUrl
+                avatarUrl: user.avatarUrl,
+                suspicious: user.suspicious
             };
         });
     
@@ -483,6 +489,7 @@ router.get('/:userId', auth.login, auth.checkRole('cashier'), async (req, res) =
                 createdAt: user.createdAt.toISOString(),
                 lastLogin: user.lastLogin ? user.lastLogin.toISOString() : null,
                 verified: user.verified,
+                suspicious: user.sus,
                 avatarUrl: user.avatarUrl,
                 promotions: promotions
             });
