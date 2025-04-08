@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 // Import page components
 
 import RegularTransactions from './pages/transactions/regular/index.js';
-import SingleTransactionRegular from './pages/transactions/SingleTransaction.jsx';
+
 import ManagerTransactions from './pages/transactions/manager/ManagerTransactions.jsx';
 import RegularAllTransactions from './pages/transactions/regular/RegularAllTransactions.jsx';
-import SingleTransactionManager from './pages/transactions/manager/SingleTransaction.jsx';
+
 import CashierTransactions from './pages/transactions/cashier/index.jsx';
 import CreatePurchasePage from './pages/transactions/cashier/CreatePurchasePage.jsx';
 import ProcessRedemptionPage from './pages/transactions/cashier/ProcessRedemptionPage.jsx';
@@ -19,6 +19,9 @@ import Home from './pages/Home.jsx';
 import Users from './pages/users/Users.jsx';
 import CreateUser from './pages/users/CreateUser.jsx';
 import {AuthProvider, useAuth} from './context/authContext.js';
+import SingleTransactionRegular from './pages/transactions/regular/SingleTransactionRegular.jsx';
+import SingleTransactionManager from './pages/transactions/manager/SingleTransactionManager.jsx';
+import RequestRedemptionPage from './pages/transactions/regular/RequestRedemptionPage.jsx';
 
 const App = () => {
   const ProtectedRoute = ({children}) => {
@@ -125,6 +128,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <RegularAllTransactions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transactions/redeem"
+          element={
+            <ProtectedRoute>
+              <RequestRedemptionPage />
             </ProtectedRoute>
           }
         />

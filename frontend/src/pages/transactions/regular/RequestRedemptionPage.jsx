@@ -1,12 +1,11 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import { UserContext } from "../../../context/userContext";
 import { Card, Form, InputGroup } from "react-bootstrap";
 import apiClient from "../../../api/client";
 import { useAuth } from "../../../context/authContext";
 
-const CreatePurchasePage = () => {
+const RequestRedemptionPage = () => {
     const { user } = useAuth();
     const [formValues, setFormValues] = useState({});
     const navigate = useNavigate();
@@ -15,8 +14,7 @@ const CreatePurchasePage = () => {
         e.preventDefault();
         const data = new FormData(e.target);
         const entries = Object.fromEntries(data.entries().filter(([_, value]) => value !== ""));
-        entries.type = "purchase"
-        entries.promotionIds = entries.promotionIds?.split(',').map((id) => parseInt(id)) || [];
+        entries.type = "redemption"
         console.log(entries);
         setFormValues(entries);
         return false;
@@ -24,13 +22,13 @@ const CreatePurchasePage = () => {
 
     useEffect(() => {
         // do this to prevent useEffect from running on component mount
-        if (formValues.type !== "purchase") {
+        if (formValues.type !== "redemption") {
             return;
         }
         const createData = async () => {
             try {
                 const response = await apiClient.post(
-                    'transactions',
+                    'users/me/transactions',
                     formValues,
                     {
                         headers: {
@@ -60,34 +58,15 @@ const CreatePurchasePage = () => {
             <section style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '1rem', justifyContent: 'start', flex: '1', width: '50rem' }}>
 
                 <Card>
-                    <Card.Header style={{ fontSize: '2rem' }}>Create a Purchase</Card.Header>
+                    <Card.Header style={{ fontSize: '2rem' }}>Redeem Points</Card.Header>
                     <Card.Body>
                         <Form onSubmit={handleSubmit}>
                             <InputGroup className="mb-3">
-                                <InputGroup.Text id="basic-addon1">User</InputGroup.Text>
-                                <Form.Control
-                                    placeholder="Enter utorid"
-                                    aria-label="utorid"
-                                    aria-describedby="utorid"
-                                    name="utorid"
-                                />
-                            </InputGroup>
-
-                            <InputGroup className="mb-3">
                                 <InputGroup.Text>Amount</InputGroup.Text>
                                 <Form.Control
-                                    aria-label="Amount (to the nearest dollar)"
-                                    placeholder="Enter amount spent"
-                                    name="spent"
-                                />
-                            </InputGroup>
-
-                            <InputGroup className="mb-3">
-                                <InputGroup.Text>Promotion IDs</InputGroup.Text>
-                                <Form.Control
-                                    aria-label="Amount (to the nearest dollar)"
-                                    placeholder='Enter any promotions to apply (comma separated, no spaces, i.e., "1,2,3")'
-                                    name="promotionIds"
+                                    aria-label="amount"
+                                    placeholder="Enter amount of points"
+                                    name="amount"
                                 />
                             </InputGroup>
 
@@ -100,7 +79,7 @@ const CreatePurchasePage = () => {
                                 />
                             </InputGroup>
                             <div className="d-flex justify-content-end">
-                                <Button variant="primary" type="submit">Create</Button>
+                                <Button variant="primary" type="submit">Redeem</Button>
                             </div>
                         </Form>
                     </Card.Body>
@@ -115,4 +94,4 @@ const CreatePurchasePage = () => {
 
 }
 
-export default CreatePurchasePage;
+export default RequestRedemptionPage;

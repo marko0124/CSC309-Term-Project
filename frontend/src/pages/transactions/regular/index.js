@@ -81,8 +81,6 @@ const RegularTransactions = () => {
         }
     }
 
-
-
     return <>
         <header>header</header>
         <nav>Nav bar</nav>

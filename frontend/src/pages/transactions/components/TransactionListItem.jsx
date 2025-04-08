@@ -1,8 +1,6 @@
-import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { capitalize } from '../../../utils/stringUtils';
 import { Link } from "react-router-dom";
-import { Button } from 'react-bootstrap';
 
 const TransactionItem = ({ transaction, view }) => {
 
@@ -21,7 +19,6 @@ const TransactionItem = ({ transaction, view }) => {
                 as="li"
                 className="d-flex justify-content-between align-items-start"
             >
-
                 <div style={{ display: 'flex', marginBottom: '1rem', justifyContent: 'space-between', width: '100%' }}>
                     {/* badge */}
                     <div style={{ padding: '0.2rem 0.8rem', backgroundColor: backgroundColor, borderRadius: '1rem', color: 'white' }}>

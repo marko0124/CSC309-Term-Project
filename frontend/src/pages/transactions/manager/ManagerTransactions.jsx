@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../../../context/userContext';
+import React from 'react';
 import TransactionsList from '../components/TransactionsList';
 import TransactionsFilters from '../components/TransactionFilters';
 import { useSearchParams } from 'react-router-dom';
-import PaginationButtons from '../components/PaginationButtons';
+
 
 const ManagerTransactions = () => {
     const [searchParams, setSearchParams] = useSearchParams();

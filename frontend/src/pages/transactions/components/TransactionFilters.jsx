@@ -3,13 +3,13 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { UserContext } from '../../../context/userContext';
+import { useAuth } from '../../../context/authContext';
 
 const TransactionsFilters = ({ setSearchParams, view }) => {
     const [amount, setAmount] = useState('');
     const [type, setType] = useState('Any');
     const [relatedId, setRelatedId] = useState("");
-    const { utorid } = useContext(UserContext);
+
     useEffect(() => {
         if (type === "") {
             setRelatedId("");

@@ -1,37 +1,36 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../../context/userContext";
+import { useEffect, useState } from "react";
 import TransactionItem from "./TransactionListItem";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 import PaginationButtons from "./PaginationButtons";
+import { useAuth } from "../../../context/authContext";
+import apiClient from "../../../api/client";
 
 const TransactionsList = ({ searchParamsString, view, showPagination, searchParams, setSearchParams }) => {
     const [data, setData] = useState({ count: 0, results: [] });
-    const { token } = useContext(UserContext);
+    const { user } = useAuth();
     const [limit, setLimit] = useState(10);
 
     useEffect(() => {
         try {
             setData([]);
 
-            const url = view === "manager" ? `${process.env.REACT_APP_BASE_URL}transactions?${searchParamsString}` 
-                : `${process.env.REACT_APP_BASE_URL}users/me/transactions?${searchParamsString}`
+            const url = view === "manager" ? `transactions?${searchParamsString}` 
+                : `users/me/transactions?${searchParamsString}`
 
             const fetchData = async () => {
-                const res = await fetch(url, {
-                    method: 'GET',
-                    headers: new Headers({
-                        'Authorization': 'Bearer ' + token
-                    })
-                });
-                if (!res.ok) {
-                    // throw new Error(`Response status: ${res.status}`);
-                    return setData({ count: 0, results: [] });
-                }
-                
-                const json = await res.json();
-                setData(json);
-            }
+                try {
+                    const response = await apiClient.get(url, {
+                      headers: {
+                        'Authorization': `Bearer ${user.token}`
+                        }
+                    });
+                    setData(response.data);
+                } catch (error) {
+                        console.error("Error fetching data:", error);
+                        setData({ count: 0, results: [] });
+                    }
+                };
             fetchData();
 
         } catch (error) {
