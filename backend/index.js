@@ -21,6 +21,8 @@ const port = (() => {
 const express = require("express");
 const cors = require("cors");
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+
 const app = express();
 const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
@@ -29,7 +31,7 @@ const eventRoutes = require("./routes/events");
 const promotionRoutes = require("./routes/promotions");
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: FRONTEND_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
