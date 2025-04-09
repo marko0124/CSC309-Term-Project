@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import * as promotionService from '../services/promotionService';
 
 const usePromotions = () => {
@@ -11,6 +12,7 @@ const usePromotions = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingPromotionId, setEditingPromotionId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeButtons, setActiveButtons] = useState({
     oneTime: false,
     automatic: false,
@@ -61,31 +63,39 @@ const toggleFilterButton = (buttonKey) => {
   }));
 };
 
-  // Add this new function to apply filters when the user wants to search
-  const applyFilters = useCallback(() => {
-    // Convert active buttons to filter type
-    let filterType = null;
-    if (activeButtons.oneTime && !activeButtons.automatic) {
-      filterType = 'one-time';
-    } else if (!activeButtons.oneTime && activeButtons.automatic) {
-      filterType = 'automatic';
-    } else if (activeButtons.oneTime && activeButtons.automatic) {
-      filterType = 'both';
-    }
-    
-    // Apply all filters at once
-    setFilter({
-      ...filter,
-      name: searchTerm,
-      type: filterType,
-      started: activeButtons.started,
-      ended: activeButtons.ended,
-      page: 1 // Reset to first page when applying filters
-    });
-    
-    // Reset current page
-    setCurrentPage(1);
-  }, [activeButtons, filter, searchTerm]);
+const applyFilters = useCallback(() => {
+  // Your existing code to determine filterType and set filter state
+  let filterType = null;
+  if (activeButtons.oneTime && !activeButtons.automatic) {
+    filterType = 'one-time';
+  } else if (!activeButtons.oneTime && activeButtons.automatic) {
+    filterType = 'automatic';
+  } else if (activeButtons.oneTime && activeButtons.automatic) {
+    filterType = 'both';
+  }
+  
+  // Set filter state
+  setFilter({
+    ...filter,
+    name: searchTerm,
+    type: filterType,
+    started: activeButtons.started,
+    ended: activeButtons.ended,
+    page: 1
+  });
+  
+  // NEW: Update URL parameters
+  const params = new URLSearchParams();
+  if (searchTerm) params.set('search', searchTerm);
+  if (filterType) params.set('type', filterType);
+  if (activeButtons.started) params.set('started', 'true');
+  if (activeButtons.ended) params.set('ended', 'true');
+  params.set('page', '1');
+  
+  setSearchParams(params);
+  setCurrentPage(1);
+}, [activeButtons, filter, searchTerm, setSearchParams]);
+
 
   // Update the handleSearch function to use applyFilters
   const handleSearch = (e) => {
@@ -95,6 +105,10 @@ const toggleFilterButton = (buttonKey) => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    
+    // Update page in URL without losing other parameters
+    searchParams.set('page', page.toString());
+    setSearchParams(searchParams);
   };
 
   const handlePromotionClick = async (promotion, e) => {

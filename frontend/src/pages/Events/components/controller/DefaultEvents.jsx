@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import '../Events.css';
-import '../../../navbar.css'; 
 import useEvents from '../../hooks/useEvents';
 import RegularSearchFilter from '../controller/RegularSearchFilter';
 import EventsList from '../EventsList';

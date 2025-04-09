@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import * as eventService from '../services/eventService';
 
 const useEvents = () => {
@@ -10,6 +11,7 @@ const useEvents = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [locationTerm, setLocationTerm] = useState('');
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeButtons, setActiveButtons] = useState({
     showFull: false,
     published: true,
@@ -35,6 +37,41 @@ const useEvents = () => {
     capacity: '',
     points: ''
   });
+
+  useEffect(() => {
+    // Read parameters from URL on initial load
+    const urlSearchTerm = searchParams.get('search') || '';
+    const urlLocationTerm = searchParams.get('location') || '';
+    const urlType = searchParams.get('type');
+    const urlStarted = searchParams.has('started');
+    const urlEnded = searchParams.has('ended');
+    
+    // Set initial states from URL
+    setSearchTerm(urlSearchTerm);
+    if (setLocationTerm) setLocationTerm(urlLocationTerm);
+    
+    // Set filter buttons active state based on URL
+    setActiveButtons({
+      ...activeButtons,
+      oneTime: urlType === 'one-time' || urlType === 'both',
+      automatic: urlType === 'automatic' || urlType === 'both',
+      started: urlStarted,
+      ended: urlEnded
+    });
+    
+    // Set filter state based on URL
+    setFilter({
+      ...filter,
+      name: urlSearchTerm,
+      location: urlLocationTerm,
+      type: urlType,
+      started: urlStarted,
+      ended: urlEnded,
+      page: parseInt(searchParams.get('page') || '1')
+    });
+    
+    setCurrentPage(parseInt(searchParams.get('page') || '1'));
+  }, []); 
 
   const fetchEvents = useCallback(async (page = 1) => {
     setLoading(true);
@@ -78,9 +115,20 @@ const useEvents = () => {
       ended: activeButtons.ended
     });
     
+    // Update URL parameters
+    const newParams = new URLSearchParams();
+    if (searchTerm) newParams.set('search', searchTerm);
+    if (locationTerm) newParams.set('location', locationTerm);
+    if (activeButtons.showFull) newParams.set('showFull', 'true');
+    if (activeButtons.published) newParams.set('published', 'true');
+    if (activeButtons.started) newParams.set('started', 'true');
+    if (activeButtons.ended) newParams.set('ended', 'true');
+    newParams.set('page', '1');
+    setSearchParams(newParams);
+    
     setCurrentPage(1);
-  }, [filter, searchTerm, locationTerm, activeButtons]); // Add activeButtons to dependencies
-
+  }, [filter, searchTerm, locationTerm, activeButtons, setSearchParams]);
+  
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
