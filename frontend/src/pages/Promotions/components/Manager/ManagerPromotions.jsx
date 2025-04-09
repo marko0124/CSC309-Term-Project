@@ -35,7 +35,9 @@ const ManagerPromotions = () => {
     handleEditClick,
     handleDeleteClick,
     toggleFilterButton,
-    resetForm
+    resetForm,
+    validationErrors,
+    handleCancel
   } = usePromotions();
 
   const { user } = useAuth();
@@ -112,7 +114,8 @@ const ManagerPromotions = () => {
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
           editMode={editMode}
-          onCancel={resetForm}
+          onCancel={handleCancel}
+          validationErrors={validationErrors}
         />
       )}
 
