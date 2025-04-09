@@ -5,12 +5,16 @@ const prisma = new PrismaClient();
 
 async function seed() {
     console.log("Seeding database.");
-    const users = await createUsers();
-    const events = await createEvents();
-    const promos = await createPromos();
-    const transactions = await createTransactions();
-    console.log("Done.");
-    return {users, events, promos, transactions};
+    try {
+        const users = await createUsers();
+        const events = await createEvents();
+        const promos = await createPromos();
+        const transactions = await createTransactions();
+        console.log("Done.");
+        return {users, events, promos, transactions};
+    } catch (error) {
+        console.log("done");
+    }
 }
 
 async function createUsers() {
