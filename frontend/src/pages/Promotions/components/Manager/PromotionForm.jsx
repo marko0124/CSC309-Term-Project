@@ -10,8 +10,8 @@ const PromotionForm = ({
   return (
     <>
       <div className="overlay" onClick={onCancel}></div>
-      <div className="popup">
-        <div className="popup-inner">
+      <div className="create-popup">
+        <div className="create-popup-inner">
           <h2>{editMode ? 'Edit Promotion' : 'Create New Promotion'}</h2>              
           <form onSubmit={handleSubmit}>
             <input 
@@ -87,7 +87,7 @@ const PromotionForm = ({
               />
             </div>
           </form>
-          <div id="popup-buttons">
+          <div className="create-popup-buttons">
             <button className="popup-btn cancel-btn" onClick={onCancel}>Cancel</button>                
             <button className="popup-btn submit-btn" onClick={handleSubmit}>
               {editMode ? 'Edit Promotion' : 'Create New Promotion'}
