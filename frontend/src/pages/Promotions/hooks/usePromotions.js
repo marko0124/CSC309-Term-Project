@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import * as promotionService from '../services/promotionService';
 
 const usePromotions = () => {
@@ -12,6 +13,8 @@ const usePromotions = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingPromotionId, setEditingPromotionId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [validationErrors, setValidationErrors] = useState({});
   const [searchParams, setSearchParams] = useSearchParams();
   const [validationErrors, setValidationErrors] = useState({});
   const [activeButtons, setActiveButtons] = useState({
@@ -96,6 +99,38 @@ const applyFilters = useCallback(() => {
   setCurrentPage(1);
 }, [activeButtons, filter, searchTerm, setSearchParams]);
 
+const applyFilters = useCallback(() => {
+  // Your existing code to determine filterType and set filter state
+  let filterType = null;
+  if (activeButtons.oneTime && !activeButtons.automatic) {
+    filterType = 'one-time';
+  } else if (!activeButtons.oneTime && activeButtons.automatic) {
+    filterType = 'automatic';
+  } else if (activeButtons.oneTime && activeButtons.automatic) {
+    filterType = 'both';
+  }
+  
+  // Set filter state
+  setFilter({
+    ...filter,
+    name: searchTerm,
+    type: filterType,
+    started: activeButtons.started,
+    ended: activeButtons.ended,
+    page: 1
+  });
+  
+  const params = new URLSearchParams();
+  if (searchTerm) params.set('search', searchTerm);
+  if (filterType) params.set('type', filterType);
+  if (activeButtons.started) params.set('started', 'true');
+  if (activeButtons.ended) params.set('ended', 'true');
+  params.set('page', '1');
+  
+  setSearchParams(params);
+  setCurrentPage(1);
+}, [activeButtons, filter, searchTerm, setSearchParams]);
+
 
   // Update the handleSearch function to use applyFilters
   const handleSearch = (e) => {
@@ -105,6 +140,10 @@ const applyFilters = useCallback(() => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    
+    // Update page in URL without losing other parameters
+    searchParams.set('page', page.toString());
+    setSearchParams(searchParams);
     
     // Update page in URL without losing other parameters
     searchParams.set('page', page.toString());
