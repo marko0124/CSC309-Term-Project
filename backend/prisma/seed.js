@@ -13,6 +13,7 @@ async function seed() {
         console.log("Done.");
         return {users, events, promos, transactions};
     } catch (error) {
+        console.log(error);
         console.log("done");
     }
 }

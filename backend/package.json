@@ -7,7 +7,7 @@
     "createsuperuser": "node prisma/createsu.js",
     "clean": "rm -rf prisma/dev.db* node_modules package-lock.json prisma/migrations/",
     "start": "node index.js",
-    "seed": "node prisma/seed.js"
+    "startPrisma": "npx prisma migrate dev --name init"
   },
   "author": "CSC309 Student, Winter 2025",
   "license": "ISC",
@@ -26,5 +26,8 @@
   },
   "devDependencies": {
     "prisma": "^6.4.1"
+  },
+  "prisma": {
+  "seed": "node prisma/seed.js"
   }
 }
