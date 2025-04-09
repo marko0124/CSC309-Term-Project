@@ -16,7 +16,7 @@ const promotionRoutes = require("./routes/promotions");
 
 app.use(cors({
     origin: FRONTEND_URL,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
   }));
@@ -27,6 +27,14 @@ app.use("/auth", authRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/events", eventRoutes);
 app.use("/promotions", promotionRoutes);
+app.get('/health', (req, res) => {
+    res.status(200).json({
+      status: 'ok',
+      database: 'SQLite',
+      dbPath: process.env.DATABASE_URL,
+      timestamp: new Date().toISOString()
+    });
+  });
 
 const server = app.listen(port, () => {
     console.log(`Server running on port ${port}`);
