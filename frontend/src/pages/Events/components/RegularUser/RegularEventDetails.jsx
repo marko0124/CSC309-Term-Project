@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import * as eventService from '../../services/eventService';
 import { useAuth } from '../../../../context/authContext';
-import '../../../navbar.css';
 import './RegularEventDetails.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
