@@ -50,20 +50,19 @@ const ManagerPromotions = () => {
         {/* Header Section */}
         <div className='header-container'> 
           <div className='header-text'>
-            <h1>A Title of the most Important Upcoming Event</h1>
+            <h1>Your Promotions!</h1>
             <div className='header-text-details'>
-              <p className='promotion-tag'>some type</p>
-              <p> Some Date</p>
+              {/* <p className='promotion-tag'>some type</p> */}
+              {/* <p> Some Date</p> */}
             </div>
             <div className='expandable-text'>
               <p className='header-text-description'>
-                {showFullDescription ? fullDescription : truncatedDescription}
+                Look out for our promotions to make purchasing cheaper and easier! 
               </p>
               <button 
                 className='show-more-button'
                 onClick={() => setShowFullDescription(!showFullDescription)}
               >
-                {showFullDescription ? 'Show Less' : 'Show More'}
               </button>
             </div>
           </div>
