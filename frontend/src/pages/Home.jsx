@@ -39,11 +39,6 @@ const Home = () => {
               <p>Today is {today.toLocaleDateString('en-US', { weekday: "long", year: "numeric", month: "long", day: "numeric" })}.</p>
             </div>
           </div>
-          <div className='expandable-text'>
-            <p className='header-text-description'>
-
-            </p>
-          </div>
         </div>
       </div>
 
@@ -62,7 +57,7 @@ const Home = () => {
           <div className="info-section">
             <h3>My Points</h3>
             <div className="info-row justify-content-center">
-              <span className="info-value points">{user.points}</span>
+              <span className="big">{user.points}</span>
             </div>
           </div>
         </div>
