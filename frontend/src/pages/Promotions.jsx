@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 // import Popup from '../components/PopUp.jsx';
-import './navbar.css'; 
 import './Promotions.css';
 import '../components/PopUp.css';
 

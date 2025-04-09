@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import * as eventService from '../../services/eventService';
-import '../../../navbar.css';
 import ManagerParticipantPopup from './ManagerParticipantPopup';
 import AwardPoints from '../controller/AwardPoints';
 import './ManagerEventDetails.css';
