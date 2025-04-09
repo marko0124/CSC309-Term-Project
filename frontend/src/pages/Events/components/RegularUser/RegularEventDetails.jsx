@@ -12,7 +12,9 @@ import {
     faCheck,
     faPlus
 } from '@fortawesome/free-solid-svg-icons';
-import RegularParticipantPopup from './RegularParticipantPopup'; // Add this import
+import RegularParticipantPopup from './RegularParticipantPopup';
+import HomeNavbar from '../../../navbar/HomeNavbar';
+
 
 const RegularEventDetails = ({ eventId: eventIdProp }) => {
     const [event, setEvent] = useState(null);
@@ -145,7 +147,7 @@ const RegularEventDetails = ({ eventId: eventIdProp }) => {
         <div className='event-details-page'>
             <main>
                 <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-                <div className='navbar'> NAVBAR (Regular) </div>
+                <HomeNavbar />
                 
                 <div className='event-details-container'>
                     <Link to="/events" className="back-button">

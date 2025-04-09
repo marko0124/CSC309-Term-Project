@@ -5,13 +5,14 @@ const PromotionForm = ({
   handleInputChange, 
   handleSubmit, 
   editMode, 
-  onCancel 
+  onCancel,
+  validationErrors
 }) => {
   return (
     <>
       <div className="overlay" onClick={onCancel}></div>
-      <div className="popup">
-        <div className="popup-inner">
+      <div className="create-popup">
+        <div className="create-popup-inner">
           <h2>{editMode ? 'Edit Promotion' : 'Create New Promotion'}</h2>              
           <form onSubmit={handleSubmit}>
             <input 
@@ -19,7 +20,7 @@ const PromotionForm = ({
               type="text" 
               name="title"
               placeholder="Promotion Title" 
-              value={formData.title}
+              value={formData?.title} // Add fallback with optional chaining
               onChange={handleInputChange}
               required
             />
@@ -27,7 +28,7 @@ const PromotionForm = ({
               id='promotion-description'
               name="description"
               placeholder="Promotion Description" 
-              value={formData.description}
+              value={formData?.description} // Add fallback
               onChange={handleInputChange}
               required
             ></textarea>
@@ -35,7 +36,7 @@ const PromotionForm = ({
               <select 
                 id="promotion-type" 
                 name="promotionType" 
-                value={formData.promotionType}
+                value={formData?.promotionType || 'one-time'}
                 onChange={handleInputChange}
                 required
               >
@@ -48,7 +49,7 @@ const PromotionForm = ({
                 type="date"
                 name="startDate"
                 placeholder="Start Date"
-                value={formData.startDate}
+                value={formData?.startDate}
                 onChange={handleInputChange}
                 required
               />
@@ -57,7 +58,7 @@ const PromotionForm = ({
                 type="date"
                 name="endDate"
                 placeholder="End Date"
-                value={formData.endDate}
+                value={formData?.endDate}
                 onChange={handleInputChange}
                 required
               />
@@ -67,7 +68,7 @@ const PromotionForm = ({
                 type="number"
                 name="minSpending"
                 placeholder="Minimum Spending"
-                value={formData.minSpending}
+                value={formData?.minSpending || ''}
                 onChange={handleInputChange}
               />
 
@@ -75,24 +76,25 @@ const PromotionForm = ({
                 type="number"
                 name="rate"
                 placeholder="Discount Rate"
-                value={formData.rate}
+                value={formData?.rate || ''}
                 onChange={handleInputChange}
               />
               <input 
                 type="number" 
                 name="points"
                 placeholder="Points" 
-                value={formData.points}
+                value={formData?.points || ''}
                 onChange={handleInputChange}
               />
             </div>
-          </form>
-          <div id="popup-buttons">
+            <div className="create-popup-buttons">
             <button className="popup-btn cancel-btn" onClick={onCancel}>Cancel</button>                
-            <button className="popup-btn submit-btn" onClick={handleSubmit}>
+            <button className="popup-btn submit-btn">
               {editMode ? 'Edit Promotion' : 'Create New Promotion'}
             </button>
           </div>
+          </form>
+          
         </div>
       </div>
     </>

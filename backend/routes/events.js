@@ -852,6 +852,7 @@ router.patch('/:eventId', auth.login, async (req, res) => {
                 return res.status(403).json({"error": "Forbidden"});
             }
             if (typeof published !== "boolean" || published === false) {
+                console.log("published", published);
                 return res.status(400).json({"error": "Bad Request"});
             }
             data.published = published;

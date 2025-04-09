@@ -163,8 +163,7 @@
   .event-edit-button:hover {
     background-color: #3a57e8;
   }
-  
-  /* Edit Form Styles */
+
   .edit-event-form {
     background-color: #f9f9f9;
     padding: 25px;
@@ -172,11 +171,13 @@
     margin-top: 20px;
   }
   
-  .edit-event-form h2 {
+.event-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 0;
     color: #2c3e50;
     font-size: 1.8rem;
-    border-bottom: 2px solid #5271ff;
     padding-bottom: 10px;
     margin-bottom: 25px;
   }
@@ -219,25 +220,25 @@
     display: block;
     color: #666;
     font-size: 0.8rem;
-    margin-top: 5px;
+
   }
   
-  .checkbox-group {
+
+  .published-checkbox-group input {
+    right :0;
+    width:15px;
+    margin-right: 10px;
+    color-scheme: var(--quaternary-color);
+
+  }
+  .published-checkbox-group label {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    font-size: 01rem;
+    color: #555;
   }
-  
-  .checkbox-group input {
-    width: auto;
-    margin-right: 10px;
-  }
-  
-  .button-group {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-top: 30px;
-  }
+
   
   .save-button,
   .cancel-button {
