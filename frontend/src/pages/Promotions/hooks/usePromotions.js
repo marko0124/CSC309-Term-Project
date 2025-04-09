@@ -181,7 +181,7 @@ const validatePromotionForm = (formData) => {
     }
   }
 
-  if (formData.startDate && startDate < now) {
+  if (formData.startDate && startDate < now || formData.endDate && endDate < now) {
     errors.startDate = "Cannot edit/create promotion that has already started";
   }
   return {
