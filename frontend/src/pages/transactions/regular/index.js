@@ -84,7 +84,7 @@ const RegularTransactions = () => {
                         }
 
                         {/* manager */}
-                        {(user.role === "cashier" || user.role === "manager" || user.role === "superuser") &&
+                        {(user.role === "manager" || user.role === "superuser") &&
                             <h3>Manager Actions</h3>
                         }
                         {(user.role === "manager" || user.role === "superuser") &&
