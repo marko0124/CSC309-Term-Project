@@ -185,6 +185,25 @@ a:hover{
     color: white;
 }
 
+.bookmark-icon {
+    margin-left: 12px;
+    cursor: pointer;
+    border-style: none;
+}
+
+.bookmark-filter-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: auto;
+    padding: 0 15px;
+}
+
+.bookmark-icon {
+    position: relative;
+}
+
 .user-header{
     font-size: 24px;
     color: var(--text-color);
