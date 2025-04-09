@@ -31,6 +31,14 @@ const server = app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
+app.use(express.json());
+// Debug route to list users
+app.get('/debug/users', async (req, res) => {
+  const users = await prisma.user.findMany();
+  res.json(users);
+});
+
+
 // Then initialize database and routes
 setupDatabase()
   .then(() => {

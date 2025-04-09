@@ -4,18 +4,19 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function seed() {
-    console.log("Seeding database.");
-    try {
-        const users = await createUsers();
-        const events = await createEvents();
-        const promos = await createPromos();
-        const transactions = await createTransactions();
-        console.log("Done.");
-        return {users, events, promos, transactions};
-    } catch (error) {
-        console.log(error);
-        console.log("done");
-    }
+  console.log("Seeding database.");
+  try {
+    const users = await createUsers();
+    const events = await createEvents();
+    const promos = await createPromos();
+    const transactions = await createTransactions();
+    console.log("Done.");
+    return { users, events, promos, transactions };
+  } catch (error) {
+    console.error("Seed failed:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 async function createUsers() {
@@ -131,13 +132,15 @@ async function createUsers() {
     ];
     const created = [];
     for (const user of users) {
-        created.push(await prisma.user.create({
-            data: user
-        }));
+      created.push(await prisma.user.upsert({
+        where: { email: user.email }, 
+        update: { ...user }, 
+        create: { ...user },
+      }));
     }
-
+    console.log("Seeded users");
     return created;
-}
+  }
 
 async function createEvents() {
     const events = [
@@ -221,52 +224,46 @@ async function createEvents() {
     const user5 = await prisma.user.findUnique({
         where: {utorid: "sasuk123"}
     });
-    for (var i = 0; i < events.length; i++) {
-        if (i === 0) {
+    for (let i = 0; i < events.length; i++) {
+        const existingEvent = await prisma.event.findFirst({ where: { name: events[i].name } });
+        if (!existingEvent) {
+          if (i === 0) {
             created.push(await prisma.event.create({
-                data: {
-                    ...events[i],
-                    organizers: {
-                        connect: {id: user1.id}
-                    }
+              data: {
+                ...events[i],
+                organizers: { connect: { id: user1.id } }
+              }
+            }));
+          } else if (i === 1) {
+            created.push(await prisma.event.create({
+              data: {
+                ...events[i],
+                organizers: { connect: { id: user1.id } },
+                guests: { connect: { id: user2.id } }
+              }
+            }));
+          } else if (i === 3) {
+            created.push(await prisma.event.create({
+              data: {
+                ...events[i],
+                guests: {
+                  connect: [
+                    { id: user1.id }, { id: user2.id }, { id: user3.id },
+                    { id: user4.id }, { id: user5.id }
+                  ]
                 }
+              }
             }));
-        } else if (i === 1) {
+          } else {
             created.push(await prisma.event.create({
-                data: {
-                    ...events[i],
-                    organizers: {
-                        connect: {id: user1.id}
-                    },
-                    guests: {
-                        connect: {id: user2.id}
-                    }
-                }
+              data: events[i]
             }));
-        } else if (i === 3) {
-            created.push(await prisma.event.create({
-                data: {
-                    ...events[i],
-                    guests: {
-                        connect: [
-                            {id: user1.id},
-                            {id: user2.id},
-                            {id: user3.id},
-                            {id: user4.id},
-                            {id: user5.id},
-                        ]
-                    }
-                }
-            }));
-        } else {
-            created.push(await prisma.event.create({
-                data: events[i]
-            }));
+          }
         }
+      }
+      console.log("Seeded events");
+      return created;
     }
-
-    return created;
-}
 
 async function createPromos() {
     const promos = [
@@ -317,28 +314,27 @@ async function createPromos() {
     ];
 
     const created = [];
-    const user = await prisma.user.findUnique({
-        where: {utorid: "conan123"}
-    });
-    for (var i = 0; i < promos.length; i++) {
+    const user = await prisma.user.findUnique({ where: { utorid: "conan123" } });
+    for (let i = 0; i < promos.length; i++) {
+      const existingPromo = await prisma.promotion.findFirst({ where: { name: promos[i].name } });
+      if (!existingPromo) {
         if (i === 2 || i === 3) {
-            created.push(await prisma.promotion.create({
-                data: {
-                    ...promos[i],
-                    users: {
-                        connect: {id: user.id}
-                    }
-                }
-            }));
+          created.push(await prisma.promotion.create({
+            data: {
+              ...promos[i],
+              users: { connect: { id: user.id } }
+            }
+          }));
         } else {
-            created.push(await prisma.promotion.create({
-                data: promos[i]
-            }));
+          created.push(await prisma.promotion.create({
+            data: promos[i]
+          }));
         }
+      }
     }
-
+    console.log("Seeded promos");
     return created;
-}
+  }
 
 async function createTransactions() {
     const superuser = await prisma.user.findUnique({
@@ -608,11 +604,18 @@ async function createTransactions() {
     ];
     
     const created = [];
-    
-    for (var transaction of transactions) {
-        created.push(await prisma.transaction.create({
-            data: transaction
-        }));
+    for (const transaction of transactions) {
+      const existing = await prisma.transaction.findFirst({
+        where: {
+          transactionType: transaction.transactionType,
+          sender: { id: transaction.sender.connect.id },
+          createdBy: { id: transaction.createdBy.connect.id },
+          points: transaction.points
+        }
+      });
+      if (!existing) {
+        created.push(await prisma.transaction.create({ data: transaction }));
+      }
     }
 
     const adjustments = [
@@ -639,13 +642,18 @@ async function createTransactions() {
         },
     ];
 
-    for (var adjustment of adjustments) {
-        created.push(await prisma.transaction.create({
-            data: transaction
-        }));
-    }
-
-    return created;
+    for (const adjustment of adjustments) {
+        if (adjustment.relatedId) { // Ensure relatedId exists
+          const existing = await prisma.transaction.findFirst({
+            where: { relatedId: adjustment.relatedId, transactionType: "adjustment" }
+          });
+          if (!existing) {
+            created.push(await prisma.transaction.create({ data: adjustment }));
+          }
+        }
+      }
+      console.log("Seeded transactions");
+      return created;
 }
-
-seed();
+    
+    seed();
