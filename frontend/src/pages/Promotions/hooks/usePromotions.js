@@ -180,6 +180,10 @@ const validatePromotionForm = (formData) => {
       errors.minSpending = "Minimum purchase must be a non-negative number";
     }
   }
+
+  if (formData.startDate && startDate < now) {
+    errors.startDate = "Cannot edit/create promotion that has already started";
+  }
   return {
     isValid: Object.keys(errors).length === 0,
     errors
