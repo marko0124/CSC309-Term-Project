@@ -26,16 +26,6 @@ app.use(cors({
 
 console.log('CORS configured with origin:', formattedOrigin);
 
-
-// Initialize the app without database routes first
-app.get('/health', (req, res) => {
-    res.status(200).json({
-      status: 'initializing',
-      message: 'Server starting up, database initialization in progress',
-      timestamp: new Date().toISOString()
-    });
-  });
-  
 // Start server first
 const server = app.listen(port, () => {
   console.log(`Server running on port ${port}`);
@@ -69,28 +59,6 @@ setupDatabase()
         dbPath: process.env.DATABASE_URL,
         timestamp: new Date().toISOString()
       });
-    });
-    
-    // Add debug endpoint
-    app.get('/debug-prisma', async (req, res) => {
-      try {
-        // Test direct database access
-        const result = await prisma.$queryRaw`SELECT name FROM sqlite_master WHERE type='table'`;
-        const dbPath = process.env.DATABASE_URL.replace('file:', '');
-        res.json({
-          tables: result,
-          dbUrl: process.env.DATABASE_URL.replace(/:[^:]*@/, ':****@'),
-          fileExists: fs.existsSync(dbPath),
-          fileSize: fs.existsSync(dbPath) ? fs.statSync(dbPath).size : 0,
-          dbDir: fs.existsSync('/data/sqlite') ? fs.readdirSync('/data/sqlite') : 'Directory not found'
-        });
-      } catch (error) {
-        res.status(500).json({ 
-          error: error.message,
-          code: error.code,
-          meta: error.meta
-        });
-      }
     });
   })
   .catch(error => {
