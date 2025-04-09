@@ -18,11 +18,14 @@ import ChangePassword from './pages/profile/ChangePassword.jsx';
 import Home from './pages/Home.jsx';
 import Users from './pages/users/Users.jsx';
 import CreateUser from './pages/users/CreateUser.jsx';
+import PromotionsRouter from './pages/Promotions/PromotionsRouter.jsx';
 import {AuthProvider, useAuth} from './context/authContext.js';
 import SingleTransactionRegular from './pages/transactions/regular/SingleTransactionRegular.jsx';
 import SingleTransactionManager from './pages/transactions/manager/SingleTransactionManager.jsx';
 import RequestRedemptionPage from './pages/transactions/regular/RequestRedemptionPage.jsx';
 import TransferPointsPage from './pages/transactions/regular/TransferPointsPage.jsx';
+import EventDetailRouter from './pages/Events/EventDetailRouter.jsx';
+import EventsRouter from './pages/Events/EventsRouter.jsx';
 
 const App = () => {
   const ProtectedRoute = ({children}) => {
@@ -197,6 +200,31 @@ const App = () => {
           }
         />
         
+        <Route
+          path="/promotions"
+          element={
+            <ProtectedRoute>
+              <PromotionsRouter />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events"
+          element={
+            <ProtectedRoute>
+              <EventsRouter />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/events/:eventId"
+          element={
+            <ProtectedRoute>
+              <EventDetailRouter />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     )
   }
@@ -209,5 +237,5 @@ const App = () => {
     </Router>
   );
 };
-
+  
 export default App;

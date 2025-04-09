@@ -36,7 +36,6 @@
     height: 70%;
     border: 2px solid black;
     width: 80%;
-
 }
 
 .popup-form{
@@ -71,15 +70,15 @@
 }
 
 .popup-inner {
-    right: 0px;
-    background-color: transparent;
-    border: none;
-    font-size: 15px;
+    right: 0px !important;
+    background-color: transparent !important;
+    border: none !important;
+    font-size: 15px !important;
 }
 
 .popup-inner h2{
-  font-size: 20px;
-  margin-bottom: 1%;
+  font-size: 20px !important;
+  margin-bottom: 1% !important;
 }
 
 .popup-btn{
