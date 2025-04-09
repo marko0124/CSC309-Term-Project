@@ -1,5 +1,36 @@
 #!/usr/bin/env node
 'use strict';
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+// Add after app initialization
+app.get('/debug-prisma', async (req, res) => {
+  try {
+    // Test direct database access
+    const result = await prisma.$queryRaw`SELECT name FROM sqlite_master WHERE type='table'`;
+    res.json({
+      tables: result,
+      dbUrl: process.env.DATABASE_URL.replace(/:[^:]*@/, ':****@'),
+      fileExists: require('fs').existsSync(process.env.DATABASE_URL.replace('file:', '')),
+      dbDir: require('fs').readdirSync('/data/sqlite')
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: error.message,
+      code: error.code,
+      meta: error.meta
+    });
+  }
+});
+
+// Fix CORS issues
+const corsOrigin = process.env.FRONTEND_URL || "http://localhost:3000";
+const formattedOrigin = corsOrigin.startsWith('http') 
+  ? corsOrigin 
+  : `https://${corsOrigin}`;
+
+
+
 
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 const port = process.env.PORT || 3001;
@@ -20,6 +51,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
   }));
+  console.log('CORS configured with origin:', formattedOrigin);
 
 app.use(express.json());
 app.use("/users", userRoutes);
