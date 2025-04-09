@@ -229,14 +229,19 @@ router.get('/me', auth.login, async (req, res) => {
         const user = await prisma.user.findUnique({
             where: {id: req.user.id},
             include: {
-                promotions: {}
+                promotions: {},
+                attended: {},
             }
         });
     
         if (!user) {
             return res.status(404).json({"error": "Not Found"});
         }
-    
+        const attended = user.attended.map(event => {
+            return {
+                id: event.id,
+            }
+        });
         const promotions = user.promotions.map(promotion => {
             return {
                 id: promotion.id,
@@ -259,7 +264,8 @@ router.get('/me', auth.login, async (req, res) => {
             lastLogin: user.lastLogin ? user.lastLogin.toISOString() : null,
             verified: user.verified,
             avatarUrl: user.avatarUrl,
-            promotions: promotions
+            promotions: promotions,
+            attended: attended
         });
     } catch (error) {
         console.error("Error", error);

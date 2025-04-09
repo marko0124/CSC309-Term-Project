@@ -122,14 +122,16 @@ router.get('/', auth.login, async (req, res) => {
                 return res.status(400).json({"error": "Bad Request"});
             }
             if (showFull !== "true") {
-                conditions.OR = [
-                    {capacity: null},
-                    {full: false}
-                ]
+                conditions.full = false;
             }
         }
         if (req.user.role !== 'manager' && req.user.role !== 'superuser') {
-            conditions.published = true;
+            conditions.OR = [
+                {published: true},
+                {organizers: {some: {
+                    id: req.user.id
+                }}}
+            ];
         } else if (published) {
             if (published !== "true" && published !== "false") {
                 return res.status(400).json({"error": "Bad Request"});
