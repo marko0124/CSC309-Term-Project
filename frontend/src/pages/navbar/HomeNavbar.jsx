@@ -42,7 +42,7 @@ function HomeNavbar() {
   );
 
   return (
-      <Navbar bg="#primary" data-bs-theme="light" sticky="top" style={{backgroundColor: "#ffffff"}}>
+      <Navbar bg="#primary"  data-bs-theme="light" sticky="top" style={{backgroundColor: "rgba(75, 172, 245, 1.0)"}}>
         <Container fluid style={{marginLeft: "5px", marginRight: "5px", width: "100%"}}>
           <Navbar.Brand href="/home" style={{color: "#292f63"}}>Home</Navbar.Brand>
           <Navbar.Collapse className="justify-content-end">
