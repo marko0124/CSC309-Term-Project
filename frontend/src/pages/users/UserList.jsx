@@ -40,7 +40,6 @@ const UserList = ({
                 >
                   <FontAwesomeIcon
                     icon={bookmarked.some(u => u.id === user.id) ? solidBookmark : regularBookmark}
-                    color = {bookmarked.some(u => u.id === user.id) ? "#428DC6" : "#292F63"}
                   />
                 </button>
               </div>
