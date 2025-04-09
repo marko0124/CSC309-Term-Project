@@ -74,6 +74,13 @@ const UserSearchFilters = ({
           >
             Activated
           </button>
+
+          <button 
+            className={`filter-button ${activeButtons.activated ? 'active-filter-button' : ''}`}
+            onClick={() => toggleFilterButton('bookmarked')}
+          >
+            Bookmarked
+          </button>
         </div>
       </div>
     </>

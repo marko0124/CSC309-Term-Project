@@ -22,6 +22,7 @@ const Users = () => {
     activeButtons,
     formData,
     editMode,
+    bookmarked,
     setButtonPopup,
     setSearchTerm,
     setSelectedUser,
@@ -32,6 +33,7 @@ const Users = () => {
     handleSubmit,
     handleEditClick,
     toggleFilterButton,
+    toggleBookmark,
     resetForm
   } = useUsers();
   const nav = useNavigate();
@@ -92,6 +94,8 @@ const Users = () => {
               itemsPerPage={itemsPerPage}
               onPageChange={handlePageChange}
               onUserClick={handleUserClick}
+              bookmarked={bookmarked}
+              toggleBookmark={toggleBookmark}
             />
           </div>
         </div>

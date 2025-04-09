@@ -1,12 +1,17 @@
 import React from 'react';
 import Pagination from './Pagination';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as regularBookmark } from '@fortawesome/free-regular-svg-icons';
 
 const UserList = ({ 
   users, 
   currentPage, 
   itemsPerPage, 
   onPageChange, 
-  onUserClick 
+  onUserClick,
+  bookmarked,
+  toggleBookmark
 }) => {
   if (!users.results || users.results.length === 0) {
     return <div className="no-results">No users :(</div>;
@@ -25,7 +30,19 @@ const UserList = ({
               className="user-clickable"
               onClick={(e) => onUserClick(user, e)}
             >
-              <div className='user-title'>{user.name}</div>
+              <div className='user-title'>{user.name}
+                <button 
+                  className="bookmark-icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleBookmark(user);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={bookmarked.some(u => u.id === user.id) ? solidBookmark : regularBookmark}
+                  />
+                </button>
+              </div>
               <p className='user-description'>
                 UTORid: {user.utorid} | Email: {user.email} | Points: {user.points}
               </p>
