@@ -149,6 +149,128 @@ const useEvents = () => {
     }));
   };
 
+// Add this to your state declarations
+const [validationErrors, setValidationErrors] = useState({});
+
+/**
+ * Validates event form data and returns specific error messages
+ * @param {Object} eventData - The event form data
+ * @returns {Object} - { isValid: boolean, errors: { field: message } }
+ */
+const validateEventsForm = (eventData) => {
+  const errors = {};
+  
+  // Check required fields
+  if (!eventData.name || eventData.name.trim() === '') {
+    errors.name = "Event name is required";
+  } else if (eventData.name.length > 100) {
+    errors.name = "Event name cannot exceed 100 characters";
+  }
+  
+  if (!eventData.description || eventData.description.trim() === '') {
+    errors.description = "Description is required";
+  }
+
+  if (!eventData.location || eventData.location.trim() === '') {
+    errors.location = "Location is required";
+  }
+  
+  // Validate dates
+  const now = new Date();
+  const startTime = new Date(eventData.startTime);
+  const endTime = new Date(eventData.endTime);
+  
+  if (!eventData.startTime) {
+    errors.startTime = "Start time is required";
+  }
+  
+  if (!eventData.endTime) {
+    errors.endTime = "End time is required";
+  } else if (startTime >= endTime) {
+    errors.endTime = "End time must be after start time";
+  }
+  
+  // Validate capacity (if provided)
+  if (eventData.capacity !== '' && eventData.capacity !== null) {
+    if (isNaN(eventData.capacity) || Number(eventData.capacity) <= 0) {
+      errors.capacity = "Capacity must be a positive number";
+    } else if (!Number.isInteger(Number(eventData.capacity))) {
+      errors.capacity = "Capacity must be a whole number";
+    }
+  }
+  
+  // Validate points (if provided)
+  if (eventData.points !== '' && eventData.points !== null) {
+    if (isNaN(eventData.points) || Number(eventData.points) < 0) {
+      errors.points = "Points must be a non-negative number";
+    }
+  }
+  
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors
+  };
+};
+
+// Fix the handleSubmit function to use validateEventsForm
+const handleSubmit = async (e) => {
+  if (e) e.preventDefault();
+  
+  // Get the form element 
+  const form = document.querySelector('form');
+  
+  // Check if the form passes HTML5 validation
+  if (form && !form.checkValidity()) {
+    // If not valid, trigger the browser's validation UI
+    form.reportValidity();
+    return;
+  }
+  
+  // Validate the form with our custom validation
+  const { isValid, errors } = validateEventsForm(formData);
+  
+  if (!isValid) {
+    // Set errors in state to display to the user
+    setValidationErrors(errors);
+    
+    // Create a summary message
+    const errorMessage = Object.values(errors).join('\n• ');
+    alert(`Please fix the following errors:\n\n• ${errorMessage}`);
+    return;
+  }
+  
+  setLoading(true);
+  
+  const eventData = {
+    name: formData.name,
+    location: formData.location,
+    description: formData.description,
+    startTime: new Date(formData.startTime).toISOString(),
+    endTime: new Date(formData.endTime).toISOString(),
+    capacity: formData.capacity || null,
+    points: formData.points || null,
+  };
+  
+  try {
+    if (selectedEvent) {
+      // If there's a selected event, we're editing
+      await eventService.updateEvent(selectedEvent.id, eventData);
+    } else {
+      // Otherwise we're creating a new event
+      await eventService.createEvent(eventData);
+    }
+    
+    resetForm();
+    fetchEvents(currentPage);
+    setButtonPopup(false);
+    setValidationErrors({});
+  } catch (error) {
+    console.error('Error submitting event:', error);
+    alert(`Failed to ${selectedEvent ? 'update' : 'create'} event: ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
   const handleCreateClick = () => {
     const today = new Date().toISOString().split('T')[0];
     
@@ -172,34 +294,6 @@ const useEvents = () => {
     console.log('Create event button clicked, buttonPopup set to:', true); // Debug
   };
 
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
-    
-    if (!formData.name || !formData.description || !formData.location || 
-        !formData.startTime || !formData.endTime || !formData.points) {
-      alert('Please fill in all required fields.');
-      return;
-    }
-    
-    const eventData = {
-      name: formData.name,
-      location: formData.location,
-      description: formData.description,
-      startTime: new Date(formData.startTime).toISOString(),
-      endTime: new Date(formData.endTime).toISOString(),
-      capacity: formData.capacity || null,
-      points: formData.points || null,
-    };
-    
-    try {
-      await eventService.createEvent(eventData);
-      resetForm();
-      fetchEvents(currentPage);
-    } catch (error) {
-      console.error('Error submitting event:', error);
-      alert(`Failed to create event: ${error.message}`);
-    }
-  };
 
   const handleEditClick = (event) => {
     setSelectedEvent(event);
@@ -271,6 +365,7 @@ const useEvents = () => {
     handleDeleteClick,
     toggleFilterButton,
     handleCreateClick,
+    validateEventsForm,
     resetForm
   };
 };

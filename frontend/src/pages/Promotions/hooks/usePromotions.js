@@ -13,6 +13,7 @@ const usePromotions = () => {
   const [editingPromotionId, setEditingPromotionId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
+  const [validationErrors, setValidationErrors] = useState({});
   const [activeButtons, setActiveButtons] = useState({
     oneTime: false,
     automatic: false,
@@ -84,7 +85,6 @@ const applyFilters = useCallback(() => {
     page: 1
   });
   
-  // NEW: Update URL parameters
   const params = new URLSearchParams();
   if (searchTerm) params.set('search', searchTerm);
   if (filterType) params.set('type', filterType);
@@ -132,40 +132,123 @@ const applyFilters = useCallback(() => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
-    
-    if (!formData.title || !formData.description || !formData.startDate || 
-        !formData.endDate || !formData.promotionType) {
-      alert('Please fill in all required fields.');
-      return;
+  /**
+ * Validates promotion form data and returns specific error messages
+ * @param {Object} formData - The promotion form data
+ * @returns {Object} - { isValid: boolean, errors: { field: message } }
+ */
+const validatePromotionForm = (formData) => {
+  const errors = {};
+  
+  // Check required fields
+  if (!formData.title || formData.title.trim() === '') {
+    errors.title = "Promotion title is required";
+  } else if (formData.title.length > 100) {
+    errors.title = "Promotion name cannot exceed 100 characters";
+  }
+  
+  if (!formData.description || formData.description.trim() === '') {
+    errors.description = "Description is required";
+  }
+
+  // Validate dates
+  const now = new Date();
+  const startDate = new Date(formData.startDate);
+  const endDate = new Date(formData.endDate);
+  
+  if (!formData.startDate) {
+    errors.startDate = "Start date is required";
+  }
+  
+  if (!formData.endDate) {
+    errors.endDate = "End date is required";
+  } else if (startDate >= endDate) {
+    errors.endDate = "End date must be after start date";
+  }
+
+  if(!(errors.description && errors.startDate && errors.endDate && errors.title)) {
+    if ((formData.minSpeding == undefined || formData.minSpending == 0)
+       && (formData.rate == undefined || formData.rate == 0) && 
+      (formData.points == undefined || formData.points == 0)){
+      errors.minSpending = "At least one of discount rate, minimum spending or points fields must speicifed (greate than 0)";
     }
-    
-    const promotionData = {
-      name: formData.title,
-      description: formData.description,
-      type: formData.promotionType,
-      startTime: new Date(formData.startDate + 'T00:00:00').toISOString(),
-      endTime: new Date(formData.endDate + 'T00:00:00').toISOString(),
-      minSpending: formData.minSpending || null,
-      rate: formData.rate || null,
-      points: formData.points || null,
-    };
-    
-    try {
-      if (editMode) {
-        await promotionService.updatePromotion(editingPromotionId, promotionData);
-      } else {
-        await promotionService.createPromotion(promotionData);
-      }
-      
-      resetForm();
-      fetchPromotions(currentPage);
-    } catch (error) {
-      console.error('Error submitting promotion:', error);
-      alert(`Failed to ${editMode ? 'update' : 'create'} promotion: ${error.message}`);
+  }
+  
+  // Check if minimum purchase is valid
+  if (formData.minSpending!== undefined && formData.minSpeding !== '') {
+    if (isNaN(formData.minSpending) || Number(formData.minSpending) < 0) {
+      errors.minSpending = "Minimum purchase must be a non-negative number";
     }
+  }
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors
   };
+};
+
+const handleSubmit = async (e) => {
+  if (e) e.preventDefault();
+  
+  // Validate the form
+  const { isValid, errors } = validatePromotionForm(formData);
+  
+  if (!isValid) {
+    // Set errors in state to display to the user
+    setValidationErrors(errors);
+    
+    // Create a summary message
+    const errorMessage = Object.values(errors).join('\n• ');
+    alert(`Please fix the following errors:\n\n• ${errorMessage}`);
+    return;
+  }
+    
+  setLoading(true);
+  
+  const promotionData = {
+    name: formData.title,
+    description: formData.description,
+    type: formData.promotionType,
+    startTime: new Date(formData.startDate + 'T00:00:00').toISOString(),
+    endTime: new Date(formData.endDate + 'T00:00:00').toISOString(),
+    minSpending: formData.minSpending || null,
+    rate: formData.rate || null,
+    points: formData.points || null,
+  };
+  
+  try {
+    if (editMode) {
+      await promotionService.updatePromotion(editingPromotionId, promotionData);
+    } else {
+      await promotionService.createPromotion(promotionData);
+    }
+    
+    resetForm();
+    fetchPromotions(currentPage);
+    setButtonPopup(false);
+  } catch (error) {
+    console.error('Error submitting promotion:', error);
+    alert(`Failed to ${editMode ? 'update' : 'create'} promotion: ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
+
+const handleCancel = () => {
+  // Clear form data
+  resetForm();
+  
+  // Clear any validation errors
+  setValidationErrors({});
+  
+  // Close the popup
+  setButtonPopup(false);
+  
+  // Reset edit mode if active
+  if (editMode) {
+    setEditMode(false);
+    setEditingPromotionId(null);
+  }
+};
 
   const handleEditClick = () => {
     setEditingPromotionId(selectedPromotion.id);
@@ -241,6 +324,7 @@ const applyFilters = useCallback(() => {
     handleEditClick, 
     handleDeleteClick,
     toggleFilterButton,
+    handleCancel,
     resetForm
   };
 };
