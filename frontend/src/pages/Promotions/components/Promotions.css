@@ -74,10 +74,23 @@ a:hover{
     font-weight: ExtraBold;
     width: 520px;
     margin-right: 60px;
+    margin-bottom: 50px;
 }
 .promotion-tag {
     height: 34px;
     width: 134px;
+    background-color: var(--tertiary-color);
+    text-align: center;
+    padding-top: 7px;
+    border-radius: 100px;
+    margin-right: 10px;
+
+}
+
+.points-promotion-tag {
+    height: auto;
+    width: auto;
+    padding: 10px;
     background-color: var(--tertiary-color);
     text-align: center;
     padding-top: 7px;

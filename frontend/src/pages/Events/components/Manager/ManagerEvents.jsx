@@ -65,9 +65,9 @@ const ManagerEvents = () => {
               </button>
             </div> */}
           </div>
-          <div className='header-image'>
+          {/* <div className='header-image'>
             <img className='himg' src={eventImage} alt="event" />
-          </div>
+          </div> */}
         </div>
       
         <div className="custom-shape-divider-top-1743545933">
