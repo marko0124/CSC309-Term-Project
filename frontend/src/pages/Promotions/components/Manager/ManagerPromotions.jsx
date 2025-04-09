@@ -8,6 +8,8 @@ import PromotionForm from './PromotionForm';
 import ManagerPromotionDetails from './ManagerPromotionDetails';
 import supermarketImage from '../../assets/supermarket.avif';
 import HomeNavbar from '../../../navbar/HomeNavbar.jsx';
+import { useAuth } from '../../../../context/authContext.js';
+
 
 const ManagerPromotions = () => {
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -36,8 +38,9 @@ const ManagerPromotions = () => {
     resetForm
   } = usePromotions();
 
-  const fullDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-  const truncatedDescription = fullDescription.substring(0, 100) + "...";
+  const { user } = useAuth();
+  // const fullDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+  // const truncatedDescription = fullDescription.substring(0, 100) + "...";
 
   if (loading) return <div>Loading...</div>;
 
@@ -50,20 +53,19 @@ const ManagerPromotions = () => {
         {/* Header Section */}
         <div className='header-container'> 
           <div className='header-text'>
-            <h1>Your Promotions!</h1>
+            <h1>Promotions</h1>
             <div className='header-text-details'>
-              {/* <p className='promotion-tag'>some type</p> */}
-              {/* <p> Some Date</p> */}
+              <p className='points-promotion-tag'>Remaining Points : {user.points}</p>
             </div>
             <div className='expandable-text'>
               <p className='header-text-description'>
                 Look out for our promotions to make purchasing cheaper and easier! 
               </p>
-              <button 
+              {/* <button 
                 className='show-more-button'
                 onClick={() => setShowFullDescription(!showFullDescription)}
               >
-              </button>
+              </button> */}
             </div>
           </div>
           <div className='header-image'>
