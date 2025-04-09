@@ -14,12 +14,15 @@ const useUsers = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingUserId, setEditingUserId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [bookmarked, setBookmarked] = useState([]);
   const [activeButtons, setActiveButtons] = useState({
     regular: false,
     cashier: false,
     manager: false,
+    superuser: false,
     verified: false,
-    activated: false
+    activated: false,
+    bookmarked: false
   });
   const [filter, setFilter] = useState({
     name: '',
@@ -37,23 +40,54 @@ const useUsers = () => {
     suspicious: false,
     role: ""
   });
-  
+
+  useEffect(() => {
+    const bookmarks = localStorage.getItem("bookmarks");
+    if (bookmarks) {
+      setBookmarked(JSON.parse(bookmarks));
+    }
+  }, [])  
 
   const fetchUsers = useCallback(async (page = 1, token) => {
     setLoading(true);
     try {
-      const data = await userService.fetchUsers(page, itemsPerPage, filter, token);
-      setUsers(data);
+      if (activeButtons.bookmarked && bookmarked.length > 0) {
+        const ids = bookmarked.map(u => u.id);
+        const data = await userService.fetchUsers(page, itemsPerPage, filter, token);
+        const results = data.results.filter(u => ids.includes(u.id));
+        setUsers({
+          ...data,
+          results,
+          count: results.length
+        });
+      } else {
+        const data = await userService.fetchUsers(page, itemsPerPage, filter, token);
+        setUsers(data);
+      }
     } catch (error) {
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
     }
-  }, [filter, itemsPerPage]);
+  }, [filter, itemsPerPage, activeButtons, bookmarked, user]);
 
   useEffect(() => {
     fetchUsers(currentPage, token);
   }, [fetchUsers, currentPage, token]);
+
+  const toggleBookmark = (user) => {
+    setBookmarked(prev => {
+      var bookmarks;
+      const index = prev.findIndex(u => u.id === user.id)
+      if (index >= 0) {
+        bookmarks = prev.filter(u => u.id !== user.id);
+      } else {
+        bookmarks = [...prev, user];
+      }
+      localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+      return bookmarks;
+    });
+  }
 
   const toggleFilterButton = (buttonKey) => {
     const newActiveButtons = {
@@ -200,6 +234,7 @@ const useUsers = () => {
     filter,
     formData,
     editMode,
+    bookmarked,
     setButtonPopup,
     setSearchTerm,
     setSelectedUser,
@@ -210,6 +245,7 @@ const useUsers = () => {
     handleSubmit,
     handleEditClick, 
     toggleFilterButton,
+    toggleBookmark,
     resetForm
   };
 };
