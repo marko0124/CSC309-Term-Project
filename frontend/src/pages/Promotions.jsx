@@ -95,7 +95,7 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) =
     setLoading(true);
     try {
       // Include page and limit in URL
-      let url = `http://localhost:5001/promotions?name=${encodeURIComponent(searchTerm)}&page=${page}&limit=${itemsPerPage}`;
+      let url = `http://localhost:3001/promotions?name=${encodeURIComponent(searchTerm)}&page=${page}&limit=${itemsPerPage}`;
       // Add additional filter parameters if needed
       if (filter.type && filter.type !== 'both') {
         url += `&type=${encodeURIComponent(filter.type)}`;
@@ -192,7 +192,7 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) =
 
   const fetchPromotions = async (page = 1) => {
     try {
-      const response = await fetch(`http://localhost:5001/promotions?page=${page}&limit=${itemsPerPage}`, {
+      const response = await fetch(`http://localhost:3001/promotions?page=${page}&limit=${itemsPerPage}`, {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
@@ -223,7 +223,7 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) =
 const fetchPromotionDetails = async (promotionId) => {
   setLoading(true);
   try {
-    const response = await fetch(`http://localhost:5001/promotions/${promotionId}`, {
+    const response = await fetch(`http://localhost:3001/promotions/${promotionId}`, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',
@@ -282,12 +282,12 @@ const handlePromotionClick = (promotion, e) => {
       
       console.log("Submitting promotion data:", promotionData);
       try {
-        let url = 'http://localhost:5001/promotions';
+        let url = 'http://localhost:3001/promotions';
         let method = 'POST';
         
         // If in edit mode, update the URL and method for PUT request
         if (editMode) {
-          url = `http://localhost:5001/promotions/${editingPromotionId}`;
+          url = `http://localhost:3001/promotions/${editingPromotionId}`;
           method = 'PATCH';
         }
         
@@ -339,7 +339,7 @@ const handlePromotionClick = (promotion, e) => {
       const confirmDelete = window.confirm('Are you sure you want to delete this promotion?');
       if (confirmDelete) {
         try {
-          const response = await fetch(`http://localhost:5001/promotions/${selectedPromotion.id}`, {
+          const response = await fetch(`http://localhost:3001/promotions/${selectedPromotion.id}`, {
             method: 'DELETE',
             headers: {
               'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc0Mzc5NTkyNCwiZXhwIjoxNzQzODgyMzI0fQ.iRuTjmsQ9N1rAeid5sIm9q7Uc6sRKrKCOYWPW_w0Djc',

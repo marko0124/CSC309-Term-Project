@@ -6,6 +6,7 @@ import ManagerSearchFilters from './ManagerSearchFilters';
 import EventsList from '../EventsList';
 import ManagerEventsForm from './ManagerEventsForm';
 import eventImage from '../../../../assets/eventImage.png'; 
+import HomeNavbar from '../../../navbar/HomeNavbar';
 
 const ManagerEvents = () => {
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -43,7 +44,7 @@ const ManagerEvents = () => {
     <div className='events-page'>
       <main>
         <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-        <div className='navbar'> NAVBAR  </div>
+        <HomeNavbar> </HomeNavbar>
         
         {/* Header Section */}
         <div className='header-container'> 

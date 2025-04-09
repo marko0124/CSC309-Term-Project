@@ -1,6 +1,6 @@
 import { use } from "react";
 
-const API_URL = 'http://localhost:5001';
+const API_URL = 'http://localhost:3001';
 const TOKEN = localStorage.getItem('token') || '';
 const headers = {
   'Authorization': `Bearer ${TOKEN}`,

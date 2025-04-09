@@ -16,6 +16,8 @@ import {
     faStar,
     faCheck 
 } from '@fortawesome/free-solid-svg-icons';
+import HomeNavbar from '../../../navbar/HomeNavbar';
+
 
 const OrganizerEventDetails = ({ eventId: eventIdProp }) => {
     const [event, setEvent] = useState(null);
@@ -172,7 +174,7 @@ const OrganizerEventDetails = ({ eventId: eventIdProp }) => {
         <div className='event-details-page'>
             <main>
                 <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-                <div className='navbar'> NAVBAR (Organizer) </div>
+                <HomeNavbar> </HomeNavbar>
                 
                 <div className='event-details-container'>
                     <Link to="/events" className="back-button">

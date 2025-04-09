@@ -10,6 +10,8 @@ import Users from './pages/users/Users.jsx';
 import CreateUser from './pages/users/CreateUser.jsx';
 import PromotionsRouter from './pages/Promotions/PromotionsRouter.jsx';
 import {AuthProvider, useAuth} from './context/authContext.js';
+import EventDetailRouter from './pages/Events/EventDetailRouter.jsx';
+import EventsRouter from './pages/Events/EventsRouter.jsx';
 
 const App = () => {
   const ProtectedRoute = ({children}) => {
@@ -107,6 +109,23 @@ const App = () => {
           element={
             <ProtectedRoute>
               <PromotionsRouter />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events"
+          element={
+            <ProtectedRoute>
+              <EventsRouter />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/events/:eventId"
+          element={
+            <ProtectedRoute>
+              <EventDetailRouter />
             </ProtectedRoute>
           }
         />

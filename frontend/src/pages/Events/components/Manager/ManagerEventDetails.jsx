@@ -16,6 +16,8 @@ import {
     faStar,
     faCheck 
   } from '@fortawesome/free-solid-svg-icons';
+import HomeNavbar from '../../../navbar/HomeNavbar';
+
 const ManagerEventDetails = ({ eventId: eventIdProp }) => {
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -205,7 +207,7 @@ const validateForm = () => {
         <div className='event-details-page'>
             <main>
                 <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-                <div className='navbar'> NAVBAR (Manager) </div>
+                <HomeNavbar> </HomeNavbar>
                 
                 <div className='event-details-container'>
                     <Link to="/events" className="back-button">
