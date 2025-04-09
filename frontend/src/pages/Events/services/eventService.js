@@ -1,6 +1,7 @@
 import { use } from "react";
+import env from "react-dotenv";
 
-const API_URL = 'http://localhost:3001';
+const API_URL = env.BACKEND_URL;
 const TOKEN = localStorage.getItem('token') || '';
 const headers = {
   'Authorization': `Bearer ${TOKEN}`,
