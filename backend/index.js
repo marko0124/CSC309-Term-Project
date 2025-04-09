@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-const { setupDatabase } = require('./setup-db');
+const { setupDatabase } = require('./setUpdb');
 const { PrismaClient } = require('@prisma/client');
 let prisma;
 
@@ -10,18 +10,7 @@ const port = process.env.PORT || 3001;
 const express = require("express");
 const cors = require("cors");
 const fs = require('fs');
-
 const app = express();
-
-// Initialize the app without database routes first
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'initializing',
-    message: 'Server starting up, database initialization in progress',
-    timestamp: new Date().toISOString()
-  });
-});
-
 // Better CORS handling
 const corsOrigin = process.env.FRONTEND_URL || "http://localhost:3000";
 const formattedOrigin = corsOrigin.startsWith('http') 
@@ -37,6 +26,16 @@ app.use(cors({
 
 console.log('CORS configured with origin:', formattedOrigin);
 
+
+// Initialize the app without database routes first
+app.get('/health', (req, res) => {
+    res.status(200).json({
+      status: 'initializing',
+      message: 'Server starting up, database initialization in progress',
+      timestamp: new Date().toISOString()
+    });
+  });
+  
 // Start server first
 const server = app.listen(port, () => {
   console.log(`Server running on port ${port}`);
