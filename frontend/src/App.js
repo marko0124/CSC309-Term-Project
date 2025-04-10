@@ -27,6 +27,7 @@ import TransferPointsPage from './pages/transactions/regular/TransferPointsPage.
 import EventDetailRouter from './pages/Events/EventDetailRouter.jsx';
 import EventsRouter from './pages/Events/EventsRouter.jsx';
 import Loading from './pages/errors/Loading.jsx';
+import NotFound from './pages/errors/NotFound.jsx';
 
 const App = () => {
   const ProtectedRoute = ({children}) => {
@@ -224,9 +225,15 @@ const App = () => {
             <ProtectedRoute>
               <EventDetailRouter />
             </ProtectedRoute>
-          }
-        />
-      </Routes>
+            }
+          />
+          <Route
+          path="*"
+          element={
+            <NotFound />
+            }
+          />
+        </Routes>
     )
   }
   
