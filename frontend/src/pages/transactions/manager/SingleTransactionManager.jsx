@@ -70,11 +70,11 @@ const SingleTransactionManager = () => {
             const response = await apiClient.post(
                 'transactions',
                 {
-                    utorid: data.utorid,
+                    utorid: data.utorid || (data.type === "transfer" ? data.amount < 0 ? data.sender : data.recipient : null),
                     type: "adjustment",
                     amount: amount,
                     relatedId: data.id,
-                    promotionIds: data.promotionIds || null,
+                    promotionIds: data.promotionIds || [],
                     remark: remark,
                 },
                 {
