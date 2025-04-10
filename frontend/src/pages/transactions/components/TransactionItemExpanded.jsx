@@ -40,7 +40,7 @@ const TransactionItemExpanded = ({ transaction, view }) => {
                             <p><b>User:</b> {transaction.utorid}</p>
                             <p><b>Spent:</b> {new Intl.NumberFormat("en-US", { style: 'currency', currency: 'USD' }).format(transaction.spent)}</p>
                             <p><b>Points Earned:</b> {transaction.amount}</p>
-                            <p><b>Promotions used (IDs):</b> [ {transaction.promotionIds} ]</p>
+                            <p><b>Promotions used (IDs):</b> [ {transaction.promotionIds.join(' ')}]</p>
                         </div>
                     }
 
