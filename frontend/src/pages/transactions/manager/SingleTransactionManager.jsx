@@ -160,8 +160,8 @@ const SingleTransactionManager = () => {
                         <div className="info-section">
                             <h3>Set status</h3>
                             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'space-around', marginBottom: '1rem' }}>
-                                <Button variant="success" onClick={handleSetValid}>Set Valid</Button>
-                                <Button variant="danger" onClick={handleSetSuspicious}>Set Suspicious</Button>
+                                <Button variant={!data.suspicious ? "secondary" : "success"} onClick={handleSetValid} disabled={!data.suspicious}>Set Valid</Button>
+                                <Button variant={data.suspicious ? "secondary" : "danger"} onClick={handleSetSuspicious} disabled={data.suspicious}>Set Suspicious</Button>
                             </div>
                             <div>
                                 <h3>Adjust Transaction</h3>
