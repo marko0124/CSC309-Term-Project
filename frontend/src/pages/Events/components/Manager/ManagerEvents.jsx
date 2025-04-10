@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import '../Events.css';
-import '../../../navbar.css'; 
 import useEvents from '../../hooks/useEvents';
 import ManagerSearchFilters from './ManagerSearchFilters';
 import EventsList from '../EventsList';
@@ -35,8 +34,8 @@ const ManagerEvents = () => {
     resetForm
   } = useEvents();
 
-  const fullDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-  const truncatedDescription = fullDescription.substring(0, 100) + "...";
+  // const fullDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+  // const truncatedDescription = fullDescription.substring(0, 100) + "...";
 
   if (loading) return <div>Loading...</div>;
 
@@ -49,12 +48,12 @@ const ManagerEvents = () => {
         {/* Header Section */}
         <div className='header-container'> 
           <div className='header-text'>
-            <h1>A Title of the most Important Upcoming Event</h1>
-            <div className='header-text-details'>
+            <h1>Checkout our Events!</h1>
+            {/* <div className='header-text-details'>
               <p className='event-tag'>some type</p>
               <p> Some Date</p>
-            </div>
-            <div className='expandable-text'>
+            </div> */}
+            {/* <div className='expandable-text'>
               <p className='header-text-description'>
                 {showFullDescription ? fullDescription : truncatedDescription}
               </p>
@@ -64,11 +63,11 @@ const ManagerEvents = () => {
               >
                 {showFullDescription ? 'Show Less' : 'Show More'}
               </button>
-            </div>
+            </div> */}
           </div>
-          <div className='header-image'>
+          {/* <div className='header-image'>
             <img className='himg' src={eventImage} alt="event" />
-          </div>
+          </div> */}
         </div>
       
         <div className="custom-shape-divider-top-1743545933">

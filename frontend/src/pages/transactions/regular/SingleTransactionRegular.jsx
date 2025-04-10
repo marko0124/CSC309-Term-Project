@@ -5,6 +5,7 @@ import { useAuth } from "../../../context/authContext";
 import apiClient from "../../../api/client";
 import HomeNavbar from "../../navbar/HomeNavbar";
 import './SingleTransaction.css'
+import Loading from "../../errors/Loading";
 
 const SingleTransactionRegular = () => {
     const { transactionId } = useParams();
@@ -70,9 +71,7 @@ const SingleTransactionRegular = () => {
         </>
     }
 
-    return <>
-    Loading...
-    </>
+    return <Loading />
 }
 
 export default SingleTransactionRegular;

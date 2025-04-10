@@ -37,7 +37,7 @@ const RegularAllTransactions = () => {
 
         {/* Main Content */}
         <section className="page-layout">
-            <div className="info-card">
+            <div className="info-card" style={{ flex: 2 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                     <h3>All My Transactions</h3>
 
@@ -53,7 +53,7 @@ const RegularAllTransactions = () => {
                     />
                 </div>
             </div>
-            <div className="info-card">
+            <div className="info-card" style={{ flex: 1 }}>
                 <h3>Filter by</h3>
                 <TransactionsFilters setSearchParams={setSearchParams} view={"regular"} />
             </div>

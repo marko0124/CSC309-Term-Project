@@ -1,6 +1,6 @@
 import env from "react-dotenv";
 
-const API_URL = env.BACKEND_URL;
+const API_URL = process.env.REACT_APP_BACKEND_URL;
 export const fetchUsers = async (page = 1, limit = 5, filters = {}, token) => {
   const headers = {
     'Authorization': `Bearer ${token}`,

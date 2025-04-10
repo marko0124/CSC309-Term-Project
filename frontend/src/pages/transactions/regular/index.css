@@ -313,6 +313,11 @@
 }
 
 @media (max-width: 768px) {
+
+    .page-layout {
+        flex-direction: column-reverse;
+    }
+
     .profile-card-wrapper {
         width: 90%;
     }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import * as eventService from '../../services/eventService';
-import '../../../navbar.css';
 import ManagerParticipantPopup from './ManagerParticipantPopup';
 import AwardPoints from '../controller/AwardPoints';
 import './ManagerEventDetails.css';
@@ -94,7 +93,7 @@ const ManagerEventDetails = ({ eventId: eventIdProp }) => {
             endTime: new Date(event.endTime).toISOString().slice(0, 16),
             capacity: event.capacity,
             points: event.points,
-            published: event.published
+            published: event.published || null
         });
         setIsEditing(true);
     };
@@ -125,7 +124,11 @@ const validateForm = () => {
     // Check that start time is before end time
     const startDate = new Date(editFormData.startTime);
     const endDate = new Date(editFormData.endTime);
-    
+    const today = new Date();
+    if (startDate < today) {
+        setUpdateError('You cannot edit an event that has already started');
+        return false;
+    }
     if (startDate >= endDate) {
       setUpdateError('End time must be after start time');
       return false;
@@ -217,7 +220,24 @@ const validateForm = () => {
                     {isEditing ? (
                         // Edit Form
                         <form onSubmit={handleSubmitEdit} className="edit-event-form">
-                            <h2>Edit Event</h2>
+                            <div className="event-form-header">
+                            <h2>Edit Event</h2>                             
+                            {!event.published && (
+                                <div className="form-group published-checkbox-group">
+                                    <label htmlFor="published">
+                                        <input
+                                            type="checkbox"
+                                            id="published"
+                                            name="published"
+                                            checked={editFormData.published}
+                                            onChange={handleInputChange}
+                                        />
+                                        Publish Event
+                                    </label>
+                                </div>
+                            )}
+                            </div>
+                            
                             
                             {updateError && <div className="error-message">{updateError}</div>}
                             
@@ -318,22 +338,8 @@ const validateForm = () => {
                                 </div>
                             </div>
                             
-                            {!event.published && (
-                                <div className="form-group checkbox-group">
-                                    <label htmlFor="published">
-                                        <input
-                                            type="checkbox"
-                                            id="published"
-                                            name="published"
-                                            checked={editFormData.published}
-                                            onChange={handleInputChange}
-                                        />
-                                        Publish Event
-                                    </label>
-                                </div>
-                            )}
-                            
-                            <div className="button-group">
+
+                            <div className="event-button-group">
                                 <button
                                     type="button"
                                     onClick={() => setIsEditing(false)}

@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import TransactionItemExpanded from "../components/TransactionItemExpanded";
-import { Card, Form, InputGroup } from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
 import { useAuth } from "../../../context/authContext";
 import apiClient from "../../../api/client";
 import HomeNavbar from "../../navbar/HomeNavbar";
 import './SingleTransaction.css'
+import Loading from "../../errors/Loading";
 
 const SingleTransactionManager = () => {
     const { transactionId } = useParams();
@@ -190,73 +191,9 @@ const SingleTransactionManager = () => {
             </div>
         </>
 
-        return <>
-            <header>header</header>
-            <nav>Nav bar</nav>
-            <section style={{ display: 'flex', padding: '1rem 10rem', gap: '2rem' }}>
-                <section style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '1rem', justifyContent: 'start', flex: '1', width: '50rem' }}>
-                    <h3>Transaction #{transactionId}</h3>
-                    <TransactionItemExpanded transaction={data} />
-                </section>
-
-                <section style={{ display: 'flex', padding: '1rem', justifyContent: 'start', flex: '1', flexDirection: 'column' }}>
-                    <h3>Actions</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: 'fit-content' }}>
-                        <Card>
-                            <Card.Header as="h5">Adjust Transaction Amount</Card.Header>
-                            <Card.Body>
-                                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'space-around' }}>
-                                    <Button variant="success" onClick={handleSetValid}>Set Valid</Button>
-                                    <Button variant="danger" onClick={handleSetSuspicious}>Set Suspicious</Button>
-                                </div>
-                            </Card.Body>
-                        </Card>
-                        <Card>
-                            <Card.Header as="h5">Adjust Transaction Amount</Card.Header>
-                            <Card.Body>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="amount">Amount</InputGroup.Text>
-                                    <Form.Control
-                                        placeholder="Enter number of points"
-                                        aria-label="Amount"
-                                        aria-describedby="amount"
-                                        onChange={(e) => { setAmount(e.target.value) }}
-                                    />
-                                </InputGroup>
-                                <InputGroup className='mb-3'>
-                                    <InputGroup.Text>Comments</InputGroup.Text>
-                                    <Form.Control as="textarea" aria-label="With textarea" onChange={(e) => { setRemark(e.target.value) }} />
-                                </InputGroup>
-                            </Card.Body>
-                            <Card.Footer style={{ display: 'flex', justifyContent: 'end' }}>
-                                <Button variant="primary" onClick={handleAdjust}>Adjust</Button>
-                            </Card.Footer>
-                        </Card>
-
-                    </div>
-                </section>
-            </section>
-
-
-            <footer>footer</footer>
-        </>
     }
 
-    return <>
-        <header>header</header>
-        <nav>Nav bar</nav>
-        <section style={{ display: 'flex', padding: '1rem 10rem', gap: '2rem' }}>
-            <section style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '1rem', justifyContent: 'start', flex: '1', width: '50rem' }}>
-                <h3>Transaction #{transactionId}</h3>
-                loading...
-            </section>
-
-            <section style={{ display: 'flex', padding: '1rem', justifyContent: 'start', flex: '1', flexDirection: 'column' }}>
-                <h3>Actions</h3>
-            </section>
-        </section>
-        <footer>footer</footer>
-    </>
+    return <Loading />
 }
 
 export default SingleTransactionManager;

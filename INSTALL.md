@@ -60,7 +60,7 @@ npx prisma db push
 - Optionally, seed the database with pre-made mock data:
 
     ```sh
-    node prisma/seed.js
+    npx prisma db seed
     ```
 
 > [!TIP]
@@ -79,3 +79,30 @@ node . PORT_NUM
     ```
 
 At this point, your backend should be fully functional for development and testing purposes.
+
+## Running it Locally 
+Ensure that your .env has the following variables in them. 
+/fontend/.env 
+```sh
+REACT_APP_BACKEND_URL="http://localhost:3001"
+```
+
+
+/backend/.env
+```sh
+FRONTEND_URL="http://localhost:3000"
+DATABASE_URL="file:./data/sqlite/dev.db"
+```
+
+Once this is complete, run: 
+
+```sh
+# /backend
+npm start
+```
+```sh
+# /frontend
+npm start
+```
+
+

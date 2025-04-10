@@ -15,7 +15,7 @@ const TransactionItem = ({ transaction, view }) => {
     return <>
         <Link to={url} style={{ textDecoration: 'none' }}>
             <ListGroup.Item
-                style={{ padding: '2rem', width: '50rem', flexDirection: 'column', borderRadius: '1rem'}}
+                style={{ padding: '2rem', width: '100%', flexDirection: 'column', borderRadius: '1rem'}}
                 as="li"
                 className="d-flex justify-content-between align-items-start"
             >
