@@ -26,13 +26,14 @@ import RequestRedemptionPage from './pages/transactions/regular/RequestRedemptio
 import TransferPointsPage from './pages/transactions/regular/TransferPointsPage.jsx';
 import EventDetailRouter from './pages/Events/EventDetailRouter.jsx';
 import EventsRouter from './pages/Events/EventsRouter.jsx';
+import Loading from './pages/errors/Loading.jsx';
 
 const App = () => {
   const ProtectedRoute = ({children}) => {
     const {isAuthenticated, loading} = useAuth();
 
     if (loading) {
-      return <div>Loading...</div>;
+      return <Loading />
     }
 
     if (!isAuthenticated) {
