@@ -549,14 +549,16 @@ async function createTransactions() {
             points: 100,
             sender: {connect: {id: sender.id}},
             createdBy: {connect: {id: sender.id}},
-            processor: {connect: {id: superuser.id}}
+            processor: {connect: {id: superuser.id}},
+            relatedId: superuser.id
         },
         {
             transactionType: "redemption",
             points: 80,
             sender: {connect: {id: sender2.id}},
             createdBy: {connect: {id: sender2.id}},
-            processor: {connect: {id: manager.id}}
+            processor: {connect: {id: manager.id}},
+            relatedId: manager.id
         },
         {
             transactionType: "redemption",

@@ -642,7 +642,8 @@ router.patch('/:transactionId/processed', auth.login, auth.checkRole('cashier'),
                 data: {
                     processor: {
                         connect: {id: req.user.id}
-                    }
+                    },
+                    relatedId: req.user.id
                 },
                 include: {
                     sender: {},

@@ -420,6 +420,8 @@ router.get('/me/transactions', auth.login, async (req, res) => {
                     amount: transaction.points,
                     type: transaction.transactionType,
                     relatedId: transaction.relatedId,
+                    sender: transaction.sender.utorid,
+                    recipient: transaction.receiver.utorid,
                     promotionIds: promotions,
                     remark: transaction.remark,
                     createdBy: transaction.createdBy.utorid
