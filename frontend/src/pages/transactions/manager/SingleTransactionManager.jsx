@@ -154,7 +154,7 @@ const SingleTransactionManager = () => {
                     <div className="info-card d-flex flex-column transaction-expanded">
 
                         <h3>Transaction #{transactionId}</h3>
-                        <TransactionItemExpanded transaction={data} />
+                        <TransactionItemExpanded transaction={data} view={"manager"}/>
                     </div>
                     <div className="info-card">
                         <div className="info-section">
