@@ -29,7 +29,7 @@ const SingleTransactionManager = () => {
                     }
                 }
             );
-            setData(response.data);
+            setData({ ...data, suspicious: response.data.suspicious, amount: response.data.amount });
         } catch (error) {
 
 
@@ -54,7 +54,7 @@ const SingleTransactionManager = () => {
                     }
                 }
             );
-            setData(response.data);
+            setData({ ...data, suspicious: response.data.suspicious, amount: response.data.amount });
         } catch (error) {
             console.error("Error patching data:", error);
             return (

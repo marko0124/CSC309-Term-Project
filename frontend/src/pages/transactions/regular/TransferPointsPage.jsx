@@ -14,6 +14,7 @@ const TransferPointsPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrorMessage(null);
         const data = new FormData(e.target);
         const entries = Object.fromEntries(data.entries().filter(([_, value]) => value !== ""));
         entries.type = "transfer"
@@ -84,7 +85,7 @@ const TransferPointsPage = () => {
             <section className="page-layout">
                 <div className="info-card">
                     {errorMessage &&
-                        <Alert variant="danger" dismissible>
+                        <Alert variant="danger">
                             <Alert.Heading>Error.</Alert.Heading>
                             <p>{errorMessage}</p>
                         </Alert>

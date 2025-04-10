@@ -24,6 +24,12 @@ const TransactionItem = ({ transaction, view }) => {
                     <div style={{ padding: '0.2rem 0.8rem', backgroundColor: backgroundColor, borderRadius: '1rem', color: 'white' }}>
                         {capitalize(transaction.type)}
                     </div>
+
+                    { view === "manager" && 
+                        <div style={{ padding: '0.2rem 0.8rem', backgroundColor: backgroundColor, borderRadius: '1rem', color: 'white' }}>
+                            ID: {transaction.id}
+                        </div>
+                    }
                     
                     {/* edit button */}
                     {/* { view === "manager" && 
