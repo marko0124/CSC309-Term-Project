@@ -265,8 +265,8 @@ async function createEvents() {
       return created;
     }
 
-    async function createPromos() {
-        const promos = [
+async function createPromos() {
+    const promos = [
             {
                 name: "Promo 1",
                 description: "Automatic extra rate",
@@ -336,6 +336,7 @@ async function createEvents() {
                 end: new Date(2024, 11, 30)
             }
         ];
+
 
     const created = [];
     const user = await prisma.user.findUnique({ where: { utorid: "conan123" } });

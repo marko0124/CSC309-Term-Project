@@ -1,6 +1,6 @@
 import React from 'react';
 import Pagination from './Pagination';
-
+import { useAuth } from '../../../context/authContext';
 const PromotionList = ({ 
   promotions, 
   currentPage, 
@@ -9,6 +9,7 @@ const PromotionList = ({
   onPromotionClick,
   isLoading = false // Add this prop with a default value
 }) => {
+  const {user} = useAuth();
   // Show loading indicator when data is being fetched
   if (isLoading) {
     return <div className="loading-promotions">Loading promotions...</div>;
@@ -26,7 +27,10 @@ const PromotionList = ({
           <ul className='promotion' key={promotion.id || index}>
             <div className='promotion-details'> 
               <div className='promotion-tag'>{promotion.type}</div> 
-              <p>{new Date(promotion.startTime).toLocaleDateString()}</p>
+              <p>{user.role === 'manager' || user.role === 'superuser' 
+                ? new Date(promotion.startTime).toLocaleDateString() 
+                : ''}
+              </p>
             </div>
             <div 
               className="promotion-clickable"
