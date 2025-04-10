@@ -265,53 +265,77 @@ async function createEvents() {
       return created;
     }
 
-async function createPromos() {
-    const promos = [
-        {
-            name: "Promo 1",
-            description: "Automatic extra rate",
-            type: "automatic",
-            rate: 1.25,
-            start: new Date(2025, 3, 30),
-            end: new Date(2025, 4, 30),
-            minSpend: 1.00
-        },
-        {
-            name: "Promo 2",
-            description: "Automatic extra points",
-            type: "automatic",
-            points: 25,
-            start: new Date(2025, 3, 30),
-            end: new Date(2025, 4, 30),
-            minSpend: 5.00
-        },
-        {
-            name: "Promo 3",
-            description: "One-Time extra rate",
-            type: "one-time",
-            rate: 1.5,
-            start: new Date(2025, 3, 30),
-            end: new Date(2025, 4, 30),
-            minSpend: 3.00
-        },
-        {
-            name: "Promo 4",
-            description: "One-Time extra points",
-            type: "one-time",
-            points: 50,
-            start: new Date(2025, 3, 30),
-            end: new Date(2025, 4, 30),
-            minSpend: 10.00
-        },
-        {
-            name: "Promo 5",
-            description: "Extra points no min spend",
-            type: "automatic",
-            points: 25,
-            start: new Date(2025, 3, 30),
-            end: new Date(2025, 4, 30)
-        }
-    ];
+    async function createPromos() {
+        const promos = [
+            {
+                name: "Promo 1",
+                description: "Automatic extra rate",
+                type: "automatic",
+                rate: 1.25,
+                start: new Date(2025, 3, 30),
+                end: new Date(2025, 4, 30),
+                minSpend: 1.00
+            },
+            {
+                name: "Promo 2",
+                description: "Automatic extra points",
+                type: "automatic",
+                points: 25,
+                start: new Date(2025, 3, 30),
+                end: new Date(2025, 4, 30),
+                minSpend: 5.00
+            },
+            {
+                name: "Promo 3",
+                description: "One-Time extra rate",
+                type: "one-time",
+                rate: 1.5,
+                start: new Date(2025, 3, 30),
+                end: new Date(2025, 4, 30),
+                minSpend: 3.00
+            },
+            {
+                name: "Promo 4",
+                description: "One-Time extra points",
+                type: "one-time",
+                points: 50,
+                start: new Date(2025, 3, 30),
+                end: new Date(2025, 4, 30),
+                minSpend: 10.00
+            },
+            {
+                name: "Promo 5",
+                description: "Extra points no min spend",
+                type: "automatic",
+                points: 25,
+                start: new Date(2025, 0, 27),
+                end: new Date(2025, 4, 30)
+            },
+            {
+                name: "Promo 6",
+                description: "Regular User Viewable",
+                type: "automatic",
+                points: 25,
+                start: new Date(2025, 0, 27),
+                end: new Date(2025, 4, 30)
+            },
+            {
+                name: "Promo 7",
+                description: "For Pagination",
+                type: "automatic",
+                points: 25,
+                start: new Date(2025, 0, 30),
+                end: new Date(2025, 4, 30)
+            },
+            {
+                name: "Promo 8",
+                description: "Extra points no min spend",
+                type: "automatic",
+                points: 25,
+                start: new Date(2024, 0, 30),
+                end: new Date(2024, 11, 30)
+            }
+        ];
 
     const created = [];
     const user = await prisma.user.findUnique({ where: { utorid: "conan123" } });
