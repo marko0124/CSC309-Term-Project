@@ -61,15 +61,15 @@ setupDatabase()
     
     // Update health check
     app.get('/health', async (req, res) => {
-      const users = await prisma.user.findFirst({
-        where: {id: 1}
-      });
+      const users = await prisma.$queryRaw`
+      SELECT * FROM Users
+    `;
       res.status(200).json({
         status: 'ok',
         database: 'SQLite',
         dbPath: process.env.DATABASE_URL,
         timestamp: new Date().toISOString(),
-        user: users.id
+        user: users
       });
     });
   })
