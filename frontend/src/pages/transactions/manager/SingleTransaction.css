@@ -318,7 +318,7 @@
 @media (max-width: 768px) {
 
     .page-layout {
-        flex-direction: column;
+        flex-direction: column-reverse;
         padding: 0 1rem;
     }
     

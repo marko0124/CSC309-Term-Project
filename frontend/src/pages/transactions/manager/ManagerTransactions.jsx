@@ -35,7 +35,7 @@ const ManagerTransactions = () => {
 
             {/* Main Content */}
             <section className="page-layout">
-                <div className="info-card">
+                <div className="info-card" style={{ flex: 2 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                         <h3>All Transactions</h3>
 
@@ -51,7 +51,7 @@ const ManagerTransactions = () => {
                         />
                     </div>
                 </div>
-                <div className="info-card">
+                <div className="info-card" style={{ flex: 1 }}>
                     <h3>Filter by</h3>
                     <TransactionsFilters setSearchParams={setSearchParams} view={"manager"} />
                 </div>

@@ -38,8 +38,8 @@ const RegularTransactions = () => {
             </div>
 
             {/* Main Content */}
-            <section className="page-layout">
-                <div className="info-card">
+            <section className="page-layout transaction-layout">
+                <div className="info-card" style={{ flex: 2 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                         <h3>My Recent Transactions</h3>
                         <Link to={"/transactions/all"}>
@@ -58,7 +58,7 @@ const RegularTransactions = () => {
                         />
                     </div>
                 </div>
-                <div className="info-card">
+                <div className="info-card" style={{ flex: 1 }}>
                     <div className="info-section">
                         <h3> Actions</h3>
                         <Link to={'/transactions/transfer'} className='mb-3'>
