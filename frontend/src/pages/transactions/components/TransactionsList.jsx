@@ -45,9 +45,8 @@ const TransactionsList = ({ searchParamsString, view, showPagination, searchPara
             return <div>No results :(</div>
         }
         const transactionsList = data.results.map((transaction) => {
-            return <li key={transaction.id}>
-                <TransactionItem transaction={transaction} view={view}/>
-            </li>
+            return <TransactionItem transaction={transaction} view={view} key={transaction.id}/>
+            
         });
 
         return <>
