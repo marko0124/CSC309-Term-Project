@@ -21,7 +21,7 @@ const ManagerTransactions = () => {
                     </div>
                     <div className='expandable-text'>
                         <p className='header-text-description'>
-                            View and manage your transactions
+                            View and manage all transactions
                         </p>
                     </div>
                 </div>
