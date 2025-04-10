@@ -60,7 +60,10 @@ setupDatabase()
     app.use("/promotions", promotionRoutes);
     
     // Update health check
-    app.get('/health', (req, res) => {
+    app.get('/health', async (req, res) => {
+      const users = await prisma.user.findMany({
+        where: {id: 1}
+    });
       res.status(200).json({
         status: 'ok',
         database: 'SQLite',
