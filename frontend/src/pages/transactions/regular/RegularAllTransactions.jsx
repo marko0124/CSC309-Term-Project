@@ -55,7 +55,7 @@ const RegularAllTransactions = () => {
             </div>
             <div className="info-card" style={{ flex: 1 }}>
                 <h3>Filter by</h3>
-                <TransactionsFilters setSearchParams={setSearchParams} view={"regular"} />
+                <TransactionsFilters searchParams={searchParams} setSearchParams={setSearchParams} view={"regular"} />
             </div>
 
         </section>

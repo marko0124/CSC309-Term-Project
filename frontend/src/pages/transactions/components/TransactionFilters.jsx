@@ -1,16 +1,20 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { useAuth } from '../../../context/authContext';
 
-const TransactionsFilters = ({ setSearchParams, view }) => {
-    const [amount, setAmount] = useState('');
-    const [type, setType] = useState('Any');
-    const [relatedId, setRelatedId] = useState("");
+const TransactionsFilters = ({ searchParams, setSearchParams, view }) => {
+    const [name, setName] = useState(searchParams.get('name'));
+    const [createdBy, setCreatedBy] = useState(searchParams.get('createdBy'));
+    const [amount, setAmount] = useState(searchParams.get('amount'));
+    const [type, setType] = useState(searchParams.get('type') || '');
+    const [relatedId, setRelatedId] = useState(searchParams.get('relatedId'));
+    const [promotionId, setPromotionId] = useState(searchParams.get('promotionId'));
+    const [operator, setOperator] = useState(searchParams.get('operator'));
+    const [suspicious, setSuspicious] = useState(searchParams.get('suspicious') === "true");
 
     useEffect(() => {
         if (type === "") {
@@ -32,11 +36,11 @@ const TransactionsFilters = ({ setSearchParams, view }) => {
                 <>
                     <Form.Group className="mb-3" controlId="formGroupName">
                         <Form.Label>Name</Form.Label>
-                        <Form.Control type="text" placeholder="name/utorid" name="name" />
+                        <Form.Control type="text" placeholder="name/utorid" name="name" value={name} onChange={(e) => setName(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formGroupCreatedBy">
                         <Form.Label>Created By</Form.Label>
-                        <Form.Control type="text" placeholder="utorid" name='createdBy' />
+                        <Form.Control type="text" placeholder="utorid" name='createdBy' value={createdBy} onChange={(e) => setCreatedBy(e.target.value)}/>
                     </Form.Group>
                 </>
             }
@@ -95,7 +99,7 @@ const TransactionsFilters = ({ setSearchParams, view }) => {
                 <Col>
                     <Form.Group className="mb-3" controlId="formGroupAmount">
                         <Form.Label>Amount</Form.Label>
-                        <Form.Control type="text" placeholder="amount" onChange={(e) => setAmount(e.target.value)} name="amount" />
+                        <Form.Control type="text" placeholder="amount"  value={amount} onChange={(e) => setAmount(e.target.value)} name="amount" />
                     </Form.Group>
                 </Col>
                 <Col>
@@ -109,6 +113,8 @@ const TransactionsFilters = ({ setSearchParams, view }) => {
                                 value="lte"
                                 label="Less than"
                                 name="operator"
+                                checked={operator === 'lte'}
+                                onChange={() => setOperator('lte')}
                             />
                             <Form.Check
                                 inline
@@ -117,6 +123,8 @@ const TransactionsFilters = ({ setSearchParams, view }) => {
                                 value="gte"
                                 label="Greater than"
                                 name="operator"
+                                checked={operator === 'gte'}
+                                onChange={() => setOperator('gte')}
                             />
                         </>
                     )}
@@ -125,7 +133,7 @@ const TransactionsFilters = ({ setSearchParams, view }) => {
             <Row>
                 <Form.Group className="mb-3" controlId="formGroupAmount">
                     <Form.Label>Promotion ID Used</Form.Label>
-                    <Form.Control type="text" placeholder="promotionId" name='promotionId' />
+                    <Form.Control type="text" placeholder="promotionId" name='promotionId' value={promotionId} onChange={(e) => setPromotionId(e.target.value)}/>
                 </Form.Group>
             </Row>
             {view === "manager" &&
@@ -137,6 +145,8 @@ const TransactionsFilters = ({ setSearchParams, view }) => {
                             label="Suspicious"
                             name='suspicious'
                             value="true"
+                            checked={suspicious}
+                            onClick={() => setSuspicious(!suspicious)}
                         />
                     </Row>
                 </>

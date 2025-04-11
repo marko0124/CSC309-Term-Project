@@ -53,7 +53,7 @@ const ManagerTransactions = () => {
                 </div>
                 <div className="info-card" style={{ flex: 1 }}>
                     <h3>Filter by</h3>
-                    <TransactionsFilters setSearchParams={setSearchParams} view={"manager"} />
+                    <TransactionsFilters searchParams={searchParams} setSearchParams={setSearchParams} view={"manager"} />
                 </div>
 
             </section>
